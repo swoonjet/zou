@@ -3,10 +3,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from mpl_toolkits.mplot3d import Axes3D
-from PIL import Image
 import random
+import tempfile
+import os
 
-# Bezier classes
+# Bezier class
 class Bezier:
     def __init__(self, control_points, collapse_axes):
         self.control_points = control_points
@@ -34,8 +35,8 @@ class Bezier3D(Bezier): pass
 def generate_random_control_points(n=12):
     return np.array([[random.uniform(-5, 5) for _ in range(3)] for _ in range(n)])
 
-# Generate the animation
-def generate_animation():
+# Generate and save animation as GIF
+def generate_animation_gif():
     control_points = generate_random_control_points(12)
     bezier = Bezier3D(control_points, [0])
     t_vals = np.linspace(0, 1, 100)
@@ -54,7 +55,6 @@ def generate_animation():
         curve = np.array([bezier_rot([t]) for t in t_vals])
         layered_curves.append(curve)
 
-    # Bounding box
     all_points = np.concatenate(layered_curves)
     center = np.mean(all_points, axis=0)
     margin = 1
@@ -62,12 +62,11 @@ def generate_animation():
     base_ylim = (np.min(all_points[:, 1]) - margin, np.max(all_points[:, 1]) + margin)
     base_zlim = (np.min(all_points[:, 2]) - margin, np.max(all_points[:, 2]) + margin)
 
-    # Setup plot
-    fig = plt.figure(figsize=(6.4, 6.4))
+    fig = plt.figure(figsize=(6, 6))
     ax = fig.add_subplot(111, projection='3d')
 
     draw_frames = len(layered_curves)
-    orbit_frames = 180
+    orbit_frames = 90
     total_frames = draw_frames + orbit_frames
 
     def ease_in_out(t):
@@ -76,7 +75,6 @@ def generate_animation():
     def update(frame):
         ax.cla()
         ax.axis('off')
-
         if frame < draw_frames:
             zoom_factor = 1.0
         else:
@@ -84,7 +82,6 @@ def generate_animation():
             eased = ease_in_out(orbit_progress)
             zoom_factor = 1 + 0.25 * np.sin(eased * 2 * np.pi)
 
-        # Set zoomed view
         xlim = center[0] + (np.array(base_xlim) - center[0]) * zoom_factor
         ylim = center[1] + (np.array(base_ylim) - center[1]) * zoom_factor
         zlim = center[2] + (np.array(base_zlim) - center[2]) * zoom_factor
@@ -109,15 +106,16 @@ def generate_animation():
 
         return []
 
+    tmpfile = tempfile.NamedTemporaryFile(delete=False, suffix='.gif')
     ani = FuncAnimation(fig, update, frames=total_frames, blit=False)
-    ani.save("bezier_sculpture.mp4", fps=30, dpi=200, extra_args=['-vcodec', 'libx264'])
+    ani.save(tmpfile.name, writer='pillow', fps=20)
+    return tmpfile.name
 
-# --- STREAMLIT APP ---
+# --- STREAMLIT UI ---
+st.title("✨ Bezier Shell Sculpture")
 
-st.title("🎥 Bezier Sculpture Generator")
-
-if st.button("✨ Generate 3D Sculpture Animation"):
-    with st.spinner("Creating sculpture... please wait (this takes ~15 seconds)"):
-        generate_animation()
-    st.success("Done! Here's your animation:")
-    st.video("bezier_sculpture.mp4")
+if st.button("🎬 Generate Sculpture"):
+    with st.spinner("Rendering..."):
+        gif_path = generate_animation_gif()
+    st.success("Done! Here it is:")
+    st.image(gif_path, caption="Animated Bezier Sculpture", use_column_width=True)
