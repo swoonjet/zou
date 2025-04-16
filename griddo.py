@@ -2,11 +2,12 @@ import streamlit as st
 import string
 import random
 from PIL import Image, ImageDraw, ImageFont
+import os
 
 # === CONFIG ===
 GRID_SIZE = 25
-CELL_SIZE = 40
-FONT_SIZE = 24
+CELL_SIZE = 50  # More space
+FONT_SIZE = 36  # Bigger characters
 HIDDEN_WORD = "NAMMU"
 CHARACTERS = string.ascii_letters + string.digits
 DIRECTIONS = [
@@ -16,11 +17,21 @@ DIRECTIONS = [
     (1, -1),  # ↙
 ]
 
-# === FONT LOAD ===
-try:
-    font = ImageFont.truetype("Courier_New.ttf", FONT_SIZE)
-except:
-    font = ImageFont.load_default()
+# === FONT SETUP ===
+# Try to load a monospace font
+def load_mono_font(size):
+    font_paths = [
+        "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",
+        "/Library/Fonts/Courier New.ttf",
+        "/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf",
+        "C:/Windows/Fonts/consola.ttf"
+    ]
+    for path in font_paths:
+        if os.path.exists(path):
+            return ImageFont.truetype(path, size)
+    return ImageFont.load_default()
+
+font = load_mono_font(FONT_SIZE)
 
 # === CHAR GENERATOR ===
 def generate_char(seed, i, j):
@@ -72,18 +83,18 @@ def draw_whisper_grid(slider_val):
             else:
                 char = generate_char(slider_val, i, j)
 
-            x = j * CELL_SIZE + 5
-            y = i * CELL_SIZE + 5
+            x = j * CELL_SIZE + CELL_SIZE // 5
+            y = i * CELL_SIZE + CELL_SIZE // 10
             draw.text((x, y), char, font=font, fill=(0, 255, 170))
 
     return img
 
 # === STREAMLIT UI ===
 st.set_page_config(page_title="Whisper Grid", layout="centered", page_icon="🌿")
-st.title("🌿 Whisper Grid")
+st.markdown("<h1 style='text-align: center; color: #00FFAA;'>Whisper Grid</h1>", unsafe_allow_html=True)
 st.caption("Slider regenerates secret grid with hidden words...")
 
-slider_val = st.slider("Seed", 0, 100, 50)
+slider_val = st.slider("Change the seed", 0, 100, 50, key="slider", label_visibility="collapsed")
 
 image = draw_whisper_grid(slider_val)
 st.image(image)
