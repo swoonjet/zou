@@ -1,0 +1,594 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>
+<title>Resonant Vessels</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a drafting sheet. The live construction leads; every later section reuses the same vessel engine. */
+:root{
+  --paper:#e9ece8;      /* cool mineral drafting paper */
+  --sheet:#f6f7f4;      /* raised panels */
+  --ink:#15181a;        /* given lines, text */
+  --graphite:#78828a;   /* construction lines */
+  --rule:#cdd3cf;       /* hairlines, grid */
+  --clay:#c2173e;       /* derived lines, the vessel itself */
+  --glaze:#1f6e64;      /* "resonant": in tune and true to the circle */
+  --display:"Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  /* type scale = a just major scale on 16px: 1, 9/8, 5/4, 4/3, 3/2, 5/3, 15/8, 2 … */
+  --s-1:12.8px; --s0:16px; --s1:18px; --s2:20px; --s3:21.33px; --s4:24px; --s5:26.67px; --s7:32px; --s9:40px; --s10:48px; --s12:64px;
+  /* spacing = fifths and octaves on 8px */
+  --g1:8px; --g2:12px; --g3:16px; --g4:24px; --g5:32px; --g6:48px; --g7:64px; --g8:96px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#101315; --sheet:#171b1e; --ink:#e4e9e6; --graphite:#7d888f; --rule:#2a3035; --clay:#ff4a6d; --glaze:#58c4b3; color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#101315; --sheet:#171b1e; --ink:#e4e9e6; --graphite:#7d888f; --rule:#2a3035; --clay:#ff4a6d; --glaze:#58c4b3; color-scheme:dark}
+
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:var(--s0);line-height:1.55;
+  background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);
+  background-size:48px 48px;background-attachment:fixed}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:var(--g6) var(--g8)}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.05;text-wrap:balance;margin:0}
+h1{font-size:clamp(var(--s9),7vw,88px);letter-spacing:-.01em}
+h1 em,h2 em{color:var(--clay)}
+h2{font-size:clamp(var(--s7),4.4vw,var(--s10))}
+h3{font-size:var(--s5)}
+p{margin:0}
+.lede{max-width:62ch;font-size:var(--s1);margin-top:var(--g3)}
+.eyebrow{font-family:var(--mono);font-size:var(--s-1);letter-spacing:.08em;text-transform:uppercase;color:var(--graphite)}
+.cap{font-family:var(--display);font-style:italic;font-size:var(--s2);line-height:1.35}
+section{margin-top:var(--g8)}
+.sec-head{display:grid;gap:var(--g2);max-width:70ch;margin-bottom:var(--g5)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.panel{background:var(--sheet);border:1px solid var(--rule)}
+
+/* ---------- lab ---------- */
+header{display:grid;gap:var(--g2);margin-bottom:var(--g5)}
+.lab{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:var(--g4);align-items:start}
+@media (max-width:880px){.lab{grid-template-columns:minmax(0,1fr)}}
+.drawing{padding:var(--g3);display:grid;gap:var(--g3)}
+#labSvg{width:100%;height:auto;display:block;aspect-ratio:1/1.05;max-width:100%}
+.steps{list-style:none;padding:0;margin:0;display:grid;gap:6px;counter-reset:st}
+.steps li{counter-increment:st;font-family:var(--display);font-style:italic;font-size:var(--s1);line-height:1.35;color:var(--graphite);display:grid;grid-template-columns:2.2em 1fr;transition:color .4s}
+.steps li::before{content:"(" counter(st) ")";font-style:normal;font-family:var(--mono);font-size:var(--s-1);padding-top:.25em}
+.steps li.cur{color:var(--ink)}
+.steps li.cur::before{color:var(--clay)}
+
+.side{display:grid;gap:var(--g4)}
+.readout{padding:var(--g4);display:grid;gap:var(--g3)}
+.ratio{display:flex;align-items:baseline;gap:var(--g3);flex-wrap:wrap}
+#ratioVal{font-family:var(--display);font-size:var(--s12);line-height:1}
+.frac{font-family:var(--mono);font-size:var(--s4);color:var(--clay)}
+#ivName{font-family:var(--display);font-style:italic;font-size:var(--s4);line-height:1.2}
+.meter{position:relative;height:28px;border-bottom:1px solid var(--ink)}
+.meter .tick{position:absolute;bottom:0;width:1px;background:var(--graphite)}
+.meter .zone{position:absolute;bottom:0;height:6px;background:var(--glaze);opacity:.35;left:44%;width:12%}
+.needle{position:absolute;bottom:0;width:2px;height:28px;background:var(--clay);left:50%;transition:left .35s cubic-bezier(.3,1.4,.5,1)}
+.meter-l{display:flex;justify-content:space-between;font-family:var(--mono);font-size:var(--s-1);color:var(--graphite)}
+dl.facts{display:grid;grid-template-columns:auto 1fr;gap:4px var(--g3);margin:0;font-size:15px}
+dl.facts dt{color:var(--graphite)}
+dl.facts dd{margin:0;font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right}
+.badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:var(--s-1);letter-spacing:.06em;text-transform:uppercase;padding:6px 10px;border:1px solid var(--graphite);color:var(--graphite);justify-self:start}
+.badge.on{border-color:var(--glaze);color:var(--glaze);background:color-mix(in srgb,var(--glaze) 10%,transparent)}
+.badge i{width:8px;height:8px;border-radius:50%;background:currentColor;display:block}
+
+.controls{padding:var(--g4);display:grid;gap:var(--g3)}
+.ctl{display:grid;grid-template-columns:1fr auto;gap:2px var(--g2);align-items:center}
+.ctl label{font-size:15px}
+.ctl output{font-family:var(--mono);font-size:14px;color:var(--clay);font-variant-numeric:tabular-nums}
+.ctl input{grid-column:1/-1;width:100%;accent-color:var(--clay)}
+.btns{display:flex;flex-wrap:wrap;gap:var(--g1)}
+button{font:500 14px/1 var(--body);color:var(--ink);background:transparent;border:1px solid var(--ink);padding:10px 14px;cursor:pointer;transition:background .15s,color .15s}
+button:hover{background:var(--ink);color:var(--paper)}
+button.primary{background:var(--clay);border-color:var(--clay);color:#fff}
+button.primary:hover{filter:brightness(1.1);background:var(--clay);color:#fff}
+button:focus-visible,input:focus-visible{outline:2px solid var(--clay);outline-offset:2px}
+.note{font-size:14px;color:var(--graphite)}
+#svgOut{width:100%;min-height:90px;font:12px/1.4 var(--mono);background:var(--paper);color:var(--ink);border:1px solid var(--rule)}
+
+/* ---------- shelf, name, kiln ---------- */
+.shelf{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:var(--g2);align-items:end;padding:var(--g4) var(--g3) 0;border-bottom:3px solid var(--ink)}
+@media (max-width:700px){.shelf{grid-template-columns:repeat(4,minmax(0,1fr));row-gap:var(--g4)}}
+.pot{all:unset;cursor:pointer;display:grid;gap:6px;justify-items:center;text-align:center;padding-bottom:var(--g2);transform-origin:50% 100%}
+.pot:focus-visible{outline:2px solid var(--clay);outline-offset:4px}
+.pot svg{width:100%;height:auto;overflow:visible}
+.pot .lbl{font-family:var(--mono);font-size:var(--s-1);color:var(--clay)}
+.pot .nm{font-family:var(--display);font-style:italic;font-size:15px;line-height:1.1;color:var(--graphite)}
+.pot.ring{animation:ring .7s ease}
+@keyframes ring{0%{transform:rotate(0)}20%{transform:rotate(-4deg)}45%{transform:rotate(3deg)}70%{transform:rotate(-1.5deg)}100%{transform:rotate(0)}}
+.row-tools{display:flex;flex-wrap:wrap;gap:var(--g2);align-items:center;margin-top:var(--g3)}
+
+.spin{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:var(--g4);align-items:center}
+@media (max-width:880px){.spin{grid-template-columns:minmax(0,1fr)}}
+#lathe{width:100%;aspect-ratio:1/1;display:block;max-width:100%}
+.spin .txt{display:grid;gap:var(--g3)}
+.pulse{display:flex;gap:var(--g3);font-family:var(--mono);font-size:14px}
+.pulse span{display:flex;align-items:center;gap:6px}
+.pulse b{width:12px;height:12px;border:1.5px solid var(--clay);display:block;transition:background .05s}
+.pulse b.hit{background:var(--clay)}
+.pulse .lo b{border-color:var(--ink)}
+.pulse .lo b.hit{background:var(--ink)}
+
+.name-in{display:flex;gap:var(--g2);flex-wrap:wrap}
+.name-in input{font:400 var(--s4)/1.2 var(--display);font-style:italic;padding:8px 12px;border:1px solid var(--ink);background:var(--sheet);color:var(--ink);flex:1 1 220px;min-width:0}
+.namerow{display:flex;flex-wrap:wrap;gap:var(--g2) var(--g1);align-items:flex-end;margin-top:var(--g4);min-height:160px;padding:var(--g3);border-bottom:3px solid var(--ink)}
+.namerow .pot{width:clamp(44px,8vw,78px)}
+.namerow .gap{width:24px}
+
+.kiln{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:var(--g2);margin-top:var(--g4)}
+.kiln .pot{padding:var(--g2);border:1px solid var(--rule);background:var(--sheet)}
+.kiln .empty{grid-column:1/-1;padding:var(--g4);border:1px dashed var(--graphite);color:var(--graphite);font-family:var(--display);font-style:italic;font-size:var(--s2)}
+
+/* ---------- system ---------- */
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:var(--g4) var(--g5)}
+.rules article{display:grid;gap:var(--g1);align-content:start;border-top:1px solid var(--ink);padding-top:var(--g2)}
+.rules article p{color:var(--ink);opacity:.86;max-width:52ch}
+.tokens{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:var(--g4);margin-top:var(--g6)}
+.tokens .panel{padding:var(--g4);display:grid;gap:var(--g3);align-content:start}
+.chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--g2)}
+.chip{display:grid;grid-template-columns:36px 1fr;gap:var(--g2);align-items:center;font-size:14px}
+.chip i{width:36px;height:36px;border:1px solid var(--rule);display:block}
+.chip small{display:block;font-family:var(--mono);font-size:12px;color:var(--graphite)}
+.strokes svg{width:100%;height:auto;display:block}
+.scale{display:grid;gap:6px}
+.scale div{display:grid;grid-template-columns:64px 1fr;align-items:baseline;gap:var(--g2);white-space:nowrap;overflow:hidden}
+.scale span{font-family:var(--mono);font-size:12px;color:var(--graphite)}
+.scale em{font-family:var(--display);line-height:1.1;overflow:hidden;text-overflow:ellipsis}
+
+.ideas{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:var(--g4)}
+.ideas article{display:grid;gap:var(--g1);align-content:start}
+.ideas h3{font-size:var(--s4)}
+.ideas .tag{font-family:var(--mono);font-size:12px;color:var(--clay);letter-spacing:.06em;text-transform:uppercase}
+footer{margin-top:var(--g8);padding-top:var(--g3);border-top:1px solid var(--rule);font-size:14px;color:var(--graphite);max-width:70ch}
+
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+
+/* construction svg */
+#labSvg [data-step]{opacity:0;transition:opacity .45s ease}
+#labSvg [data-step].on{opacity:1}
+#labSvg [data-step].dim{opacity:.32}
+#labSvg .draw{stroke-dasharray:1 1;stroke-dashoffset:1;transition:stroke-dashoffset 1.1s ease}
+#labSvg .on .draw,#labSvg .dim .draw{stroke-dashoffset:0}
+#labSvg.static [data-step],#labSvg.static .draw{transition:none}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <pattern id="hatch" patternUnits="userSpaceOnUse" width="0.055" height="0.055" patternTransform="rotate(-48)">
+      <rect width="0.055" height="0.055" style="fill:var(--clay)"/>
+      <line x1="0" y1="0" x2="0" y2="0.055" style="stroke:var(--sheet)" stroke-width="0.012"/>
+    </pattern>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">A compass-and-straightedge design system · after Drawing 8.10</p>
+    <h1>Resonant <em>Vessels</em></h1>
+    <p class="lede">Every shape here is drawn from one circle with a compass, the way the hexagon-and-octagon pot is. Every proportion is also a musical ratio, so each vessel can be heard. Move the sliders, strike the pot, and tune it until it rings true.</p>
+  </header>
+
+  <!-- ===== LAB ===== -->
+  <div class="lab">
+    <div class="panel drawing">
+      <svg id="labSvg" role="img" aria-label="Construction drawing of the current vessel"></svg>
+      <ol class="steps" id="steps"></ol>
+    </div>
+
+    <div class="side">
+      <div class="panel readout" aria-live="polite">
+        <p class="eyebrow">Height : width</p>
+        <div class="ratio"><span id="ratioVal" class="mono">1.0667</span><span class="frac" id="frac">16/15</span></div>
+        <p id="ivName">a major semitone</p>
+        <div>
+          <div class="meter" id="meter">
+            <div class="zone"></div>
+            <div class="tick" style="left:0;height:10px"></div><div class="tick" style="left:25%;height:6px"></div><div class="tick" style="left:50%;height:14px"></div><div class="tick" style="left:75%;height:6px"></div><div class="tick" style="left:calc(100% - 1px);height:10px"></div>
+            <div class="needle" id="needle"></div>
+          </div>
+          <div class="meter-l"><span>−50¢ flat</span><span id="centsVal">0.0¢</span><span>sharp +50¢</span></div>
+        </div>
+        <dl class="facts">
+          <dt>Height</dt><dd id="fH">—</dd>
+          <dt>Width</dt><dd id="fW">—</dd>
+          <dt>Perimeter</dt><dd id="fP">—</dd>
+          <dt>Faces</dt><dd id="fF">—</dd>
+        </dl>
+        <p class="badge" id="badge"><i></i><span id="badgeTxt">Not yet resonant</span></p>
+      </div>
+
+      <div class="panel controls">
+        <div class="ctl"><label for="n">Neck polygon</label><output id="nOut" for="n"></output><input type="range" id="n" min="3" max="12" step="1" value="6"></div>
+        <div class="ctl"><label for="m">Body polygon</label><output id="mOut" for="m"></output><input type="range" id="m" min="4" max="16" step="1" value="8"></div>
+        <div class="ctl"><label for="neckR">Neck circle, as a share of the first circle</label><output id="neckROut" for="neckR"></output><input type="range" id="neckR" min="0.25" max="0.85" step="0.01" value="0.55"></div>
+        <div class="ctl"><label for="lift">Neck height above center</label><output id="liftOut" for="lift"></output><input type="range" id="lift" min="0" max="2" step="0.001" value="0.6"></div>
+        <div class="ctl"><label for="swell">Shoulder swell</label><output id="swellOut" for="swell"></output><input type="range" id="swell" min="-0.3" max="0.5" step="0.01" value="0.18"></div>
+        <div class="btns">
+          <button class="primary" id="strike">Strike</button>
+          <button id="tune">Tune</button>
+          <button id="replay">Replay construction</button>
+          <button id="throw">Throw a new pot</button>
+          <button id="copySvg">Copy SVG</button>
+        </div>
+        <p class="note" id="hint">Strike plays the base note and the note the pot's ratio makes. A pot that is slightly out of tune beats audibly.</p>
+        <textarea id="svgOut" hidden readonly aria-label="SVG outline of the vessel"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SHELF ===== -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Extrapolation 1 · the instrument</p>
+      <h2>A shelf that is a <em>scale</em></h2>
+      <p>Eight vessels, each built from a different pair of polygons, each tuned so that its height-to-width ratio is one degree of the just major scale. The shelf is the octave: eight tones from C to C′, six and eight joined. Click a pot or press keys 1 to 8.</p>
+    </div>
+    <div class="shelf" id="shelf"></div>
+    <div class="row-tools"><button class="primary" id="playShelf">Play the shelf</button><button id="playChord">Play 4 : 5 : 6</button><span class="note">Click any pot to open it in the drawing above with Shift held.</span></div>
+  </section>
+
+  <!-- ===== SPIN ===== -->
+  <section>
+    <div class="spin">
+      <div class="panel"><canvas id="lathe" aria-label="The current vessel revolved, with a hexagonal neck blending into an octagonal body"></canvas></div>
+      <div class="txt">
+        <p class="eyebrow">Extrapolation 2 · the lathe</p>
+        <h2>Six against <em>eight</em>, spinning</h2>
+        <p>Revolve the profile and keep the polygons: the neck's cross-section stays a hexagon and the body's an octagon, blending through the shoulder. As it turns, every neck face that passes the front sounds a high note and every body face a low one. A 6 and 8 vessel plays a 3-against-4 polyrhythm, pitched at its own interval.</p>
+        <div class="pulse"><span class="hi"><b id="pHi"></b> neck · <span id="pnN">6</span></span><span class="lo"><b id="pLo"></b> body · <span id="pnM">8</span></span></div>
+        <div class="btns"><button class="primary" id="listen">Listen to the spin</button><button id="pauseSpin">Pause</button></div>
+        <p class="note">The vessel here is whatever is in the drawing above. Try neck 3 and body 4, or 5 against 8.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== NAME ===== -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Extrapolation 3 · the alphabet</p>
+      <h2>Your name in <em>clay</em></h2>
+      <p>Each letter picks its own polygons, neck and swell, then gets tuned to a scale degree. A word becomes a row of pots and a short melody. Same letters, same pots, every time.</p>
+    </div>
+    <div class="name-in"><input id="nameIn" value="resonance" maxlength="18" aria-label="Word to turn into vessels" autocomplete="off" spellcheck="false"><button class="primary" id="playName">Play it</button></div>
+    <div class="namerow" id="nameRow"></div>
+  </section>
+
+  <!-- ===== KILN ===== -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Extrapolation 4 · the hunt</p>
+      <h2>The <em>kiln</em> keeps the rare ones</h2>
+      <p>The book's pot is special twice over: its ratio is a clean interval, and its perimeter is within one percent of the circle it came from. Most random pots manage one or neither. Throw at random; a pot within 6 cents of an interval and within 1% of π lands here.</p>
+    </div>
+    <div class="row-tools"><button class="primary" id="throw500">Throw 500 pots</button><button id="clearKiln">Empty the kiln</button><span class="note mono" id="kilnStat"></span></div>
+    <div class="kiln" id="kiln"></div>
+  </section>
+
+  <!-- ===== SYSTEM ===== -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">The system</p>
+      <h2>Five rules, one <em>circle</em></h2>
+    </div>
+    <div class="rules">
+      <article><h3>Everything comes from one radius</h3><p>No free numbers. Sizes, positions and curves are reached from the first circle by compass and straightedge, so a design can always be redrawn by hand.</p></article>
+      <article><h3>Black is given, red is derived</h3><p>Color carries meaning. Ink marks what you start with, graphite marks the working, and red marks what the construction produced.</p></article>
+      <article><h3>Keep the construction visible</h3><p>The working lines are ornament. Show them faint behind the result, and let replays reveal how a form was made.</p></article>
+      <article><h3>Every proportion is audible</h3><p>Any ratio in the system has a sound. Name ratios by interval, and test a layout by listening to it.</p></article>
+      <article><h3>Near is the point</h3><p>The pot's perimeter is 1.010π, not π. Keep the small error and display it. It shows where the drawing and the ideal disagree.</p></article>
+    </div>
+
+    <div class="tokens">
+      <div class="panel">
+        <p class="eyebrow">Color</p>
+        <div class="chips">
+          <div class="chip"><i style="background:var(--paper)"></i><div>Paper<small>ground</small></div></div>
+          <div class="chip"><i style="background:var(--ink)"></i><div>Ink<small>given</small></div></div>
+          <div class="chip"><i style="background:var(--graphite)"></i><div>Graphite<small>construction</small></div></div>
+          <div class="chip"><i style="background:var(--clay)"></i><div>Clay<small>derived</small></div></div>
+          <div class="chip"><i style="background:var(--glaze)"></i><div>Glaze<small>resonant</small></div></div>
+          <div class="chip"><i style="background:var(--rule)"></i><div>Rule<small>grid</small></div></div>
+        </div>
+      </div>
+      <div class="panel strokes">
+        <p class="eyebrow">Line weights</p>
+        <svg viewBox="0 0 300 120" role="img" aria-label="Three line weights: construction, given, derived">
+          <line x1="0" y1="20" x2="190" y2="20" style="stroke:var(--graphite)" stroke-width="0.75"/>
+          <text x="200" y="24" style="fill:var(--graphite);font:12px var(--mono)">0.75 construct</text>
+          <line x1="0" y1="60" x2="190" y2="60" style="stroke:var(--ink)" stroke-width="1.5"/>
+          <text x="200" y="64" style="fill:var(--graphite);font:12px var(--mono)">1.5 given</text>
+          <line x1="0" y1="100" x2="190" y2="100" style="stroke:var(--clay)" stroke-width="3" stroke-linecap="round"/>
+          <text x="200" y="104" style="fill:var(--graphite);font:12px var(--mono)">3 derived</text>
+        </svg>
+        <p class="note">Each weight doubles the last: one octave apart.</p>
+      </div>
+      <div class="panel">
+        <p class="eyebrow">Type scale · just major on 16px</p>
+        <div class="scale" id="scale"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== IDEAS ===== -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Further</p>
+      <h2>Where else the <em>recipe</em> goes</h2>
+      <p>The engine underneath is small: two polygons, some deleted edges, a three-point arc, and a measurement. Change what the output is used for and you get very different things.</p>
+    </div>
+    <div class="ideas">
+      <article><span class="tag">Type</span><h3>A vessel typeface</h3><p>Use the deleted edges as the counters of letters. Each (neck, body) pair becomes a glyph skeleton, and the alphabet above becomes a real font.</p></article>
+      <article><span class="tag">Space</span><h3>Rooms at 16 : 15</h3><p>Run the recipe at room scale: a hexagonal alcove over an octagonal hall. The room's proportion is a musical interval, and it would ring at that interval too.</p></article>
+      <article><span class="tag">Sets</span><h3>Chords that nest</h3><p>Three vessels tuned 4 : 5 : 6 sized to fit inside one another, like nesting bowls. Stack them and you hold a major triad.</p></article>
+      <article><span class="tag">Lineage</span><h3>Pots that breed</h3><p>Make the neck of one vessel the body of the next, each a fifth above its parent. You get a family tree that climbs the circle of fifths.</p></article>
+      <article><span class="tag">Surface</span><h3>A floor of broken pots</h3><p>Cut each pot back into its polygons. Octagons tile with squares and hexagons tile alone, so the floor is a shelf taken apart.</p></article>
+      <article><span class="tag">Making</span><h3>Templates for the wheel</h3><p>Export the profile as a potter's rib, a laser-cut stencil or a lathe path. Copy SVG above is the first step toward that.</p></article>
+      <article><span class="tag">Interface</span><h3>Buttons that chime</h3><p>Cut avatars, buttons and progress rings from the same recipes. A progress bar fills a pot and sounds its interval when it is done.</p></article>
+      <article><span class="tag">Listening</span><h3>Hum a pot</h3><p>Hum two notes, measure the interval, throw the vessel that matches. The ratio works in both directions: shape to sound and sound to shape.</p></article>
+    </div>
+  </section>
+
+  <footer>Built from the construction in Drawing 8.10 (hexagon and octagon joined by three-point arcs). Units follow the book: the first circle has diameter 1.0000, so the book's pot measures 1.0174 by 0.9562.</footer>
+</div>
+
+<script>
+(()=>{
+const D=Math.PI/180, TAU=Math.PI*2;
+const $=s=>document.querySelector(s);
+const POLY={3:'triangle',4:'square',5:'pentagon',6:'hexagon',7:'heptagon',8:'octagon',9:'nonagon',10:'decagon',11:'hendecagon',12:'dodecagon',13:'tridecagon',14:'tetradecagon',15:'pentadecagon',16:'hexadecagon'};
+const INTERVALS=[[1,1,'unison'],[16,15,'major semitone'],[9,8,'whole tone'],[6,5,'minor third'],[5,4,'major third'],[4,3,'perfect fourth'],[45,32,'tritone'],[3,2,'perfect fifth'],[8,5,'minor sixth'],[5,3,'major sixth'],[16,9,'minor seventh'],[15,8,'major seventh'],[2,1,'octave'],[9,4,'major ninth'],[5,2,'major tenth'],[3,1,'twelfth']];
+const SCALE=[[1,1,'unison'],[9,8,'whole tone'],[5,4,'major third'],[4,3,'fourth'],[3,2,'fifth'],[5,3,'major sixth'],[15,8,'major seventh'],[2,1,'octave']];
+const fmt=(x,d=4)=>x.toFixed(d).replace(/^(-?)0\./,'$1.');
+
+/* ---------- geometry ---------- */
+function circleFrom3(a,b,c){const d=2*(a.x*(b.y-c.y)+b.x*(c.y-a.y)+c.x*(a.y-b.y));if(Math.abs(d)<1e-9)return null;const A=a.x*a.x+a.y*a.y,B=b.x*b.x+b.y*b.y,C=c.x*c.x+c.y*c.y;const x=(A*(b.y-c.y)+B*(c.y-a.y)+C*(a.y-b.y))/d,y=(A*(c.x-b.x)+B*(a.x-c.x)+C*(b.x-a.x))/d;return{x,y,r:Math.hypot(a.x-x,a.y-y)}}
+function makeVessel(p){
+  const {n,m,neckR:r,lift,swell}=p;
+  const body=[];for(let i=0;;i++){const a=-90+180/m+i*360/m;if(a>180/m+1e-6)break;body.push({x:Math.cos(a*D),y:Math.sin(a*D),w:0})}
+  const neck=[];for(let i=0;;i++){const a=90-180/n-i*360/n;if(a<-1e-6)break;neck.push({x:r*Math.cos(a*D),y:lift+r*Math.sin(a*D),w:1})}
+  neck.reverse();
+  const B=body[body.length-1],N=neck[0];
+  const dx=N.x-B.x,dy=N.y-B.y,L=Math.hypot(dx,dy)||1e-9;let nx=dy/L,ny=-dx/L;if(nx<0){nx=-nx;ny=-ny}
+  const P={x:(B.x+N.x)/2+nx*swell*L,y:(B.y+N.y)/2+ny*swell*L};
+  let arc=[],circ=null,span=0;
+  if(Math.abs(swell)>0.004)circ=circleFrom3(B,P,N);
+  if(circ){const ang=q=>Math.atan2(q.y-circ.y,q.x-circ.x);const nm=t=>((t%TAU)+TAU)%TAU;const aB=ang(B),aP=ang(P),aN=ang(N);span=nm(aN-aB);if(nm(aP-aB)>span)span-=TAU;
+    for(let i=1;i<48;i++){const t=i/48,a=aB+span*t;arc.push({x:circ.x+circ.r*Math.cos(a),y:circ.y+circ.r*Math.sin(a),w:t})}
+    circ.aB=aB;circ.span=span;}
+  const bottom=body[0].y,top=neck[neck.length-1].y;
+  const right=[{x:0,y:bottom,w:0},...body,...arc,...neck,{x:0,y:top,w:1}];
+  let per=0,W=0;for(let i=1;i<right.length;i++)per+=Math.hypot(right[i].x-right[i-1].x,right[i].y-right[i-1].y);
+  for(const q of right)W=Math.max(W,q.x);
+  return{p,body,neck,B,N,P,circ,right,top,bottom,H:top-bottom,W:2*W,per:2*per};
+}
+function nearest(r,list=INTERVALS){let best,bc=1e9;for(const iv of list){const c=1200*Math.log2(r/(iv[0]/iv[1]));if(Math.abs(c)<Math.abs(bc)){bc=c;best=iv}}return{iv:best,cents:bc}}
+function analyse(v){const tall=v.H>=v.W;const r=tall?v.H/v.W:v.W/v.H;const nn=nearest(r);
+  return{...nn,r,hw:v.H/v.W,tall,target:tall?nn.iv[0]/nn.iv[1]:nn.iv[1]/nn.iv[0],pi:v.per/TAU,
+    resonant:Math.abs(nn.cents)<=6&&Math.abs(v.per/TAU-1)<=0.01}}
+function tune(p,targetHW){let lo=-0.6,hi=4;const f=l=>{const v=makeVessel({...p,lift:l});return v.H/v.W-targetHW};
+  if(f(lo)>0)return lo;if(f(hi)<0)return hi;for(let i=0;i<50;i++){const mid=(lo+hi)/2;if(f(mid)>0)hi=mid;else lo=mid}return(lo+hi)/2}
+const flip=q=>`${q.x.toFixed(4)},${(-q.y).toFixed(4)}`;
+function outline(v,dy=0){const R=v.right.map(q=>({x:q.x,y:q.y+dy}));const Lf=R.slice(1,-1).reverse().map(q=>({x:-q.x,y:q.y}));return[...R,...Lf]}
+function pathD(v,dy=0){const o=outline(v,dy);return'M'+o.map(flip).join('L')+'Z'}
+function miniSVG(v,box){ // box: {w,h} in units; vessel stands on baseline y=0
+  const dy=-v.bottom, w=box?box.w:v.W+.3, h=box?box.h:v.H+.3;
+  return `<svg viewBox="${(-w/2).toFixed(3)} ${(-h).toFixed(3)} ${w.toFixed(3)} ${(h+.04).toFixed(3)}" aria-hidden="true"><path d="${pathD(v,dy)}" fill="url(#hatch)" style="stroke:var(--clay)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg>`}
+
+/* ---------- audio ---------- */
+let ac=null,master=null;
+function audio(){if(!ac){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;ac=new C();master=ac.createGain();master.gain.value=.7;master.connect(ac.destination)}if(ac.state==='suspended')ac.resume();return ac}
+function strikeNote(freq,when=0,dur=1.8,gain=.22){const a=audio();if(!a)return;const t=a.currentTime+when+.01;
+  // a clay pot: a sine body, a quiet inharmonic partial and a short tap
+  [[1,1],[2.76,.12],[5.4,.035]].forEach(([mul,g])=>{const o=a.createOscillator(),e=a.createGain();o.type='sine';o.frequency.value=freq*mul;
+    e.gain.setValueAtTime(0,t);e.gain.linearRampToValueAtTime(gain*g,t+.006);e.gain.exponentialRampToValueAtTime(.0001,t+dur/(mul>1?mul*.7:1));o.connect(e).connect(master);o.start(t);o.stop(t+dur+.05)})}
+function tick(freq,gain=.18){strikeNote(freq,0,.35,gain)}
+const ROOT=196; // G3
+
+/* ---------- lab ---------- */
+const P={n:6,m:8,neckR:.55,lift:.6,swell:.18};
+let V,A,timers=[];
+const ids=['n','m','neckR','lift','swell'];
+function syncInputs(){ids.forEach(k=>{$('#'+k).value=P[k]});outs()}
+function outs(){$('#nOut').textContent=`${P.n} · ${POLY[P.n]}`;$('#mOut').textContent=`${P.m} · ${POLY[P.m]}`;
+  $('#neckROut').textContent=fmt(P.neckR,2);$('#liftOut').textContent=fmt(P.lift/2,4);$('#swellOut').textContent=(P.swell>=0?'+':'')+Math.round(P.swell*100)+'%'}
+ids.forEach(k=>$('#'+k).addEventListener('input',e=>{P[k]=+e.target.value;render(false)}));
+
+function stepsText(v,a){const n=POLY[P.n],m=POLY[P.m];
+  return[
+    'A circle is drawn, and the square around it. Every later length is measured from this one radius.',
+    `An ${m.match(/^[aeiou]/)?'':''}${m} is inscribed in the circle, standing on a flat side.`.replace(/^An ([^aeiou])/,'A $1'),
+    `A second circle, ${fmt(P.neckR,2)} of the first, is raised ${fmt(P.lift/2,3)} above the center, and a ${n} is drawn in it.`.replace(/a ([aeiou])/,'an $1'),
+    `Parts of both polygons are deleted: the ${n} keeps its crown, the ${m} keeps its base.`,
+    Math.abs(P.swell)>0.004?`Three-point arcs join the last vertex of each, swelling ${P.swell>0?'outward':'inward'} by ${Math.abs(Math.round(P.swell*100))}% of the chord.`:'Straight lines join the last vertex of each, with no swell.',
+    `The vessel stands ${fmt(v.H/2)} by ${fmt(v.W/2)}: a ratio of ${a.iv[0]}/${a.iv[1]} ${a.tall?'':'(wide) '}within ${Math.abs(a.cents).toFixed(1)} cents, perimeter ${a.pi.toFixed(3)} × π.`];
+}
+function svgUnitsPerPx(vbw){const w=$('#labSvg').getBoundingClientRect().width||560;return vbw/w}
+function drawLab(v,a){
+  const svg=$('#labSvg');
+  const half=Math.max(1.6,v.W/2+.45,P.neckR+.2);
+  const yTop=Math.max(v.top,P.lift+P.neckR,1)+.22, yBot=Math.min(v.bottom,-1)-.5;
+  const vbw=half*2+.3, vbh=yTop-yBot;
+  svg.setAttribute('viewBox',`${(-vbw/2).toFixed(3)} ${(-yTop).toFixed(3)} ${vbw.toFixed(3)} ${vbh.toFixed(3)}`);
+  svg.style.aspectRatio=`${vbw}/${vbh}`;
+  const k=svgUnitsPerPx(vbw), sw=x=>(x*k).toFixed(4), fs=(13*k).toFixed(4);
+  const line=(a,b,cls,w,extra='')=>`<path class="${cls}" d="M${flip(a)}L${flip(b)}" pathLength="1" style="stroke:var(--${cls==='draw c'?'clay':cls==='draw g'?'ink':'graphite'})" stroke-width="${sw(w)}" fill="none" ${extra}/>`;
+  const poly=(pts,col,w,closed)=>`<path class="draw" d="M${pts.map(flip).join('L')}${closed?'Z':''}" pathLength="1" style="stroke:var(--${col})" stroke-width="${sw(w)}" fill="none" stroke-linejoin="round" stroke-linecap="round"/>`;
+  const circle=(c,r,col,w)=>`<circle class="draw" cx="${c.x.toFixed(4)}" cy="${(-c.y).toFixed(4)}" r="${r.toFixed(4)}" pathLength="1" style="stroke:var(--${col})" stroke-width="${sw(w)}" fill="none"/>`;
+  const dot=(q,col,r=3)=>`<circle cx="${q.x.toFixed(4)}" cy="${(-q.y).toFixed(4)}" r="${sw(r)}" style="fill:var(--${col})"/>`;
+  const fullPoly=(k2,r,cy,flatTop)=>{const pts=[];const off=flatTop?90-180/k2:-90+180/k2;for(let i=0;i<k2;i++){const a=(off+i*360/k2)*D;pts.push({x:r*Math.cos(a),y:cy+r*Math.sin(a)})}return pts};
+  const mir=pts=>pts.map(q=>({x:-q.x,y:q.y}));
+  let s='';
+  // step 6a: fill (drawn first so lines sit on top)
+  s+=`<g data-step="6"><path d="${pathD(v)}" fill="url(#hatch)" opacity=".9"/></g>`;
+  // step 1: given circle and square
+  s+=`<g data-step="1">${circle({x:0,y:0},1,'ink',1.5)}${poly([{x:-1,y:-1},{x:1,y:-1},{x:1,y:1},{x:-1,y:1}],'ink',1.5,true)}${poly([{x:-1.15,y:0},{x:1.15,y:0}],'graphite',.75)}${poly([{x:0,y:-1.15},{x:0,y:Math.max(1.15,v.top+.1)}],'graphite',.75)}</g>`;
+  // step 2: full body polygon
+  const bp=fullPoly(P.m,1,0,false);
+  s+=`<g data-step="2">${poly(bp,'graphite',1,true)}${bp.map(q=>dot(q,'graphite',2)).join('')}</g>`;
+  // step 3: neck circle + polygon
+  const np=fullPoly(P.n,P.neckR,P.lift,true);
+  s+=`<g data-step="3">${circle({x:0,y:P.lift},P.neckR,'graphite',.75)}${poly(np,'graphite',1,true)}${dot({x:0,y:P.lift},'ink',2.5)}</g>`;
+  // step 4: kept edges
+  const bodyKeep=[...mir(v.body).reverse(),...v.body], neckKeep=[...v.neck,...mir(v.neck).reverse()];
+  s+=`<g data-step="4">${poly(bodyKeep,'clay',3)}${poly(neckKeep,'clay',3)}</g>`;
+  // step 5: arcs with construction
+  let s5='';
+  if(v.circ&&v.circ.r<6){s5+=circle(v.circ,v.circ.r,'graphite',.6);s5+=circle({x:-v.circ.x,y:v.circ.y},v.circ.r,'graphite',.6)}
+  s5+=`<path d="M${flip(v.B)}L${flip(v.N)}M${flip({x:-v.B.x,y:v.B.y})}L${flip({x:-v.N.x,y:v.N.y})}" style="stroke:var(--graphite)" stroke-width="${sw(.75)}" stroke-dasharray="${sw(4)} ${sw(3)}" fill="none"/>`;
+  const arcR=v.right.filter(q=>q.w>0&&q.w<1);const arcPts=[v.B,...arcR,v.N];
+  s5+=poly(arcPts,'clay',3)+poly(mir(arcPts),'clay',3);
+  [v.B,v.P,v.N].forEach(q=>{s5+=dot(q,'clay',3.2)+dot({x:-q.x,y:q.y},'clay',3.2)});
+  s+=`<g data-step="5">${s5}</g>`;
+  // step 6b: dimensions
+  const yb=v.bottom-.24, xr=Math.max(1.22,v.W/2+.2);
+  const tk=(q1,q2)=>`<path d="M${flip(q1)}L${flip(q2)}" style="stroke:var(--ink)" stroke-width="${sw(.75)}"/>`;
+  let s6=tk({x:-v.W/2,y:yb},{x:v.W/2,y:yb})+tk({x:-v.W/2,y:yb-.05},{x:-v.W/2,y:yb+.05})+tk({x:v.W/2,y:yb-.05},{x:v.W/2,y:yb+.05});
+  s6+=tk({x:xr,y:v.bottom},{x:xr,y:v.top})+tk({x:xr-.05,y:v.bottom},{x:xr+.05,y:v.bottom})+tk({x:xr-.05,y:v.top},{x:xr+.05,y:v.top});
+  const tstyle=`style="fill:var(--ink);font-family:var(--mono);font-size:${fs}px"`;
+  s6+=`<text x="0" y="${(-(yb-.14)).toFixed(3)}" text-anchor="middle" ${tstyle}>${fmt(v.W/2)}</text>`;
+  const my=-(v.bottom+v.top)/2;
+  s6+=`<text x="${(xr+.09).toFixed(3)}" y="${my.toFixed(3)}" text-anchor="middle" transform="rotate(-90 ${(xr+.09).toFixed(3)} ${my.toFixed(3)})" ${tstyle}>${fmt(v.H/2)}</text>`;
+  s6+=`<text x="${(-vbw/2+.08).toFixed(3)}" y="${(-(yTop-.12)).toFixed(3)}" style="fill:var(--clay);font-family:var(--mono);font-size:${fs}px">${a.iv[0]}/${a.iv[1]}  per = ${a.pi.toFixed(3)} × π</text>`;
+  s+=`<g data-step="6">${s6}</g>`;
+  svg.innerHTML=s;
+}
+function setSteps(v,a,cur){const t=stepsText(v,a);$('#steps').innerHTML=t.map((x,i)=>`<li class="${cur===i+1?'cur':''}">${x}</li>`).join('')}
+function showAll(){const svg=$('#labSvg');svg.classList.add('static');svg.querySelectorAll('[data-step]').forEach(g=>{g.classList.add('on');g.classList.remove('dim')});
+  ['2','3'].forEach(n=>svg.querySelectorAll(`[data-step="${n}"]`).forEach(g=>{g.classList.remove('on');g.classList.add('dim')}))}
+function animateBuild(){timers.forEach(clearTimeout);timers=[];const svg=$('#labSvg');
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){showAll();setSteps(V,A,6);return}
+  svg.classList.remove('static');svg.querySelectorAll('[data-step]').forEach(g=>g.classList.remove('on','dim'));void svg.getBoundingClientRect();
+  for(let s=1;s<=6;s++)timers.push(setTimeout(()=>{svg.querySelectorAll(`[data-step="${s}"]`).forEach(g=>g.classList.add('on'));
+    if(s===4)['2','3'].forEach(n=>svg.querySelectorAll(`[data-step="${n}"]`).forEach(g=>{g.classList.remove('on');g.classList.add('dim')}));
+    setSteps(V,A,s)},(s-1)*1250+60))}
+function render(animate){
+  timers.forEach(clearTimeout);timers=[];
+  V=makeVessel(P);A=analyse(V);outs();
+  drawLab(V,A);
+  if(animate)animateBuild();else{showAll();setSteps(V,A,0)}
+  $('#ratioVal').textContent=A.hw.toFixed(4);
+  $('#frac').textContent=A.tall?`${A.iv[0]}/${A.iv[1]}`:`${A.iv[1]}/${A.iv[0]}`;
+  const sharp=A.cents>=0;
+  $('#ivName').textContent=`${A.tall?'a':'a wide'} ${A.iv[2]}, ${Math.abs(A.cents)<.5?'in tune':`${Math.abs(A.cents).toFixed(1)} cents ${sharp?'sharp':'flat'}`}`;
+  const c=Math.max(-50,Math.min(50,A.cents));$('#needle').style.left=`calc(${50+c}% - 1px)`;$('#centsVal').textContent=`${A.cents>=0?'+':''}${A.cents.toFixed(1)}¢`;
+  $('#fH').textContent=fmt(V.H/2);$('#fW').textContent=fmt(V.W/2);$('#fP').textContent=`${A.pi.toFixed(3)} × π`;$('#fF').textContent=`${P.n} + ${P.m}`;
+  $('#badge').classList.toggle('on',A.resonant);
+  $('#badgeTxt').textContent=A.resonant?'Resonant: in tune and true to the circle':Math.abs(A.cents)<=6?`In tune, perimeter ${((A.pi-1)*100).toFixed(1)}% off π`:Math.abs(A.pi-1)<=.01?'True to the circle, out of tune':'Not yet resonant';
+  $('#tune').textContent=`Tune to ${A.tall?`${A.iv[0]}/${A.iv[1]}`:`${A.iv[1]}/${A.iv[0]}`}`;
+  $('#pnN').textContent=P.n;$('#pnM').textContent=P.m;
+  lathe.setVessel(V);
+}
+$('#strike').onclick=()=>{strikeNote(ROOT,0,2.2);strikeNote(ROOT*A.r,.45,2.4);strikeNote(ROOT,1.2,2.6,.16);strikeNote(ROOT*A.r,1.2,2.6,.16)};
+$('#tune').onclick=()=>{P.lift=tune(P,A.target);syncInputs();render(false);strikeNote(ROOT,0,2.4,.16);strikeNote(ROOT*A.r,0,2.4,.16)};
+$('#replay').onclick=()=>render(true);
+function rnd(a,b){return a+Math.random()*(b-a)}
+function randomP(){return{n:3+Math.floor(Math.random()*10),m:4+Math.floor(Math.random()*13),neckR:+rnd(.28,.8).toFixed(2),lift:+rnd(.15,1.7).toFixed(3),swell:+rnd(-.2,.45).toFixed(2)}}
+$('#throw').onclick=()=>{Object.assign(P,randomP());syncInputs();render(true);if(A.resonant)addKiln({...P})};
+$('#copySvg').onclick=async()=>{const pad=.1,x0=-V.W/2-pad,y0=-V.top-pad,w=V.W+2*pad,h=V.H+2*pad;
+  const txt=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${x0.toFixed(4)} ${y0.toFixed(4)} ${w.toFixed(4)} ${h.toFixed(4)}" width="${(w*50).toFixed(1)}mm" height="${(h*50).toFixed(1)}mm"><!-- neck ${P.n}, body ${P.m}, neckR ${P.neckR}, lift ${P.lift.toFixed(4)}, swell ${P.swell}; ratio ${A.hw.toFixed(4)} --><path d="${pathD(V)}" fill="none" stroke="#c2173e" stroke-width="0.01"/></svg>`;
+  const ta=$('#svgOut');try{await navigator.clipboard.writeText(txt);$('#copySvg').textContent='Copied';setTimeout(()=>$('#copySvg').textContent='Copy SVG',1600);ta.hidden=true}
+  catch(e){ta.hidden=false;ta.value=txt;ta.focus();ta.select();$('#hint').textContent='Copying is blocked here, so the SVG is selected below. Press Ctrl+C or ⌘C.'}};
+
+/* ---------- lathe ---------- */
+const lathe=(()=>{
+  const cv=$('#lathe'),ctx=cv.getContext('2d');let v=null,rings=[],phi=0,last=performance.now(),running=!matchMedia('(prefers-reduced-motion: reduce)').matches,listening=false,lastIdx={},flash={hi:0,lo:0};
+  const polyR=(k,t)=>{const s=TAU/k;const u=((t%s)+s)%s;return Math.cos(Math.PI/k)/Math.cos(u-Math.PI/k)};
+  function setVessel(nv){v=nv;// resample the right profile by length into rings
+    const R=v.right;const segs=[];let tot=0;for(let i=1;i<R.length;i++){const l=Math.hypot(R[i].x-R[i-1].x,R[i].y-R[i-1].y);segs.push(l);tot+=l}
+    rings=[];const N=46;for(let j=1;j<N;j++){let d=tot*j/N,i=0;while(i<segs.length-1&&d>segs[i]){d-=segs[i];i++}const t=segs[i]?d/segs[i]:0;const a=R[i],b=R[i+1];
+      rings.push({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t,w:a.w+(b.w-a.w)*t})}
+    lastIdx={};if(!running)draw()}
+  function resize(){const r=cv.getBoundingClientRect(),d=Math.min(2,devicePixelRatio||1);cv.width=Math.round(r.width*d);cv.height=Math.round(r.width*d)}
+  function col(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim()}
+  function draw(){if(!v)return;const Wd=cv.width,Hd=cv.height;ctx.clearRect(0,0,Wd,Hd);
+    const ink=col('--ink'),clay=col('--clay'),gr=col('--graphite');
+    const tilt=.42,ct=Math.cos(tilt),st=Math.sin(tilt);const sc=Math.min(Wd/(v.W*1.35+.2),Hd/((v.H)*ct+v.W*st*.5+.9));
+    const cx=Wd/2,cy=Hd/2+((v.top+v.bottom)/2)*ct*sc;
+    const n=v.p.n,m=v.p.m;
+    const rad=(x,w,t)=>x*((1-w)*polyR(m,t)+w*polyR(n,t));
+    const proj=(r,y,t)=>{const X=r*Math.cos(t+phi),Z=r*Math.sin(t+phi);return[cx+X*sc,cy-y*ct*sc+Z*st*sc,Z]};
+    ctx.lineCap='round';ctx.lineJoin='round';
+    // rings, back then front
+    for(const pass of[0,1]){ctx.beginPath();
+      for(const g of rings){const S=120;let pen=false;for(let i=0;i<=S;i++){const t=i/S*TAU;const [x,y,Z]=proj(rad(g.x,g.w,t),g.y,t);const front=Z>=0;if((pass===1)===front){if(pen)ctx.lineTo(x,y);else{ctx.moveTo(x,y);pen=true}}else pen=false}}
+      ctx.strokeStyle=pass?ink:gr;ctx.globalAlpha=pass?.55:.22;ctx.lineWidth=pass?1.1*(cv.width/600):.8*(cv.width/600);ctx.stroke()}
+    // meridians at polygon vertices
+    const mer=(k,lo,hi,hiCol,fl)=>{for(let j=0;j<k;j++){const t=j*TAU/k;const Z=Math.sin(t+phi);ctx.beginPath();let first=true;
+        for(const g of rings){if(g.w<lo||g.w>hi)continue;const [x,y]=proj(rad(g.x,g.w,t),g.y,t);if(first){ctx.moveTo(x,y);first=false}else ctx.lineTo(x,y)}
+        const nearFront=Math.cos(t+phi-Math.PI/2)>Math.cos(Math.PI/k);
+        ctx.strokeStyle=(fl&&nearFront)?hiCol:clay;ctx.globalAlpha=Z>=0?(fl&&nearFront?1:.9):.18;ctx.lineWidth=(Z>=0?(fl&&nearFront?4:2.2):1)*(cv.width/600);ctx.stroke()}};
+    const now=performance.now();
+    mer(m,0,.999,ink,now-flash.lo<140);mer(n,.001,1,clay,now-flash.hi<140);
+    // base shadow line
+    ctx.globalAlpha=.6;ctx.strokeStyle=ink;ctx.lineWidth=1.5*(cv.width/600);ctx.beginPath();const by=cy-v.bottom*ct*sc+ (v.W*.62)*st*sc;ctx.moveTo(cx-v.W*.7*sc,by);ctx.lineTo(cx+v.W*.7*sc,by);ctx.stroke();ctx.globalAlpha=1}
+  function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+    if(running){phi+=dt*TAU/4.2;
+      if(listening&&v){const a=analyse(v);for(const [k,key,f] of [[v.p.m,'lo',ROOT/2],[v.p.n,'hi',ROOT/2*a.r*2]]){const idx=Math.floor(phi/(TAU/k));if(lastIdx[key]!==undefined&&idx!==lastIdx[key]){tick(f,key==='lo'?.22:.14);flash[key]=now;const b=key==='hi'?$('#pHi'):$('#pLo');b.classList.add('hit');setTimeout(()=>b.classList.remove('hit'),110)}lastIdx[key]=idx}}
+      draw()}
+    requestAnimationFrame(frame)}
+  new ResizeObserver(()=>{resize();draw()}).observe(cv);
+  requestAnimationFrame(frame);
+  $('#listen').onclick=()=>{audio();listening=!listening;running=running||listening;lastIdx={};$('#listen').textContent=listening?'Stop listening':'Listen to the spin';$('#pauseSpin').textContent='Pause'};
+  $('#pauseSpin').onclick=()=>{running=!running;$('#pauseSpin').textContent=running?'Pause':'Spin'};
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>draw());
+  return{setVessel,draw};
+})();
+
+/* ---------- shelf ---------- */
+const PAIRS=[[4,4,.62,.05],[3,6,.6,.22],[5,8,.5,.2],[6,8,.55,.18],[6,10,.45,.28],[8,12,.42,.12],[5,10,.38,.35],[6,12,.35,.3]];
+const shelfV=SCALE.map((iv,i)=>{const [n,m,neckR,swell]=PAIRS[i];const p={n,m,neckR,swell,lift:.6};p.lift=tune(p,iv[0]/iv[1]);return{p,iv,v:makeVessel(p)}});
+const sbox={w:Math.max(...shelfV.map(s=>s.v.W))+.25,h:Math.max(...shelfV.map(s=>s.v.H))+.15};
+$('#shelf').innerHTML=shelfV.map((s,i)=>`<button class="pot" data-i="${i}" aria-label="${s.iv[2]}, ${POLY[s.p.n]} over ${POLY[s.p.m]}">${miniSVG(s.v,sbox)}<span class="lbl">${s.iv[0]}/${s.iv[1]}</span><span class="nm">${s.iv[2]}</span></button>`).join('');
+function ring(el){el.classList.remove('ring');void el.offsetWidth;el.classList.add('ring')}
+function playShelfPot(i,when=0){const s=shelfV[i];const el=$(`#shelf .pot[data-i="${i}"]`);
+  if(when)setTimeout(()=>ring(el),when*1000);else ring(el);strikeNote(ROOT*s.iv[0]/s.iv[1],when,1.6,.2)}
+function loadP(p){Object.assign(P,p);syncInputs();render(true);$('.lab').scrollIntoView({behavior:'smooth',block:'start'})}
+$('#shelf').addEventListener('click',e=>{const b=e.target.closest('.pot');if(!b)return;const i=+b.dataset.i;playShelfPot(i);if(e.shiftKey)loadP({...shelfV[i].p})});
+$('#playShelf').onclick=()=>{audio();for(let i=0;i<8;i++)playShelfPot(i,i*.28);for(let i=6;i>=0;i--)playShelfPot(i,8*.28+(6-i)*.28)};
+$('#playChord').onclick=()=>{audio();[0,2,4].forEach((i,k)=>playShelfPot(i,k*.08));[0,2,4].forEach(i=>playShelfPot(i,.9))};
+document.addEventListener('keydown',e=>{if(e.target.matches('input,textarea'))return;const k=+e.key;if(k>=1&&k<=8)playShelfPot(k-1)});
+
+/* ---------- name ---------- */
+function hash(s){let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
+let nameData=[];
+function renderName(){const txt=$('#nameIn').value.toLowerCase().slice(0,18);
+  nameData=[...txt].map(ch=>{if(!/[a-z0-9]/.test(ch))return null;const h=hash('vessel'+ch);
+    const p={n:3+h%8,m:4+(h>>>3)%9,neckR:.32+((h>>>7)%40)/100,swell:-.12+((h>>>11)%50)/100,lift:.6};const deg=(ch.charCodeAt(0)*5)%8;const iv=SCALE[deg];p.lift=tune(p,iv[0]/iv[1]);return{ch,p,iv,v:makeVessel(p)}});
+  const vs=nameData.filter(Boolean);if(!vs.length){$('#nameRow').innerHTML='<p class="note">Type some letters.</p>';return}
+  const box={w:Math.max(...vs.map(d=>d.v.W))+.2,h:Math.max(...vs.map(d=>d.v.H))+.1};
+  $('#nameRow').innerHTML=nameData.map((d,i)=>d?`<button class="pot" data-i="${i}" aria-label="letter ${d.ch}">${miniSVG(d.v,box)}<span class="lbl">${d.ch}</span></button>`:`<span class="gap"></span>`).join('')}
+function playName(){audio();let t=0;nameData.forEach((d,i)=>{if(!d){t+=.3;return}const el=$(`#nameRow .pot[data-i="${i}"]`);const w=t;setTimeout(()=>ring(el),w*1000);strikeNote(ROOT*d.iv[0]/d.iv[1]*(i%4===3?2:1),w,1.4,.18);t+=.24})}
+$('#nameIn').addEventListener('input',renderName);
+$('#playName').onclick=playName;
+$('#nameIn').addEventListener('keydown',e=>{if(e.key==='Enter')playName()});
+$('#nameRow').addEventListener('click',e=>{const b=e.target.closest('.pot');if(!b)return;const d=nameData[+b.dataset.i];ring(b);strikeNote(ROOT*d.iv[0]/d.iv[1],0,1.6,.2);if(e.shiftKey)loadP({...d.p})});
+
+/* ---------- kiln ---------- */
+let kiln=[];try{kiln=JSON.parse(localStorage.getItem('rv-kiln')||'[]')}catch(e){kiln=[]}
+if(!kiln.length)kiln=[{n:6,m:8,neckR:.55,swell:.18,lift:0}]; // the book's pot, tuned below
+kiln=kiln.map(p=>p.lift?p:{...p,lift:tune(p,16/15)});
+let thrown=0,found=0;
+function saveKiln(){try{localStorage.setItem('rv-kiln',JSON.stringify(kiln.slice(0,48)))}catch(e){}}
+function addKiln(p){kiln.unshift(p);kiln=kiln.slice(0,48);saveKiln();renderKiln()}
+function renderKiln(){const el=$('#kiln');if(!kiln.length){el.innerHTML='<p class="empty">Empty. Throw some pots.</p>';return}
+  el.innerHTML=kiln.map((p,i)=>{const v=makeVessel(p),a=analyse(v);return`<button class="pot" data-i="${i}" aria-label="${a.iv[2]}, ${POLY[p.n]} over ${POLY[p.m]}">${miniSVG(v,{w:3.1,h:Math.max(2.6,v.H+.1)})}<span class="lbl">${a.tall?a.iv[0]+'/'+a.iv[1]:a.iv[1]+'/'+a.iv[0]}</span><span class="nm">${p.n} + ${p.m}</span></button>`}).join('')}
+$('#kiln').addEventListener('click',e=>{const b=e.target.closest('.pot');if(!b)return;const p=kiln[+b.dataset.i];const a=analyse(makeVessel(p));ring(b);strikeNote(ROOT,0,1.6,.16);strikeNote(ROOT*a.r,0,1.6,.16);loadP({...p})});
+$('#throw500').onclick=()=>{let f=0;for(let i=0;i<500;i++){const p=randomP();const a=analyse(makeVessel(p));if(a.resonant){kiln.unshift(p);f++}}
+  kiln=kiln.slice(0,48);saveKiln();thrown+=500;found+=f;renderKiln();$('#kilnStat').textContent=`${f} of 500 were resonant (${(f/5).toFixed(1)}%). Session total: ${found} of ${thrown}. Click one to draw it.`;
+  if(f){audio();strikeNote(ROOT*1.5,0,1.2,.12)}};
+$('#clearKiln').onclick=()=>{kiln=[];saveKiln();renderKiln();$('#kilnStat').textContent=''};
+
+/* ---------- type scale specimen ---------- */
+const TS=[[2,'2/1','octave'],[15/8,'15/8','seventh'],[5/3,'5/3','sixth'],[3/2,'3/2','fifth'],[4/3,'4/3','fourth'],[5/4,'5/4','third'],[9/8,'9/8','second'],[1,'1/1','unison']];
+$('#scale').innerHTML=TS.map(([r,f,nm])=>`<div><span>${f} · ${(16*r).toFixed(1)}</span><em style="font-size:${(16*r).toFixed(2)}px">${nm}</em></div>`).join('');
+
+/* ---------- start: the book's pot, tuned to 16/15 ---------- */
+P.lift=tune(P,16/15);syncInputs();
+renderName();renderKiln();
+render(true);
+addEventListener('resize',()=>{clearTimeout(window.__rz);window.__rz=setTimeout(()=>render(false),150)});
+})();
+</script>
+</body></html>
