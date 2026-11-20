@@ -88,6 +88,22 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 #svgOut{width:100%;min-height:80px;font:12px/1.4 var(--mono);background:var(--paper);color:var(--ink);border:1px solid var(--rule)}
 
 /* gallery */
+.vari{margin-top:var(--g5)}
+.vari-head{display:flex;justify-content:space-between;gap:var(--g3);align-items:end;flex-wrap:wrap;margin-bottom:var(--g3)}
+.vari-head .note{max-width:60ch}
+.children{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:var(--g2)}
+@media (max-width:700px){.children{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:6px}
+.tools label{position:relative;cursor:pointer}
+.tools input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.tools span{display:grid;gap:2px;padding:8px 10px;border:1px solid var(--ink);font-size:14px;font-weight:500}
+.tools small{font:400 11.5px var(--mono);color:var(--graphite)}
+.tools input:checked+span{background:var(--ink);color:var(--paper)}
+.tools input:checked+span small{color:var(--paper);opacity:.7}
+.tools input:focus-visible+span{outline:2px solid var(--clay);outline-offset:2px}
+#hand{width:100%;aspect-ratio:1/1;display:block;cursor:crosshair;touch-action:manipulation}
+#handHint{font-family:var(--display);font-style:italic;font-size:var(--t2);color:var(--ink)}
+#handHint b{font-style:normal;font-family:var(--mono);font-size:13px;color:var(--clay);font-weight:500;margin-right:.5em}
 .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--g3)}
 .seedcard{all:unset;cursor:pointer;display:grid;gap:6px;padding:var(--g2);background:var(--sheet);border:1px solid var(--rule);transition:border-color .15s}
 .seedcard:hover{border-color:var(--clay)}
@@ -177,11 +193,50 @@ footer{margin-top:var(--g8);padding-top:var(--g3);border-top:1px solid var(--rul
         </div>
       </div>
     </div>
+    <div class="vari">
+      <div class="vari-head"><div><p class="eyebrow">Variations · generation <span id="gen">1</span></p><p class="note">Each child redraws one move of the current recipe with different choices. Click the one you like best and it becomes the parent. Keep picking and the design evolves.</p></div><button id="reroll">New children</button></div>
+      <div class="children" id="children"></div>
+    </div>
   </section>
 
   <section>
     <div class="sec-head">
-      <p class="eyebrow">Part 3 · a field of seeds</p>
+      <p class="eyebrow">Part 3 · by hand</p>
+      <h2>Build your own, <em>one tap</em> at a time</h2>
+      <p>Pick a move, then tap points on the drawing. Taps snap to points that already exist, so anything you make stays drawable with a real compass. Each move repeats around the center, and the same delete-by-depth rule turns the working into a result.</p>
+    </div>
+    <div class="machine">
+      <div class="panel stage">
+        <p id="handHint" aria-live="polite"></p>
+        <canvas id="hand" aria-label="Your construction. Tap points to apply the selected move."></canvas>
+        <div class="stats" id="hstats"></div>
+      </div>
+      <div class="side">
+        <div class="panel controls">
+          <div class="tools" role="radiogroup" aria-label="Move">
+            <label><input type="radio" name="tool" value="circle" checked><span>Circle<small>center, through</small></span></label>
+            <label><input type="radio" name="tool" value="vesica"><span>Vesica<small>two centers</small></span></label>
+            <label><input type="radio" name="tool" value="walk"><span>Walk<small>center, start</small></span></label>
+            <label><input type="radio" name="tool" value="diagonal"><span>Diagonal<small>center, rim</small></span></label>
+            <label><input type="radio" name="tool" value="corners"><span>Corner arcs<small>center, rim</small></span></label>
+            <label><input type="radio" name="tool" value="join"><span>Join<small>three points</small></span></label>
+            <label><input type="radio" name="tool" value="line"><span>Line<small>two points</small></span></label>
+            <label><input type="radio" name="tool" value="halve"><span>Halve<small>center, rim</small></span></label>
+          </div>
+          <div class="ctl"><label for="hsym">Repeat around the center</label><span></span>
+            <select id="hsym" style="grid-column:1/-1"><option value="1">Once (no symmetry)</option><option value="2">2 times</option><option value="3">3 times</option><option value="4">4 times</option><option value="5">5 times</option><option value="6" selected>6 times</option><option value="8">8 times</option><option value="12">12 times</option></select></div>
+          <div class="ctl"><label for="hdepth">Keep the region inside exactly</label><output id="hdepthOut" for="hdepth"></output><input type="range" id="hdepth" min="1" max="8" value="2"></div>
+          <div class="checks"><label><input type="checkbox" id="hmirror" checked> Mirror</label><label><input type="checkbox" id="hwork" checked> Show working</label></div>
+          <div class="btns"><button id="hundo">Undo</button><button id="hclear">Start over</button><button class="primary" id="hplay">Play it back</button><button id="hcopy">Copy SVG</button></div>
+        </div>
+        <div class="panel recipe"><p class="eyebrow">Your recipe</p><ol id="hrecipe"></ol></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Part 4 · a field of seeds</p>
       <h2>Twenty-four <em>sentences</em></h2>
       <p>Each tile is a different seed and symmetry, shown as its result only. Click one to open it in the machine and see how it was built.</p>
     </div>
@@ -311,12 +366,19 @@ const MOVES={
   halve(R,C){const K=pickCircle(R,C,.35,1.6);if(!K)return null;C.circle(K.c,K.r/2);return{move:'halve',text:`A circle of half the radius is drawn about ${C.label(C.addPoint(K.c))}.`,r:K.r/2}},
 };
 const WEIGHTS=[['circle',3],['vesica',2.5],['walk',1.4],['inscribe',1.4],['diagonal',.9],['corners',.8],['line',1.6],['join',1.5],['halve',1]];
-function build(seed,steps,sym,mirror){const C=new Cons({sym,mirror});const R=mulberry(seed*9301+sym*49297+(mirror?7:0));
+function build(seed,steps,sym,mirror,vari={}){const C=new Cons({sym,mirror});
   C.step=0;C.circle({x:0,y:0},1,{once:true,given:true});C.seg({x:-1,y:0},{x:1,y:0},{once:true,given:true});C.seg({x:0,y:-1},{x:0,y:1},{once:true,given:true});
   const recipe=[{move:'given',text:`A circle is given, with its two axes. Its radius is the unit for everything that follows.`,r:1}];
   const tot=WEIGHTS.reduce((s,w)=>s+w[1],0);
-  for(let s=1;s<=steps;s++){C.step=s;let res=null;for(let tries=0;tries<40&&!res;tries++){if(C.circles.length>230&&tries<39){res=MOVES.line(R,C);continue}let x=R()*tot,mv='circle';for(const [k,w]of WEIGHTS){x-=w;if(x<=0){mv=k;break}}res=MOVES[mv](R,C)}if(res)recipe.push(res)}
+  for(let s=1;s<=steps;s++){C.step=s;const R=mulberry(seed*9301+sym*49297+(mirror?7:0)+s*104729+(vari[s]||0)*7919);let res=null;for(let tries=0;tries<40&&!res;tries++){if(C.circles.length>230&&tries<39){res=MOVES.line(R,C);continue}let x=R()*tot,mv='circle';for(const [k,w]of WEIGHTS){x-=w;if(x<=0){mv=k;break}}res=MOVES[mv](R,C)}if(res)recipe.push(res)}
   return{C,recipe,nSteps:C.step}}
+// choose a depth that shows inner structure, not just the outer ring
+function smartK(C,tracery=true){let maxE=0;for(const K of C.circles)maxE=Math.max(maxE,Math.hypot(K.c.x,K.c.y)+K.r);let best=null;
+  for(let k=1;k<=7;k++){const ink=inkFor(C,k,tracery);const n=ink.arcs.length;if(!n)continue;const sc=Math.min(n,160)*(1.45-ink.ext/(maxE+.01))*(n<6?.3:1);if(!best||sc>best.sc)best={k,ink,sc}}
+  return best||{k:1,ink:inkFor(C,1,tracery)}}
+function svgText(m,H,comment){const f=v=>v.toFixed(5);let d='';for(const A of m.ink.arcs){const K=A.K;const a0=A.a0,a1=A.a1;const pt=a=>`${f(K.c.x+K.r*Math.cos(a))} ${f(-(K.c.y+K.r*Math.sin(a)))}`;if(a1-a0>=TAU-1e-6){const mm=a0+Math.PI;d+=`M${pt(a0)}A${f(K.r)} ${f(K.r)} 0 0 0 ${pt(mm)}A${f(K.r)} ${f(K.r)} 0 0 0 ${pt(a0)}`;continue}d+=`M${pt(a0)}A${f(K.r)} ${f(K.r)} 0 ${a1-a0>Math.PI?1:0} 0 ${pt(a1)}`}
+  for(const L of m.ink.lines){const S2=L.S,p=t=>`${f(S2.p.x+(S2.q.x-S2.p.x)*t)} ${f(-(S2.p.y+(S2.q.y-S2.p.y)*t))}`;d+=`M${p(L.t0)}L${p(L.t1)}`}
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${f(-H)} ${f(-H)} ${f(2*H)} ${f(2*H)}" width="200mm" height="200mm"><!-- ${comment} --><path d="${d}" fill="none" stroke="#c2173e" stroke-width="${f(H/200)}" stroke-linecap="round"/></svg>`}
 
 /* ================= rendering ================= */
 const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
@@ -383,11 +445,12 @@ function drawParts(){const P=pal();partsEl.querySelectorAll('canvas').forEach(cv
 partsEl.addEventListener('click',e=>{if(e.target.matches('[data-play]')){tone(220,0,2);tone(220*R3,.5,2);tone(220,1.3,2.4,.14);tone(220*R3,1.3,2.4,.14)}});
 
 /* ================= part 2: the machine ================= */
-const S={seed:7,steps:5,sym:6,mirror:true,k:2,lens:'construction',tracery:true,sound:true};
+const S={seed:7,steps:5,sym:6,mirror:true,k:2,lens:'construction',tracery:true,sound:true,vari:{}};let gen=1;
+const variCode=v=>Object.keys(v).sort((a,b)=>a-b).map(k=>`${k}.${v[k]}`).join(' ');
 let M=null,anim=null;
 function readUI(){S.seed=Math.max(1,parseInt($('#seed').value)||1);S.steps=+$('#steps').value;S.sym=+$('#sym').value;S.mirror=$('#mirror').checked;S.k=+$('#depth').value;S.tracery=$('#tracery').checked;S.sound=$('#sound').checked;S.lens=document.querySelector('input[name=lens]:checked').value}
 function writeUI(){$('#seed').value=S.seed;$('#steps').value=S.steps;$('#sym').value=S.sym;$('#mirror').checked=S.mirror;$('#depth').value=S.k;$('#tracery').checked=S.tracery;document.querySelector(`input[name=lens][value=${S.lens}]`).checked=true}
-function compute(){const b=build(S.seed,S.steps,S.sym,S.mirror);M=b;M.ink=inkFor(M.C,S.k,S.tracery);M.Hw=clamp(Math.max(M.ink.ext,1)*1.1,1.12,3);}
+function compute(){const b=build(S.seed,S.steps,S.sym,S.mirror,S.vari);M=b;M.ink=inkFor(M.C,S.k,S.tracery);M.Hw=clamp(Math.max(M.ink.ext,1)*1.1,1.12,3);}
 function view(){return S.lens==='construction'?Math.max(M.Hw,1.25):M.Hw}
 function rasterMain(){const cv=$('#main'),W=sizeCanvas(cv);const r=raster(M.C,S.k,W,view(),pal());M.fill=r.off;M.maxD=r.maxD;
   const dm=$('#depth');dm.max=Math.max(2,Math.min(12,r.maxD));$('#depthOut').textContent=`${S.k} circle${S.k>1?'s':''}`}
@@ -399,10 +462,11 @@ function drawTile(ctx,W){const P=pal();const T=Math.round(W*.42);const off=docum
   ctx.clearRect(0,0,W,W);const ext=Math.max(M.ink.ext,.3)/M.Hw*T/2;const sp=ext*2*.94;const hexLattice=S.sym%3===0;const dy=hexLattice?sp*Math.sqrt(3)/2:sp;
   let row=0;for(let y=-sp;y<W+sp;y+=dy,row++){const ox=hexLattice&&row%2?sp/2:0;for(let x=-sp+ox;x<W+sp;x+=sp)ctx.drawImage(off,x-T/2+W/2%sp,y-T/2+W/2%dy)}}
 function renderRecipe(cur=-1){$('#recipe').innerHTML=M.recipe.map((r,i)=>`<li class="${i===cur?'cur':''}"><span>${r.text}${r.move!=='line'?`<span class="r">r = ${fmtR(r.r)}</span>`:''}</span></li>`).join('');
-  $('#recipeHead').textContent=`Recipe · seed ${S.seed}${S.sym>1?` · every move repeated ${S.sym}×`:''}${S.mirror?', mirrored':''}`;
+  $('#recipeHead').textContent=`Recipe · seed ${S.seed}${gen>1?` · generation ${gen}`:''}${S.sym>1?` · every move repeated ${S.sym}×`:''}${S.mirror?', mirrored':''}`;
   $('#recipeBox').classList.toggle('playing',cur>=0)}
 function renderStats(){const nC=M.C.circles.length,nS=M.C.segs.length,nP=M.C.pts.length;$('#stats').innerHTML=`<span>${nC} circles</span><span>${nS} lines</span><span>${nP} points</span><span>${M.ink.arcs.length+M.ink.lines.length} pieces kept</span>${M.ink.arcs.length?'':`<span style="color:var(--clay)">Nothing sits inside exactly ${S.k} circles. Lower the depth.</span>`}`}
-function render(){stopAnim();readUI();$('#stepsOut').textContent=S.steps;compute();rasterMain();drawMain();renderRecipe();renderStats()}
+let chT;function render(){stopAnim();readUI();$('#stepsOut').textContent=S.steps;compute();rasterMain();drawMain();renderRecipe();renderStats();clearTimeout(chT);chT=setTimeout(makeChildren,120)}
+function newSeed(v){$('#seed').value=v;S.vari={};gen=1;$('#gen').textContent=gen;render()}
 function stopAnim(){if(anim){cancelAnimationFrame(anim.raf);anim=null}}
 function replay(){stopAnim();if(S.lens==='tile'){document.querySelector('input[name=lens][value=construction]').checked=true;S.lens='construction';rasterMain()}
   if(matchMedia('(prefers-reduced-motion: reduce)').matches){drawMain();return}
@@ -416,25 +480,92 @@ function replay(){stopAnim();if(S.lens==='tile'){document.querySelector('input[n
 ['steps','sym','mirror','tracery','sound'].forEach(id=>$('#'+id).addEventListener('input',render));
 $('#depth').addEventListener('input',()=>{stopAnim();readUI();M.ink=inkFor(M.C,S.k,S.tracery);M.Hw=clamp(Math.max(M.ink.ext,1)*1.1,1.12,3);rasterMain();drawMain();renderStats();if(S.sound)tone(BASE*[1,9/8,5/4,4/3,3/2,5/3,15/8,2,9/4,5/2,8/3,3][S.k-1]/2,0,.9,.12)});
 document.querySelectorAll('input[name=lens]').forEach(r=>r.addEventListener('change',()=>{stopAnim();readUI();rasterMain();drawMain()}));
-$('#seed').addEventListener('change',render);
-$('#seedPrev').onclick=()=>{$('#seed').value=Math.max(1,S.seed-1);render()};
-$('#seedNext').onclick=()=>{$('#seed').value=S.seed+1;render()};
-$('#seedRand').onclick=()=>{$('#seed').value=1+Math.floor(Math.random()*99999);render();replay()};
+$('#seed').addEventListener('change',()=>newSeed(Math.max(1,parseInt($('#seed').value)||1)));
+$('#seedPrev').onclick=()=>newSeed(Math.max(1,S.seed-1));
+$('#seedNext').onclick=()=>newSeed(S.seed+1);
+$('#seedRand').onclick=()=>{newSeed(1+Math.floor(Math.random()*99999));replay()};
 $('#replay').onclick=replay;
 async function copyText(txt,btn,label){const ta=$('#svgOut');try{await navigator.clipboard.writeText(txt);btn.textContent='Copied';setTimeout(()=>btn.textContent=label,1500);ta.hidden=true}catch(e){ta.hidden=false;ta.value=txt;ta.focus();ta.select()}}
-$('#copyRecipe').onclick=e=>copyText(`Compass Grammar · seed ${S.seed} · ${S.sym}-fold${S.mirror?' mirrored':''} · keep depth ${S.k}\n`+M.recipe.map((r,i)=>`(${i+1}) ${r.text}`).join('\n'),e.target,'Copy recipe');
-$('#copySvg').onclick=e=>{const H=M.Hw,f=v=>v.toFixed(5);let d='';for(const A of M.ink.arcs){const K=A.K;let a0=A.a0,a1=A.a1;const pt=a=>`${f(K.c.x+K.r*Math.cos(a))} ${f(-(K.c.y+K.r*Math.sin(a)))}`;if(a1-a0>=TAU-1e-6){const m=a0+Math.PI;d+=`M${pt(a0)}A${f(K.r)} ${f(K.r)} 0 0 0 ${pt(m)}A${f(K.r)} ${f(K.r)} 0 0 0 ${pt(a0)}`;continue}d+=`M${pt(a0)}A${f(K.r)} ${f(K.r)} 0 ${a1-a0>Math.PI?1:0} 0 ${pt(a1)}`}
-  for(const L of M.ink.lines){const S2=L.S,p=t=>`${f(S2.p.x+(S2.q.x-S2.p.x)*t)} ${f(-(S2.p.y+(S2.q.y-S2.p.y)*t))}`;d+=`M${p(L.t0)}L${p(L.t1)}`}
-  copyText(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${f(-H)} ${f(-H)} ${f(2*H)} ${f(2*H)}" width="200mm" height="200mm"><!-- Compass Grammar seed ${S.seed}, ${S.sym}-fold${S.mirror?' mirrored':''}, depth ${S.k} --><path d="${d}" fill="none" stroke="#c2173e" stroke-width="${f(H/200)}" stroke-linecap="round"/></svg>`,e.target,'Copy SVG')};
+$('#copyRecipe').onclick=e=>copyText(`Compass Grammar · seed ${S.seed}${gen>1?` · variant ${variCode(S.vari)}`:''} · ${S.sym}-fold${S.mirror?' mirrored':''} · keep depth ${S.k}\n`+M.recipe.map((r,i)=>`(${i+1}) ${r.text}`).join('\n'),e.target,'Copy recipe');
+$('#copySvg').onclick=e=>copyText(svgText(M,M.Hw,`Compass Grammar seed ${S.seed}, ${S.sym}-fold${S.mirror?' mirrored':''}, depth ${S.k}`),e.target,'Copy SVG');
 
-/* ================= part 3: gallery ================= */
+/* ================= variations ================= */
+let kids=[];
+function thumb(cv,b,k,ink){const P=pal();const W=sizeCanvas(cv);const Hw=clamp(Math.max(ink.ext,.6)*1.08,.7,3);drawScene(cv.getContext('2d'),W,{...b,ink,fill:raster(b.C,k,W,Hw,P).off},{lens:'emblem',Hw,thin:true})}
+function makeChildren(){const el=$('#children');const order=[];for(let j=S.steps;j>=1;j--)order.push(j);for(let i=order.length-1;i>0;i--){const r=Math.floor(Math.random()*(i+1));[order[i],order[r]]=[order[r],order[i]]}
+  kids=[];for(let c=0;c<6;c++){const j=order[c%order.length];const v={...S.vari};v[j]=(v[j]||0)+1+Math.floor(Math.random()*997);kids.push({v,j})}
+  el.innerHTML=kids.map((k,i)=>`<button class="seedcard" data-i="${i}" aria-label="Variation ${i+1}, move ${k.j} redrawn"><canvas></canvas><span><b>move ${k.j}</b><i>child ${i+1}</i></span></button>`).join('');
+  const cards=[...el.querySelectorAll('.seedcard')];let i=0;const next=()=>{if(i>=kids.length)return;const kd=kids[i];const b=build(S.seed,S.steps,S.sym,S.mirror,kd.v);let k=S.k,ink=inkFor(b.C,k,S.tracery);if(!ink.arcs.length){const sk=smartK(b.C,S.tracery);k=sk.k;ink=sk.ink}kd.k=k;thumb(cards[i].querySelector('canvas'),b,k,ink);i++;setTimeout(next,0)};next()}
+$('#children').addEventListener('click',e=>{const c=e.target.closest('.seedcard');if(!c)return;const kd=kids[+c.dataset.i];S.vari=kd.v;S.k=kd.k;gen++;$('#gen').textContent=gen;writeUI();render();if(S.sound)tone(pitch(M.recipe[Math.min(kd.j,M.recipe.length-1)].r),0,1.2,.15);
+  document.querySelector('.machine').scrollIntoView({behavior:'smooth',block:'start'})});
+$('#reroll').onclick=makeChildren;
+
+/* ================= part 3: by hand ================= */
+const HT={circle:{n:2,name:'Circle',hint:['tap the center','tap a point it passes through']},vesica:{n:2,name:'Vesica',hint:['tap the first center','tap the second center']},
+  walk:{n:2,name:'Walk',hint:['tap the center','tap where the walk starts']},diagonal:{n:2,name:'Diagonal',hint:['tap the center','tap a point on the rim; the new circle is √2 larger']},
+  corners:{n:2,name:'Corner arcs',hint:['tap the center','tap a point on the rim; a square and four corner arcs follow']},join:{n:3,name:'Join',hint:['tap the first point','tap the second point','tap the third point']},
+  line:{n:2,name:'Line',hint:['tap the start','tap the end']},halve:{n:2,name:'Halve',hint:['tap the center','tap a point on the rim; the new circle is half as large']}};
+const Hs={sym:6,mirror:true,k:2,tool:'circle',ops:[{m:'vesica',p:[{x:0,y:0},{x:1,y:0}]}],sel:[],hover:-1,work:true,Hw:2.15,example:true};
+try{const sv=JSON.parse(localStorage.getItem('cg-hand')||'null');if(sv&&Array.isArray(sv.ops)){Object.assign(Hs,{ops:sv.ops,sym:sv.sym||6,mirror:!!sv.mirror,k:sv.k||2,example:false})}}catch(e){}
+let HM=null;
+function circum(a,b,c){const d=2*(a.x*(b.y-c.y)+b.x*(c.y-a.y)+c.x*(a.y-b.y));if(Math.abs(d)<1e-7)return null;const A=a.x*a.x+a.y*a.y,B=b.x*b.x+b.y*b.y,Cc=c.x*c.x+c.y*c.y;const cen={x:(A*(b.y-c.y)+B*(c.y-a.y)+Cc*(a.y-b.y))/d,y:(A*(c.x-b.x)+B*(a.x-c.x)+Cc*(b.x-a.x))/d};return{c:cen,r:dist(cen,a)}}
+function applyHand(C,op){const [a,b,c]=op.p;const d=dist(a,b);const L=q=>C.label(C.addPoint(q));
+  switch(op.m){
+    case'circle':C.circle(a,d);return{text:`A circle is drawn about ${L(a)} through ${L(b)}.`,r:d};
+    case'vesica':C.circle(a,d);C.circle(b,d);return{text:`A vesica is drawn on ${L(a)} and ${L(b)}.`,r:d};
+    case'line':C.seg(a,b);return{text:`A line joins ${L(a)} and ${L(b)}.`,r:d,line:true};
+    case'halve':C.circle(a,d/2);return{text:`A circle of half the radius is drawn about ${L(a)}.`,r:d/2};
+    case'diagonal':C.circle(a,d*R2);return{text:`A circle about ${L(a)}, its radius the quarter-circle diagonal (×√2).`,r:d*R2};
+    case'walk':{const t=Math.atan2(b.y-a.y,b.x-a.x);const p=[];for(let i=0;i<6;i++)p.push({x:a.x+d*Math.cos(t+i*TAU/6),y:a.y+d*Math.sin(t+i*TAU/6)});C.addPoints(p);for(let i=0;i<6;i++)C.seg(p[i],p[(i+1)%6]);return{text:`The compass is walked around ${L(a)} from ${L(b)}, and the six points are joined.`,r:d}}
+    case'corners':{const t=Math.atan2(b.y-a.y,b.x-a.x);const cs=[];for(let i=0;i<4;i++)cs.push({x:a.x+d*R2*Math.cos(t+Math.PI/4+i*TAU/4),y:a.y+d*R2*Math.sin(t+Math.PI/4+i*TAU/4)});for(let i=0;i<4;i++)C.seg(cs[i],cs[(i+1)%4]);for(const q of cs)C.circle(q,d*R2);return{text:`A square is drawn about the circle at ${L(a)}; four corner arcs pass through ${L(a)}.`,r:d*R2}}
+    case'join':{const cc=circum(a,b,c);if(!cc)return{text:'Three points in a line make no circle; nothing is drawn.',r:1};C.circle(cc.c,cc.r);return{text:`A circle is drawn through ${L(a)}, ${L(b)} and ${L(c)}.`,r:cc.r}}}}
+function rebuildHand(){const C=new Cons({sym:Hs.sym,mirror:Hs.mirror});C.step=0;C.circle({x:0,y:0},1,{once:true,given:true});C.seg({x:-1,y:0},{x:1,y:0},{once:true,given:true});C.seg({x:0,y:-1},{x:0,y:1},{once:true,given:true});
+  const recipe=[{text:'A circle is given, with its two axes.',r:1}];Hs.ops.forEach((op,i)=>{C.step=i+1;recipe.push(applyHand(C,op))});
+  HM={C,recipe,nSteps:Hs.ops.length};HM.ink=inkFor(C,Hs.k,true);const cv=$('#hand'),W=sizeCanvas(cv);const r=raster(C,Hs.k,W,Hs.Hw,pal());HM.fill=r.off;
+  $('#hdepth').max=Math.max(2,Math.min(12,r.maxD));$('#hdepthOut').textContent=`${Hs.k} circle${Hs.k>1?'s':''}`;
+  $('#hrecipe').innerHTML=recipe.map(x=>`<li><span>${x.text}${x.line?'':`<span class="r">r = ${fmtR(x.r)}</span>`}</span></li>`).join('');
+  $('#hstats').innerHTML=`<span>${C.circles.length} circles</span><span>${C.segs.length} lines</span><span>${C.pts.length} points to snap to</span>${HM.ink.arcs.length?'':`<span style="color:var(--clay)">Nothing sits inside exactly ${Hs.k} circles yet.</span>`}`;
+  try{if(!Hs.example)localStorage.setItem('cg-hand',JSON.stringify({ops:Hs.ops,sym:Hs.sym,mirror:Hs.mirror,k:Hs.k}))}catch(e){}
+  drawHand();hint()}
+function hint(){const t=HT[Hs.tool];$('#handHint').innerHTML=`<b>${t.name} · ${Hs.sel.length+1}/${t.n}</b>${t.hint[Hs.sel.length]}${Hs.example&&Hs.ops.length===1&&!Hs.sel.length?'. One vesica is already drawn as an example.':'.'}`}
+function drawHand(){if(!HM)return;const cv=$('#hand'),W=cv.width,ctx=cv.getContext('2d');const tool=HT[Hs.tool];
+  drawScene(ctx,W,HM,{lens:Hs.work?'construction':'emblem',Hw:Hs.Hw,labels:false,extra:(ctx,X,Y,s,P,d)=>{
+    ctx.globalAlpha=.55;ctx.fillStyle=P.gr;for(const p of HM.C.pts){const x=X(p),y=Y(p);if(x<0||y<0||x>W||y>W)continue;ctx.fillRect(x-1.2*d,y-1.2*d,2.4*d,2.4*d)}ctx.globalAlpha=1;
+    const hv=Hs.hover>=0?HM.C.pts[Hs.hover]:null;
+    if(Hs.sel.length&&hv){const a=Hs.sel[0],dd=dist(a,hv);ctx.strokeStyle=P.clay;ctx.lineWidth=1.4*d;ctx.setLineDash([5*d,4*d]);ctx.beginPath();
+      if(Hs.tool==='line'){ctx.moveTo(X(a),Y(a));ctx.lineTo(X(hv),Y(hv))}
+      else if(Hs.tool==='join'){if(Hs.sel.length===2){const cc=circum(Hs.sel[0],Hs.sel[1],hv);if(cc)ctx.arc(X(cc.c),Y(cc.c),cc.r*s,0,TAU)}else{ctx.moveTo(X(a),Y(a));ctx.lineTo(X(hv),Y(hv))}}
+      else if(Hs.tool==='vesica'){ctx.arc(X(a),Y(a),dd*s,0,TAU);ctx.moveTo(X(hv)+dd*s,Y(hv));ctx.arc(X(hv),Y(hv),dd*s,0,TAU)}
+      else{const f=Hs.tool==='diagonal'||Hs.tool==='corners'?R2:Hs.tool==='halve'?.5:1;ctx.arc(X(a),Y(a),dd*f*s,0,TAU)}
+      ctx.stroke();ctx.setLineDash([])}
+    ctx.fillStyle=P.clay;for(const q of Hs.sel){ctx.beginPath();ctx.arc(X(q),Y(q),4.5*d,0,TAU);ctx.fill()}
+    if(hv){ctx.strokeStyle=P.clay;ctx.lineWidth=1.6*d;ctx.beginPath();ctx.arc(X(hv),Y(hv),8*d,0,TAU);ctx.stroke()}}})}
+function handPoint(e){const cv=$('#hand'),r=cv.getBoundingClientRect();const x=((e.clientX-r.left)/r.width*2-1)*Hs.Hw,y=(1-(e.clientY-r.top)/r.height*2)*Hs.Hw;const tol=(e.pointerType==='touch'?24:15)/r.width*2*Hs.Hw;
+  let best=-1,bd=tol;HM.C.pts.forEach((p,i)=>{const dd=Math.hypot(p.x-x,p.y-y);if(dd<bd&&Math.abs(p.x)<=Hs.Hw&&Math.abs(p.y)<=Hs.Hw){bd=dd;best=i}});return best}
+$('#hand').addEventListener('pointermove',e=>{const h=handPoint(e);if(h!==Hs.hover){Hs.hover=h;drawHand()}});
+$('#hand').addEventListener('pointerleave',()=>{Hs.hover=-1;drawHand()});
+$('#hand').addEventListener('pointerdown',e=>{const h=handPoint(e);Hs.hover=h;if(h<0){drawHand();return}const p=HM.C.pts[h],q={x:p.x,y:p.y};
+  if(Hs.sel.some(s2=>dist(s2,q)<1e-6)){drawHand();return}Hs.sel.push(q);
+  if(Hs.sel.length>=HT[Hs.tool].n){Hs.ops.push({m:Hs.tool,p:Hs.sel});Hs.sel=[];Hs.example=false;rebuildHand();tone(pitch(HM.recipe[HM.recipe.length-1].r),0,1.3,.17)}else{tone(pitch(1)*2,0,.25,.06);drawHand();hint()}});
+document.querySelectorAll('input[name=tool]').forEach(r=>r.addEventListener('change',()=>{Hs.tool=r.value;Hs.sel=[];drawHand();hint()}));
+$('#hsym').addEventListener('input',()=>{Hs.sym=+$('#hsym').value;Hs.sel=[];rebuildHand()});
+$('#hmirror').addEventListener('input',()=>{Hs.mirror=$('#hmirror').checked;Hs.sel=[];rebuildHand()});
+$('#hwork').addEventListener('input',()=>{Hs.work=$('#hwork').checked;drawHand()});
+$('#hdepth').addEventListener('input',()=>{Hs.k=+$('#hdepth').value;rebuildHand()});
+$('#hundo').onclick=()=>{if(Hs.sel.length)Hs.sel.pop();else Hs.ops.pop();Hs.example=false;rebuildHand()};
+$('#hclear').onclick=()=>{Hs.ops=[];Hs.sel=[];Hs.example=false;rebuildHand()};
+$('#hplay').onclick=()=>{audio();HM.recipe.forEach((x,i)=>tone(pitch(x.r),i*.32,1.3,.16))};
+$('#hcopy').onclick=e=>copyText(svgText(HM,Hs.Hw,`Compass Grammar, by hand, ${Hs.sym}-fold${Hs.mirror?' mirrored':''}, depth ${Hs.k}`),e.target,'Copy SVG');
+$('#hsym').value=Hs.sym;$('#hmirror').checked=Hs.mirror;$('#hdepth').value=Hs.k;
+
+/* ================= part 4: gallery ================= */
 const SYMS=[6,4,8,3,12,5,6,4,2,6,8,3];let galStart=1;
 function gallery(){const g=$('#gallery');const items=[];for(let i=0;i<24;i++){const seed=galStart+i*37,sym=SYMS[i%SYMS.length],k=2+(i%3===2?1:0),steps=4+(i%4);items.push({seed,sym,k,steps,mirror:i%5!==4})}
   g.innerHTML=items.map((it,i)=>`<button class="seedcard" data-i="${i}" aria-label="Seed ${it.seed}, ${it.sym}-fold"><canvas></canvas><span><b>${it.seed}</b><i>${it.sym}× · k ${it.k}</i></span></button>`).join('');
   g._items=items;const cards=[...g.querySelectorAll('.seedcard')];let i=0;
-  const P=pal();const next=()=>{if(i>=cards.length)return;const it=items[i],cv=cards[i].querySelector('canvas');const W=sizeCanvas(cv);const b=build(it.seed,it.steps,it.sym,it.mirror);let ink=inkFor(b.C,it.k,true);if(!ink.arcs.length){it.k=1;ink=inkFor(b.C,1,true);cards[i].querySelector('i').textContent=`${it.sym}× · k 1`}
+  const P=pal();const next=()=>{if(i>=cards.length)return;const it=items[i],cv=cards[i].querySelector('canvas');const W=sizeCanvas(cv);const b=build(it.seed,it.steps,it.sym,it.mirror);const sk=smartK(b.C,true);it.k=sk.k;const ink=sk.ink;cards[i].querySelector('i').textContent=`${it.sym}× · k ${it.k}`;
     const Hw=clamp(Math.max(ink.ext,.6)*1.08,.7,3);drawScene(cv.getContext('2d'),W,{...b,ink,fill:raster(b.C,it.k,W,Hw,P).off},{lens:'emblem',Hw,thin:true});i++;setTimeout(next,0)};next()}
-$('#gallery').addEventListener('click',e=>{const c=e.target.closest('.seedcard');if(!c)return;const it=$('#gallery')._items[+c.dataset.i];Object.assign(S,{seed:it.seed,steps:it.steps,sym:it.sym,mirror:it.mirror,k:it.k,lens:'construction'});writeUI();render();
+$('#gallery').addEventListener('click',e=>{const c=e.target.closest('.seedcard');if(!c)return;const it=$('#gallery')._items[+c.dataset.i];Object.assign(S,{seed:it.seed,steps:it.steps,sym:it.sym,mirror:it.mirror,k:it.k,lens:'construction',vari:{}});gen=1;$('#gen').textContent=gen;writeUI();render();
   document.querySelector('.machine').scrollIntoView({behavior:'smooth',block:'start'});setTimeout(replay,500)});
 $('#moreSeeds').onclick=()=>{galStart+=24*37;gallery()};
 
@@ -444,9 +575,9 @@ $('#lengths').innerHTML='<tr><th>Length</th><th>From</th><th>Value</th><th>Sound
 $('#space').innerHTML=[8,11.3,16,22.6,32,45.3,64,90.5].map((v,i)=>`<div><span>g${i+1} · ${v}</span><b style="width:${v}px;max-width:100%"></b></div>`).join('');
 
 /* ================= start ================= */
-writeUI();render();drawParts();gallery();
-let rz;new ResizeObserver(()=>{clearTimeout(rz);rz=setTimeout(()=>{drawParts();if(!anim){rasterMain();drawMain()}},120)}).observe(document.querySelector('.wrap'));
-matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{drawParts();rasterMain();drawMain();gallery()});
+writeUI();render();drawParts();rebuildHand();gallery();
+let rz;new ResizeObserver(()=>{clearTimeout(rz);rz=setTimeout(()=>{drawParts();if(!anim){rasterMain();drawMain()}rebuildHand()},120)}).observe(document.querySelector('.wrap'));
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{drawParts();rasterMain();drawMain();rebuildHand();gallery();makeChildren()});
 })();
 </script>
 </body></html>
