@@ -1,0 +1,452 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>
+<title>Compass Grammar</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a drafting sheet. Parts first (the alphabet), then the machine that spells with them, then what it makes. */
+:root{
+  --paper:#e9ece8; --sheet:#f6f7f4; --ink:#15181a; --graphite:#78828a; --rule:#cdd3cf; --clay:#c2173e; --glaze:#1f6e64;
+  --display:"Instrument Serif","Iowan Old Style",Georgia,serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  /* type: steps of the fourth root of 2 (a square root, taken twice — constructible) */
+  --t-1:13.45px; --t0:16px; --t1:19.03px; --t2:22.63px; --t3:26.91px; --t4:32px; --t5:38.05px; --t6:45.25px; --t8:64px;
+  /* space: steps of √2, the quarter-circle diagonal (the same ratio as A-series paper) */
+  --g1:8px; --g2:11.3px; --g3:16px; --g4:22.6px; --g5:32px; --g6:45.3px; --g7:64px; --g8:90.5px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#101315;--sheet:#171b1e;--ink:#e4e9e6;--graphite:#7d888f;--rule:#2a3035;--clay:#ff4a6d;--glaze:#58c4b3;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#101315;--sheet:#171b1e;--ink:#e4e9e6;--graphite:#7d888f;--rule:#2a3035;--clay:#ff4a6d;--glaze:#58c4b3;color-scheme:dark}
+
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:var(--t0);line-height:1.55;
+  background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);background-size:45.25px 45.25px;background-attachment:fixed}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:var(--g6) var(--g8)}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.05;text-wrap:balance;margin:0}
+h1{font-size:clamp(var(--t6),7.5vw,90.5px);letter-spacing:-.01em}
+h2{font-size:clamp(var(--t4),4.4vw,var(--t6))}
+h3{font-size:var(--t3)}
+h1 em,h2 em{color:var(--clay)}
+p{margin:0}
+.lede{max-width:64ch;font-size:var(--t1);margin-top:var(--g3)}
+.eyebrow{font-family:var(--mono);font-size:var(--t-1);letter-spacing:.08em;text-transform:uppercase;color:var(--graphite)}
+.note{font-size:14px;color:var(--graphite)}
+section{margin-top:var(--g8)}
+.sec-head{display:grid;gap:var(--g2);max-width:70ch;margin-bottom:var(--g5)}
+.panel{background:var(--sheet);border:1px solid var(--rule)}
+header{display:grid;gap:var(--g2)}
+
+/* parts */
+.parts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--g3)}
+@media (max-width:900px){.parts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.part{display:grid;gap:var(--g1);align-content:start;padding:var(--g3)}
+.part canvas{width:100%;aspect-ratio:1/1;display:block}
+.part .top{display:flex;justify-content:space-between;align-items:baseline;gap:var(--g1)}
+.part .gives{font-family:var(--mono);font-size:14px;color:var(--clay);white-space:nowrap}
+.part p{font-size:14.5px;line-height:1.45}
+.part .num{font-family:var(--mono);font-size:12px;color:var(--graphite)}
+.part button{justify-self:start;margin-top:4px}
+
+/* machine */
+.machine{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:var(--g4);align-items:start}
+@media (max-width:900px){.machine{grid-template-columns:minmax(0,1fr)}}
+.stage{padding:var(--g3);display:grid;gap:var(--g3)}
+#main{width:100%;aspect-ratio:1/1;display:block}
+.lens{display:flex;gap:0;border:1px solid var(--ink);justify-self:start;flex-wrap:wrap}
+.lens label{position:relative}
+.lens input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.lens span{display:block;padding:8px 14px;font-size:14px;font-weight:500}
+.lens input:checked+span{background:var(--ink);color:var(--paper)}
+.lens input:focus-visible+span{outline:2px solid var(--clay);outline-offset:2px}
+.side{display:grid;gap:var(--g4)}
+.controls{padding:var(--g4);display:grid;gap:var(--g3)}
+.ctl{display:grid;grid-template-columns:1fr auto;gap:2px var(--g2);align-items:center}
+.ctl label{font-size:15px}
+.ctl output{font-family:var(--mono);font-size:14px;color:var(--clay);font-variant-numeric:tabular-nums}
+.ctl input[type=range]{grid-column:1/-1;width:100%;accent-color:var(--clay)}
+.seedrow{display:flex;gap:6px;align-items:stretch;flex-wrap:wrap}
+.seedrow input{width:7.5em;font:500 16px var(--mono);padding:8px 10px;border:1px solid var(--ink);background:var(--paper);color:var(--ink)}
+select{font:500 14px var(--body);padding:8px 10px;border:1px solid var(--ink);background:var(--paper);color:var(--ink)}
+.checks{display:flex;flex-wrap:wrap;gap:var(--g2) var(--g4);font-size:15px}
+.checks label{display:flex;align-items:center;gap:8px;cursor:pointer}
+.checks input{accent-color:var(--clay);width:16px;height:16px}
+.btns{display:flex;flex-wrap:wrap;gap:var(--g1)}
+button{font:500 14px/1 var(--body);color:var(--ink);background:transparent;border:1px solid var(--ink);padding:10px 14px;cursor:pointer;transition:background .15s,color .15s}
+button:hover{background:var(--ink);color:var(--paper)}
+button.primary{background:var(--clay);border-color:var(--clay);color:#fff}
+button.primary:hover{filter:brightness(1.1);background:var(--clay);color:#fff}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--clay);outline-offset:2px}
+.recipe{padding:var(--g4);display:grid;gap:var(--g2)}
+.recipe ol{list-style:none;margin:0;padding:0;display:grid;gap:6px;counter-reset:st}
+.recipe li{counter-increment:st;font-family:var(--display);font-style:italic;font-size:var(--t1);line-height:1.3;display:grid;grid-template-columns:2.3em 1fr;color:var(--ink);transition:color .3s}
+.recipe li::before{content:"(" counter(st) ")";font-style:normal;font-family:var(--mono);font-size:12.5px;color:var(--graphite);padding-top:.3em}
+.recipe.playing li{color:var(--graphite)}
+.recipe.playing li.cur{color:var(--ink)}
+.recipe.playing li.cur::before{color:var(--clay)}
+.recipe .r{font-family:var(--mono);font-style:normal;font-size:12.5px;color:var(--clay);margin-left:.4em;white-space:nowrap}
+.stats{display:flex;flex-wrap:wrap;gap:var(--g1) var(--g4);font-family:var(--mono);font-size:13px;color:var(--graphite)}
+#svgOut{width:100%;min-height:80px;font:12px/1.4 var(--mono);background:var(--paper);color:var(--ink);border:1px solid var(--rule)}
+
+/* gallery */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--g3)}
+.seedcard{all:unset;cursor:pointer;display:grid;gap:6px;padding:var(--g2);background:var(--sheet);border:1px solid var(--rule);transition:border-color .15s}
+.seedcard:hover{border-color:var(--clay)}
+.seedcard:focus-visible{outline:2px solid var(--clay);outline-offset:2px}
+.seedcard canvas{width:100%;aspect-ratio:1/1;display:block}
+.seedcard span{font-family:var(--mono);font-size:12px;color:var(--graphite);display:flex;justify-content:space-between}
+
+/* system */
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:var(--g4) var(--g5)}
+.rules article{display:grid;gap:var(--g1);align-content:start;border-top:1px solid var(--ink);padding-top:var(--g2)}
+.rules p{max-width:52ch}
+.tokens{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:var(--g4);margin-top:var(--g6)}
+.tokens .panel{padding:var(--g4);display:grid;gap:var(--g3);align-content:start}
+table.lengths{width:100%;border-collapse:collapse;font-size:14px}
+table.lengths th{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--graphite);text-align:left;padding:4px 0;border-bottom:1px solid var(--rule)}
+table.lengths td{padding:5px 0;border-bottom:1px solid var(--rule);font-family:var(--mono);font-variant-numeric:tabular-nums}
+table.lengths td:first-child{font-family:var(--display);font-size:19px}
+table.lengths td.c{color:var(--clay)}
+.chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--g2)}
+.chip{display:grid;grid-template-columns:34px 1fr;gap:var(--g2);align-items:center;font-size:14px}
+.chip i{width:34px;height:34px;border:1px solid var(--rule);display:block}
+.chip small{display:block;font-family:var(--mono);font-size:12px;color:var(--graphite)}
+.space{display:grid;gap:6px}
+.space div{display:grid;grid-template-columns:70px 1fr;gap:var(--g2);align-items:center;font-family:var(--mono);font-size:12px;color:var(--graphite)}
+.space b{display:block;height:10px;background:var(--clay)}
+
+.ideas{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:var(--g5) var(--g4)}
+.ideas article{display:grid;gap:var(--g1);align-content:start}
+.ideas h3{font-size:var(--t3)}
+.ideas .tag{font-family:var(--mono);font-size:12px;color:var(--clay);letter-spacing:.06em;text-transform:uppercase}
+.ideas .uses{font-family:var(--mono);font-size:12px;color:var(--graphite)}
+footer{margin-top:var(--g8);padding-top:var(--g3);border-top:1px solid var(--rule);font-size:14px;color:var(--graphite);max-width:70ch}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">A design system built from compass moves · after Drawing 8.10</p>
+    <h1>Compass <em>Grammar</em></h1>
+    <p class="lede">The pot in the book is one sentence. The words it's made of are a handful of compass and straightedge moves: draw a circle, overlap two, walk the radius, take a diagonal, cut from the corners, delete, join, measure. Break those out and you can write new sentences forever, and every one can still be drawn by hand.</p>
+  </header>
+
+  <section style="margin-top:var(--g7)">
+    <div class="sec-head">
+      <p class="eyebrow">Part 1 · the alphabet</p>
+      <h2>Eight moves hidden in <em>one drawing</em></h2>
+      <p>Each move takes what is already on the page and gives back something new: a point, a length, a ratio. Black was given, grey is the working, red is what the move produced.</p>
+    </div>
+    <div class="parts" id="parts"></div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Part 2 · the machine</p>
+      <h2>Random sentences, <em>exact</em> geometry</h2>
+      <p>A seed picks a sequence of moves and which points they use. Symmetry repeats every move around the center. Then one rule does the deleting: keep only the region that sits inside exactly <em>k</em> circles. That single number replaces “parts of the octagon are deleted”, and changing it reveals completely different shapes inside the same construction.</p>
+    </div>
+    <div class="machine">
+      <div class="panel stage">
+        <div class="lens" role="radiogroup" aria-label="View">
+          <label><input type="radio" name="lens" value="construction" checked><span>Construction</span></label>
+          <label><input type="radio" name="lens" value="emblem"><span>Result</span></label>
+          <label><input type="radio" name="lens" value="tile"><span>Pattern</span></label>
+        </div>
+        <canvas id="main" aria-label="The current construction"></canvas>
+        <div class="stats" id="stats"></div>
+      </div>
+      <div class="side">
+        <div class="panel controls">
+          <div class="ctl"><label for="seed">Seed</label><span></span>
+            <div class="seedrow" style="grid-column:1/-1"><button id="seedPrev" aria-label="Previous seed">←</button><input id="seed" type="number" value="7" min="1" max="999999" inputmode="numeric"><button id="seedNext" aria-label="Next seed">→</button><button id="seedRand">Random</button></div></div>
+          <div class="ctl"><label for="steps">Moves</label><output id="stepsOut" for="steps"></output><input type="range" id="steps" min="1" max="12" value="5"></div>
+          <div class="ctl"><label for="sym">Repeat around the center</label><span></span>
+            <select id="sym" style="grid-column:1/-1"><option value="1">Once (no symmetry)</option><option value="2">2 times</option><option value="3">3 times</option><option value="4">4 times</option><option value="5">5 times</option><option value="6" selected>6 times</option><option value="8">8 times</option><option value="12">12 times</option></select></div>
+          <div class="ctl"><label for="depth">Keep the region inside exactly</label><output id="depthOut" for="depth"></output><input type="range" id="depth" min="1" max="8" value="2"></div>
+          <div class="checks">
+            <label><input type="checkbox" id="mirror" checked> Mirror</label>
+            <label><input type="checkbox" id="tracery" checked> Keep lines inside</label>
+            <label><input type="checkbox" id="sound" checked> Sound</label>
+          </div>
+          <div class="btns"><button class="primary" id="replay">Draw it step by step</button><button id="copyRecipe">Copy recipe</button><button id="copySvg">Copy SVG</button></div>
+          <textarea id="svgOut" hidden readonly aria-label="Copied text"></textarea>
+        </div>
+        <div class="panel recipe" id="recipeBox">
+          <p class="eyebrow" id="recipeHead">Recipe</p>
+          <ol id="recipe"></ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Part 3 · a field of seeds</p>
+      <h2>Twenty-four <em>sentences</em></h2>
+      <p>Each tile is a different seed and symmetry, shown as its result only. Click one to open it in the machine and see how it was built.</p>
+    </div>
+    <div class="gallery" id="gallery"></div>
+    <div class="btns" style="margin-top:var(--g4)"><button id="moreSeeds">Show 24 more</button></div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">The system</p>
+      <h2>Rules for <em>anything</em> built this way</h2>
+    </div>
+    <div class="rules">
+      <article><h3>Only constructible numbers</h3><p>No length is typed in. Every size is reached from the first radius by compass and straightedge, so 1, √2, √3, ½ and φ are allowed and 0.37 is not.</p></article>
+      <article><h3>Shapes are recipes</h3><p>Store a design as its list of moves, not its outline. The recipe can be redrawn, replayed, varied by one step, or handed to someone with a real compass.</p></article>
+      <article><h3>Delete by counting</h3><p>Choose regions by how many circles contain them. It keeps deletion lawful and makes every result a cousin of every other result from the same construction.</p></article>
+      <article><h3>Black given, grey working, red derived</h3><p>Color always says where a line came from. The working stays on the page, faint, as ornament and as proof.</p></article>
+      <article><h3>Every length can be heard</h3><p>Any length divided by the first radius is a frequency ratio. A construction can be played back as the sequence of circles it draws.</p></article>
+    </div>
+    <div class="tokens">
+      <div class="panel">
+        <p class="eyebrow">Lengths · what the moves give</p>
+        <div style="overflow-x:auto"><table class="lengths" id="lengths"></table></div>
+      </div>
+      <div class="panel">
+        <p class="eyebrow">Spacing · √2 steps on 8px</p>
+        <div class="space" id="space"></div>
+        <p class="note">The quarter-circle diagonal, repeated. Type uses its square root (4th root of 2), also constructible.</p>
+      </div>
+      <div class="panel">
+        <p class="eyebrow">Color · where a line came from</p>
+        <div class="chips">
+          <div class="chip"><i style="background:var(--ink)"></i><div>Ink<small>given</small></div></div>
+          <div class="chip"><i style="background:var(--graphite)"></i><div>Graphite<small>working</small></div></div>
+          <div class="chip"><i style="background:var(--clay)"></i><div>Red<small>derived</small></div></div>
+          <div class="chip"><i style="background:var(--paper)"></i><div>Paper<small>ground</small></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Further</p>
+      <h2>Other things the moves can <em>build</em></h2>
+      <p>The machine above makes emblems. Point the same moves at a different output and you get something else.</p>
+    </div>
+    <div class="ideas">
+      <article><span class="tag">Type</span><h3>One construction, 26 letters</h3><p>Fix a single dense construction. Each letter is a different choice of which regions to keep. The whole alphabet shares one hidden skeleton, so it can't help but match.</p><p class="uses">circle · vesica · walk · delete</p></article>
+      <article><span class="tag">Identity</span><h3>A logo that comes with its proof</h3><p>A brand mark stored as a recipe. The brand guide is the construction, the variants are other depths of the same drawing, and the animation is the drawing being made.</p><p class="uses">any moves · replay</p></article>
+      <article><span class="tag">Glass &amp; metal</span><h3>Tracery for cutting</h3><p>Regions become glass, kept arcs become lead or a laser path. Depth numbers can choose the glass color, so the window is colored by how many circles overlap.</p><p class="uses">delete by depth · copy SVG</p></article>
+      <article><span class="tag">Sound</span><h3>Constructions as scores</h3><p>Each move draws circles; each circle's radius is a pitch. A recipe is a melody in irrational intervals: √2 is a tritone, √3 sits near a harmonic seventh.</p><p class="uses">measure</p></article>
+      <article><span class="tag">Motion</span><h3>Walks that don't close</h3><p>Walk the compass with a chord that isn't the radius and the points never meet. Animate the chord length and the walk becomes a slow spiral that locks into polygons at constructible values.</p><p class="uses">walk · measure</p></article>
+      <article><span class="tag">Play</span><h3>Find the recipe</h3><p>Show only the red result and ask for the moves that make it, in as few as possible. Scoring by move count rewards seeing the hidden circles.</p><p class="uses">all eight</p></article>
+      <article><span class="tag">Surface</span><h3>Repeats that tile</h3><p>Take a 4- or 6-fold result and repeat it on a square or hexagonal grid. Overlapping neighbors create new regions you never drew, which you can delete by depth again.</p><p class="uses">symmetry · delete</p></article>
+      <article><span class="tag">Time</span><h3>One move a day</h3><p>A calendar or journal that adds a seeded move each day. By the end of a month it has drawn a construction no one designed, and each day's page shows its own depth.</p><p class="uses">any moves · replay</p></article>
+    </div>
+  </section>
+
+  <footer>Moves drawn from Drawing 8.10: vesica piscis, walking the compass for the hexagon, the quarter-circle diagonal, corner arcs through the center for the octagon, deletion, three-point arcs, and measuring ratios against musical intervals and π.</footer>
+</div>
+
+<script>
+(()=>{
+const TAU=Math.PI*2, R2=Math.SQRT2, R3=Math.sqrt(3), PHI=(1+Math.sqrt(5))/2, EPS=1e-7;
+const $=s=>document.querySelector(s);
+const DPR=()=>Math.min(2,window.devicePixelRatio||1);
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const POLY={3:'triangle',4:'square',5:'pentagon',6:'hexagon',8:'octagon',10:'decagon',12:'dodecagon'};
+const INTERVALS=[[1,1,'unison'],[16,15,'semitone'],[9,8,'whole tone'],[7,6,'septimal minor third'],[6,5,'minor third'],[5,4,'major third'],[4,3,'fourth'],[7,5,'septimal tritone'],[3,2,'fifth'],[8,5,'minor sixth'],[5,3,'major sixth'],[7,4,'harmonic seventh'],[16,9,'minor seventh'],[15,8,'major seventh'],[2,1,'octave']];
+function nearestIv(r){while(r>=2.0001)r/=2;while(r<1)r*=2;let best,bc=1e9;for(const iv of INTERVALS){const c=1200*Math.log2(r/(iv[0]/iv[1]));if(Math.abs(c)<Math.abs(bc)){bc=c;best=iv}}return{iv:best,cents:bc}}
+function mulberry(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const NAMES='ABCDEFGHJKLMNPQRSTUVWXYZ';
+
+/* ================= construction engine ================= */
+class Cons{
+  constructor(o={}){this.sym=o.sym||1;this.mirror=!!o.mirror;this.pts=[];this.pmap=new Map();this.circles=[];this.segs=[];this.ckeys=new Set();this.skeys=new Set();this.step=0;this.labels=new Map();this.T=this.makeT()}
+  makeT(){const T=[];for(let i=0;i<this.sym;i++){const a=i*TAU/this.sym,c=Math.cos(a),s=Math.sin(a);T.push(p=>({x:c*p.x-s*p.y,y:s*p.x+c*p.y}));if(this.mirror)T.push(p=>({x:-c*p.x-s*p.y,y:-s*p.x+c*p.y}))}return T}
+  addPoint(p){const k=Math.round(p.x*2e4)+':'+Math.round(p.y*2e4);let i=this.pmap.get(k);if(i===undefined){i=this.pts.length;this.pts.push({x:p.x,y:p.y,step:this.step});this.pmap.set(k,i)}return i}
+  addPoints(list,o={}){for(const T of(o.once?[p=>p]:this.T))for(const p of list)this.addPoint(T(p))}
+  circle(c,r,o={}){let n=0;for(const T of(o.once?[p=>p]:this.T)){const cc=T(c);const k=Math.round(cc.x*1e4)+':'+Math.round(cc.y*1e4)+':'+Math.round(r*1e4);if(this.ckeys.has(k))continue;this.ckeys.add(k);
+      const C={c:cc,r,step:this.step,cuts:[],hl:!!o.hl,given:!!o.given};for(const D of this.circles)this.xcc(C,D);for(const S of this.segs)this.xcs(C,S);this.circles.push(C);this.addPoint(cc);n++}return n}
+  seg(p,q,o={}){let n=0;for(const T of(o.once?[p=>p]:this.T)){const a=T(p),b=T(q);const ka=Math.round(a.x*1e4)+':'+Math.round(a.y*1e4),kb=Math.round(b.x*1e4)+':'+Math.round(b.y*1e4);const k=ka<kb?ka+'|'+kb:kb+'|'+ka;if(this.skeys.has(k))continue;this.skeys.add(k);
+      const S={p:a,q:b,step:this.step,cuts:[],hl:!!o.hl,given:!!o.given};for(const C of this.circles)this.xcs(C,S);for(const U of this.segs)this.xss(S,U);this.segs.push(S);this.addPoint(a);this.addPoint(b);n++}return n}
+  xcc(A,B){const dx=B.c.x-A.c.x,dy=B.c.y-A.c.y,d=Math.hypot(dx,dy);if(d<EPS||d>A.r+B.r+EPS||d<Math.abs(A.r-B.r)-EPS)return;
+    const a=(A.r*A.r-B.r*B.r+d*d)/(2*d),h=Math.sqrt(Math.max(0,A.r*A.r-a*a));const mx=A.c.x+a*dx/d,my=A.c.y+a*dy/d;
+    for(const sgn of(h<1e-9?[1]:[1,-1])){const p={x:mx-sgn*h*dy/d,y:my+sgn*h*dx/d};this.addPoint(p);A.cuts.push(Math.atan2(p.y-A.c.y,p.x-A.c.x));B.cuts.push(Math.atan2(p.y-B.c.y,p.x-B.c.x))}}
+  xcs(C,S){const dx=S.q.x-S.p.x,dy=S.q.y-S.p.y,fx=S.p.x-C.c.x,fy=S.p.y-C.c.y;const a=dx*dx+dy*dy,b=2*(fx*dx+fy*dy),c=fx*fx+fy*fy-C.r*C.r;const disc=b*b-4*a*c;if(disc<0||a<EPS)return;const sq=Math.sqrt(disc);
+    for(const t of(sq<1e-9?[-b/(2*a)]:[(-b-sq)/(2*a),(-b+sq)/(2*a)])){if(t<-1e-9||t>1+1e-9)continue;const p={x:S.p.x+t*dx,y:S.p.y+t*dy};this.addPoint(p);C.cuts.push(Math.atan2(p.y-C.c.y,p.x-C.c.x));S.cuts.push(t)}}
+  xss(S,U){const rx=S.q.x-S.p.x,ry=S.q.y-S.p.y,sx=U.q.x-U.p.x,sy=U.q.y-U.p.y;const den=rx*sy-ry*sx;if(Math.abs(den)<1e-12)return;const qx=U.p.x-S.p.x,qy=U.p.y-S.p.y;const t=(qx*sy-qy*sx)/den,u=(qx*ry-qy*rx)/den;
+    if(t<-1e-9||t>1+1e-9||u<-1e-9||u>1+1e-9)return;const p={x:S.p.x+t*rx,y:S.p.y+t*ry};this.addPoint(p);S.cuts.push(t);U.cuts.push(u)}
+  label(i){if(!this.labels.has(i)){const n=this.labels.size;this.labels.set(i,NAMES[n%NAMES.length]+(n>=NAMES.length?'′':''))}return this.labels.get(i)}
+}
+function depthAt(C,x,y,skip){let d=0;for(const K of C.circles){if(K===skip)continue;const dx=x-K.c.x,dy=y-K.c.y;if(dx*dx+dy*dy<(K.r-1e-6)*(K.r-1e-6))d++}return d}
+// The deletion rule: keep arcs that bound the region inside exactly k circles, and lines that cross it.
+function inkFor(C,k,tracery){const arcs=[],lines=[];
+  for(const K of C.circles){const a=[...new Set(K.cuts.map(v=>Math.round((((v%TAU)+TAU)%TAU)*1e6)/1e6))].sort((x,y)=>x-y);if(!a.length)a.push(0);
+    for(let i=0;i<a.length;i++){const a0=a[i],a1=i+1<a.length?a[i+1]:a[0]+TAU;if(a1-a0<1e-5)continue;const m=(a0+a1)/2;const d=depthAt(C,K.c.x+K.r*Math.cos(m),K.c.y+K.r*Math.sin(m),K);if(d===k-1||d===k)arcs.push({K,a0,a1})}}
+  if(tracery)for(const S of C.segs){const ts=[0,...S.cuts.filter(t=>t>1e-6&&t<1-1e-6),1].sort((x,y)=>x-y);for(let i=0;i+1<ts.length;i++){const t0=ts[i],t1=ts[i+1];if(t1-t0<1e-5)continue;const tm=(t0+t1)/2;const x=S.p.x+(S.q.x-S.p.x)*tm,y=S.p.y+(S.q.y-S.p.y)*tm;if(depthAt(C,x,y,null)===k)lines.push({S,t0,t1})}}
+  let ext=0;for(const A of arcs)for(let j=0;j<=6;j++){const t=A.a0+(A.a1-A.a0)*j/6;ext=Math.max(ext,Math.hypot(A.K.c.x+A.K.r*Math.cos(t),A.K.c.y+A.K.r*Math.sin(t)))}
+  return{arcs,lines,ext}}
+
+/* ================= the moves (random grammar) ================= */
+function pickPoint(R,C,ex=[],maxR=1.55){const all=[];const recent=[];for(let i=0;i<C.pts.length;i++){const p=C.pts[i];if(Math.hypot(p.x,p.y)>maxR||ex.includes(i))continue;let near=false;for(const j of ex){const q=C.pts[j];if(Math.hypot(p.x-q.x,p.y-q.y)<.12){near=true;break}}if(near)continue;all.push(i);if(p.step===C.step-1)recent.push(i)}
+  const pool=(recent.length&&R()<.55)?recent:all;return pool.length?pool[Math.floor(R()*pool.length)]:-1}
+function pickCircle(R,C,rmin=.25,rmax=1.6){const c=C.circles.filter(K=>K.r>=rmin&&K.r<=rmax&&Math.hypot(K.c.x,K.c.y)<1.3);return c.length?c[Math.floor(R()*c.length)]:null}
+const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+const fmtR=r=>{const known=[[1,'1'],[.5,'½'],[R2,'√2'],[R2/2,'√2/2'],[R3,'√3'],[R3/2,'√3/2'],[2,'2'],[PHI,'φ'],[1/PHI,'1/φ'],[Math.sqrt(5),'√5'],[R2-1,'√2−1'],[2*R2,'2√2'],[1/R3,'1/√3'],[R3-1,'√3−1'],[.25,'¼'],[R2/4,'√2/4']];for(const [v,n]of known)if(Math.abs(v-r)<5e-4)return n;return r.toFixed(3)};
+const MOVES={
+  circle(R,C){const P=pickPoint(R,C);if(P<0)return null;const Q=pickPoint(R,C,[P]);if(Q<0)return null;const r=dist(C.pts[P],C.pts[Q]);if(r<.15||r>2.1)return null;
+    C.circle(C.pts[P],r);return{move:'circle',text:`A circle is drawn about ${C.label(P)} through ${C.label(Q)}.`,r}},
+  vesica(R,C){const P=pickPoint(R,C);if(P<0)return null;const Q=pickPoint(R,C,[P]);if(Q<0)return null;const p=C.pts[P],q=C.pts[Q],r=dist(p,q);if(r<.2||r>1.5)return null;
+    C.circle(p,r);C.circle(q,r);return{move:'vesica',text:`A vesica is drawn on ${C.label(P)} and ${C.label(Q)}: each circle passes through the other's center.`,r}},
+  walk(R,C){const K=pickCircle(R,C,.3,1.5);if(!K)return null;const a=K.cuts.length?K.cuts[Math.floor(R()*K.cuts.length)]:0;const pts=[];for(let i=0;i<6;i++)pts.push({x:K.c.x+K.r*Math.cos(a+i*TAU/6),y:K.c.y+K.r*Math.sin(a+i*TAU/6)});
+    const join=R()<.6;C.addPoints(pts);if(join)for(let i=0;i<6;i++)C.seg(pts[i],pts[(i+1)%6]);else for(let i=0;i<6;i+=2)C.circle(pts[i],K.r);
+    return{move:'walk',text:`The compass is walked around the circle about ${C.label(C.addPoint(K.c))}, marking six points${join?', joined as a hexagon':', and three of them become centers of equal circles'}.`,r:K.r}},
+  inscribe(R,C){const K=pickCircle(R,C,.3,1.5);if(!K)return null;const n=[3,4,8,12][Math.floor(R()*4)];const a=K.cuts.length?K.cuts[Math.floor(R()*K.cuts.length)]:Math.PI/2;const pts=[];for(let i=0;i<n;i++)pts.push({x:K.c.x+K.r*Math.cos(a+i*TAU/n),y:K.c.y+K.r*Math.sin(a+i*TAU/n)});
+    for(let i=0;i<n;i++)C.seg(pts[i],pts[(i+1)%n]);return{move:'inscribe',text:`A${n===8?'n':''} ${POLY[n]} is inscribed in the circle about ${C.label(C.addPoint(K.c))}.`,r:K.r}},
+  diagonal(R,C){const K=pickCircle(R,C,.2,1.2);if(!K)return null;C.circle(K.c,K.r*R2);return{move:'diagonal',text:`A larger circle is drawn about ${C.label(C.addPoint(K.c))}, its radius the quarter-circle diagonal of the last (×√2).`,r:K.r*R2}},
+  corners(R,C){const K=pickCircle(R,C,.2,.85);if(!K)return null;const a=K.cuts.length&&R()<.5?K.cuts[0]:0;const cs=[];for(let i=0;i<4;i++){const t=a+Math.PI/4+i*TAU/4;cs.push({x:K.c.x+K.r*R2*Math.cos(t),y:K.c.y+K.r*R2*Math.sin(t)})}
+    for(let i=0;i<4;i++)C.seg(cs[i],cs[(i+1)%4]);for(const c of cs)C.circle(c,K.r*R2);
+    return{move:'corners',text:`A square is drawn about the circle at ${C.label(C.addPoint(K.c))}; its corners are centers of four arcs through ${C.label(C.addPoint(K.c))}, cutting the sides at octagon points.`,r:K.r*R2}},
+  line(R,C){const P=pickPoint(R,C);if(P<0)return null;const Q=pickPoint(R,C,[P]);if(Q<0)return null;if(dist(C.pts[P],C.pts[Q])<.3)return null;C.seg(C.pts[P],C.pts[Q]);return{move:'line',text:`A line joins ${C.label(P)} and ${C.label(Q)}.`,r:dist(C.pts[P],C.pts[Q])}},
+  join(R,C){const P=pickPoint(R,C);if(P<0)return null;const Q=pickPoint(R,C,[P]);if(Q<0)return null;const S=pickPoint(R,C,[P,Q]);if(S<0)return null;const a=C.pts[P],b=C.pts[Q],c=C.pts[S];
+    const d=2*(a.x*(b.y-c.y)+b.x*(c.y-a.y)+c.x*(a.y-b.y));if(Math.abs(d)<1e-6)return null;const A=a.x*a.x+a.y*a.y,B=b.x*b.x+b.y*b.y,Cc=c.x*c.x+c.y*c.y;const cen={x:(A*(b.y-c.y)+B*(c.y-a.y)+Cc*(a.y-b.y))/d,y:(A*(c.x-b.x)+B*(a.x-c.x)+Cc*(b.x-a.x))/d};const r=dist(cen,a);
+    if(r<.2||r>1.8||Math.hypot(cen.x,cen.y)>1.6)return null;C.circle(cen,r);return{move:'join',text:`A circle is drawn through ${C.label(P)}, ${C.label(Q)} and ${C.label(S)}.`,r}},
+  halve(R,C){const K=pickCircle(R,C,.35,1.6);if(!K)return null;C.circle(K.c,K.r/2);return{move:'halve',text:`A circle of half the radius is drawn about ${C.label(C.addPoint(K.c))}.`,r:K.r/2}},
+};
+const WEIGHTS=[['circle',3],['vesica',2.5],['walk',1.4],['inscribe',1.4],['diagonal',.9],['corners',.8],['line',1.6],['join',1.5],['halve',1]];
+function build(seed,steps,sym,mirror){const C=new Cons({sym,mirror});const R=mulberry(seed*9301+sym*49297+(mirror?7:0));
+  C.step=0;C.circle({x:0,y:0},1,{once:true,given:true});C.seg({x:-1,y:0},{x:1,y:0},{once:true,given:true});C.seg({x:0,y:-1},{x:0,y:1},{once:true,given:true});
+  const recipe=[{move:'given',text:`A circle is given, with its two axes. Its radius is the unit for everything that follows.`,r:1}];
+  const tot=WEIGHTS.reduce((s,w)=>s+w[1],0);
+  for(let s=1;s<=steps;s++){C.step=s;let res=null;for(let tries=0;tries<40&&!res;tries++){if(C.circles.length>230&&tries<39){res=MOVES.line(R,C);continue}let x=R()*tot,mv='circle';for(const [k,w]of WEIGHTS){x-=w;if(x<=0){mv=k;break}}res=MOVES[mv](R,C)}if(res)recipe.push(res)}
+  return{C,recipe,nSteps:C.step}}
+
+/* ================= rendering ================= */
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const hex=h=>{h=h.replace('#','');if(h.length===3)h=h.split('').map(c=>c+c).join('');return[0,2,4].map(i=>parseInt(h.slice(i,i+2),16))};
+function pal(){return{ink:css('--ink'),clay:css('--clay'),gr:css('--graphite'),sheet:css('--sheet'),clayRGB:hex(css('--clay')),sheetRGB:hex(css('--sheet'))}}
+function raster(C,k,W,Hw,P,hatch=true){const s=W/(2*Hw),o=W/2;const cnt=new Uint8Array(W*W);let maxD=0;
+  for(const K of C.circles){const cx=o+K.c.x*s,cy=o-K.c.y*s,r=K.r*s;const y0=Math.max(0,Math.ceil(cy-r-.5)),y1=Math.min(W-1,Math.floor(cy+r-.5));
+    for(let y=y0;y<=y1;y++){const dy=y+.5-cy,hw2=r*r-dy*dy;if(hw2<=0)continue;const hw=Math.sqrt(hw2);const x0=Math.max(0,Math.ceil(cx-hw-.5)),x1=Math.min(W-1,Math.floor(cx+hw-.5));let i=y*W+x0;for(let x=x0;x<=x1;x++){const v=++cnt[i++];if(v>maxD)maxD=v}}}
+  const img=new ImageData(W,W),d=img.data;const per=Math.max(4,Math.round(5*DPR())),lw=Math.max(1,Math.round(DPR()*.9));const [cr,cg,cb]=P.clayRGB,[sr,sg,sb]=P.sheetRGB;
+  if(k>0)for(let i=0;i<cnt.length;i++){if(cnt[i]!==k)continue;const x=i%W,y=(i/W)|0;const stripe=hatch&&((x+y)%per)<lw;const j=i*4;if(stripe){d[j]=sr;d[j+1]=sg;d[j+2]=sb}else{d[j]=cr;d[j+1]=cg;d[j+2]=cb}d[j+3]=255}
+  const off=document.createElement('canvas');off.width=off.height=W;off.getContext('2d').putImageData(img,0,0);return{off,maxD}}
+function drawScene(ctx,W,m,o){ // m:{C,ink,fill,nSteps}, o:{lens,Hw,t,labels,extra}
+  const P=pal(),dpr=DPR(),s=W/(2*o.Hw),c0=W/2,X=p=>c0+p.x*s,Y=p=>c0-p.y*s;const t=o.t??Infinity;
+  ctx.clearRect(0,0,W,W);ctx.lineCap='round';ctx.lineJoin='round';
+  const inkA=o.t==null?1:clamp(t-m.nSteps,0,1);
+  if(m.fill&&inkA>0){ctx.globalAlpha=inkA*(o.lens==='construction'?.88:1);ctx.drawImage(m.fill,0,0)}
+  if(o.lens==='construction'){
+    for(const K of m.C.circles){const p=clamp(t-K.step,0,1);if(p<=0)continue;ctx.globalAlpha=K.hl?1:K.given?.85:.42;ctx.strokeStyle=K.hl?P.clay:K.given?P.ink:P.gr;ctx.lineWidth=(K.hl?2.4:K.given?1.3:.8)*dpr;ctx.beginPath();ctx.arc(X(K.c),Y(K.c),K.r*s,0,-TAU*p,true);ctx.stroke()}
+    for(const S of m.C.segs){const p=clamp(t-S.step,0,1);if(p<=0)continue;ctx.globalAlpha=S.hl?1:S.given?.85:.42;ctx.strokeStyle=S.hl?P.clay:S.given?P.ink:P.gr;ctx.lineWidth=(S.hl?2.4:S.given?1.3:.8)*dpr;ctx.beginPath();ctx.moveTo(X(S.p),Y(S.p));ctx.lineTo(X({x:S.p.x+(S.q.x-S.p.x)*p}),Y({y:S.p.y+(S.q.y-S.p.y)*p}));ctx.stroke()}}
+  if(m.ink&&inkA>0){ctx.globalAlpha=inkA;ctx.strokeStyle=P.clay;ctx.lineWidth=(o.thin?1.4:2.4)*dpr;ctx.beginPath();
+    for(const A of m.ink.arcs){const cx=X(A.K.c),cy=Y(A.K.c);ctx.moveTo(cx+A.K.r*s*Math.cos(A.a0),cy-A.K.r*s*Math.sin(A.a0));ctx.arc(cx,cy,A.K.r*s,-A.a0,-A.a1,true)}
+    for(const L of m.ink.lines){const S=L.S;ctx.moveTo(X({x:S.p.x+(S.q.x-S.p.x)*L.t0}),Y({y:S.p.y+(S.q.y-S.p.y)*L.t0}));ctx.lineTo(X({x:S.p.x+(S.q.x-S.p.x)*L.t1}),Y({y:S.p.y+(S.q.y-S.p.y)*L.t1}))}ctx.stroke()}
+  if(o.lens==='construction'&&o.labels){ctx.globalAlpha=1;ctx.font=`${12*dpr}px ${css('--mono').split(',')[0]}`;for(const [i,name]of m.C.labels){const p=m.C.pts[i];if(p.step>t)continue;const x=X(p),y=Y(p);if(x<0||y<0||x>W||y>W)continue;ctx.fillStyle=P.ink;ctx.beginPath();ctx.arc(x,y,2.6*dpr,0,TAU);ctx.fill();ctx.fillStyle=P.ink;ctx.fillText(name,x+5*dpr,y-5*dpr)}}
+  if(o.extra)o.extra(ctx,X,Y,s,P,dpr);ctx.globalAlpha=1}
+function sizeCanvas(cv){const r=cv.getBoundingClientRect();const W=Math.max(50,Math.round(r.width*DPR()));if(cv.width!==W){cv.width=W;cv.height=W}return W}
+
+/* ================= audio ================= */
+let ac=null,master=null;
+function audio(){if(!ac){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ac=new A();master=ac.createGain();master.gain.value=.7;master.connect(ac.destination)}if(ac.state==='suspended')ac.resume();return ac}
+function tone(f,when=0,dur=1.4,g=.18){const a=audio();if(!a)return;const t=a.currentTime+when+.01;[[1,1],[2,.18],[3.01,.06]].forEach(([mul,gg])=>{const o=a.createOscillator(),e=a.createGain();o.type='sine';o.frequency.value=f*mul;e.gain.setValueAtTime(0,t);e.gain.linearRampToValueAtTime(g*gg,t+.01);e.gain.exponentialRampToValueAtTime(.0001,t+dur/mul);o.connect(e).connect(master);o.start(t);o.stop(t+dur+.05)})}
+const BASE=261.63;const pitch=r=>{let f=BASE/r;while(f>700)f/=2;while(f<130)f*=2;return f};
+
+/* ================= part 1: the eight moves ================= */
+const PARTS=[
+ {name:'Circle',gives:'→ 1',text:'The given. A center, a boundary and the one length everything else is measured from.',Hw:1.25,k:0,
+  setup(C){C.circle({x:0,y:0},1,{once:true,given:true});C.seg({x:-1.15,y:0},{x:1.15,y:0},{once:true,given:true});C.seg({x:0,y:-1.15},{x:0,y:1.15},{once:true,given:true})},
+  extra(ctx,X,Y,s,P,d){ctx.fillStyle=P.ink;ctx.beginPath();ctx.arc(X({x:0}),Y({y:0}),3*d,0,TAU);ctx.fill();ctx.font=`${12*d}px IBM Plex Mono, monospace`;ctx.fillText('r = 1',X({x:.12}),Y({y:.1}))}},
+ {name:'Vesica',gives:'→ √3',text:'Two equal circles, each through the other\'s center. The lens between them is √3 tall: the root of the triangle and hexagon.',Hw:1.6,k:2,
+  setup(C){C.circle({x:-.5,y:0},1,{once:true,given:true});C.circle({x:.5,y:0},1,{once:true});C.seg({x:0,y:-R3/2},{x:0,y:R3/2},{once:true,hl:true})}},
+ {name:'Walk',gives:'→ 6',text:'Step the compass around its own circle. The radius fits exactly six times, giving the hexagon for free.',Hw:1.25,k:0,
+  setup(C){C.circle({x:0,y:0},1,{once:true,given:true});const p=[];for(let i=0;i<6;i++)p.push({x:Math.cos(i*TAU/6),y:Math.sin(i*TAU/6)});for(let i=0;i<6;i++)C.seg(p[i],p[(i+1)%6],{once:true,hl:true});for(let i=0;i<6;i++){C.addPoint(p[i])}},
+  extra(ctx,X,Y,s,P,d){ctx.strokeStyle=P.gr;ctx.globalAlpha=.6;ctx.lineWidth=.8*d;for(let i=0;i<6;i++){const a=i*TAU/6;ctx.beginPath();ctx.arc(X({x:Math.cos(a)}),Y({y:Math.sin(a)}),s,-(a+Math.PI*2/3+.15),-(a+Math.PI*4/3-.15),true);ctx.stroke()}ctx.globalAlpha=1;ctx.fillStyle=P.clay;for(let i=0;i<6;i++){const a=i*TAU/6;ctx.beginPath();ctx.arc(X({x:Math.cos(a)}),Y({y:Math.sin(a)}),3*d,0,TAU);ctx.fill()}}},
+ {name:'Diagonal',gives:'→ √2',text:'Take the diagonal of a quarter of the square and use it as a new radius. Circle and square trade places, growing by √2.',Hw:1.5,k:0,
+  setup(C){C.circle({x:0,y:0},1,{once:true,given:true});const q=[{x:-1,y:-1},{x:1,y:-1},{x:1,y:1},{x:-1,y:1}];for(let i=0;i<4;i++)C.seg(q[i],q[(i+1)%4],{once:true});C.seg({x:0,y:0},{x:1,y:1},{once:true});C.circle({x:0,y:0},R2,{once:true,hl:true})}},
+ {name:'Corner arcs',gives:'→ 8',text:'From each corner of the square, an arc through the center. The arcs cut the sides at the eight points of a regular octagon.',Hw:1.3,k:0,
+  setup(C){const q=[{x:-1,y:-1},{x:1,y:-1},{x:1,y:1},{x:-1,y:1}];for(let i=0;i<4;i++)C.seg(q[i],q[(i+1)%4],{once:true,given:true});for(const c of q)C.circle(c,R2,{once:true});const u=R2-1;const o=[{x:u,y:-1},{x:1,y:-u},{x:1,y:u},{x:u,y:1},{x:-u,y:1},{x:-1,y:u},{x:-1,y:-u},{x:-u,y:-1}];for(let i=0;i<8;i++)C.seg(o[i],o[(i+1)%8],{once:true,hl:true})}},
+ {name:'Delete',gives:'→ regions',text:'Keep only what lies inside exactly k circles. Here k = 2: the three overlapping lenses survive, everything else goes.',Hw:1.35,k:2,
+  setup(C){for(let i=0;i<3;i++){const a=Math.PI/2+i*TAU/3;C.circle({x:.5*Math.cos(a),y:.5*Math.sin(a)},.75,{once:true,given:i===0})}}},
+ {name:'Join',gives:'→ curves',text:'Any three points lie on exactly one circle. Its arc is the smoothest way to join them, which is how the pot\'s shoulders were drawn.',Hw:1.3,k:0,
+  setup(C){},extra(ctx,X,Y,s,P,d){const a={x:-.85,y:-.45},b={x:-.05,y:.55},c={x:.85,y:-.15};const D=2*(a.x*(b.y-c.y)+b.x*(c.y-a.y)+c.x*(a.y-b.y));const A=a.x*a.x+a.y*a.y,B=b.x*b.x+b.y*b.y,Cc=c.x*c.x+c.y*c.y;const cen={x:(A*(b.y-c.y)+B*(c.y-a.y)+Cc*(a.y-b.y))/D,y:(A*(c.x-b.x)+B*(a.x-c.x)+Cc*(b.x-a.x))/D};const r=dist(cen,a);
+    ctx.globalAlpha=.45;ctx.strokeStyle=P.gr;ctx.lineWidth=.8*d;ctx.beginPath();ctx.arc(X(cen),Y(cen),r*s,0,TAU);ctx.stroke();ctx.setLineDash([4*d,3*d]);ctx.beginPath();ctx.moveTo(X(a),Y(a));ctx.lineTo(X(b),Y(b));ctx.lineTo(X(c),Y(c));ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;
+    const ang=q=>Math.atan2(q.y-cen.y,q.x-cen.x);ctx.strokeStyle=P.clay;ctx.lineWidth=2.4*d;ctx.beginPath();ctx.arc(X(cen),Y(cen),r*s,-ang(a),-ang(c),false);ctx.stroke();
+    ctx.fillStyle=P.ink;ctx.font=`${12*d}px IBM Plex Mono, monospace`;[[a,'A'],[b,'B'],[c,'C']].forEach(([q,n])=>{ctx.beginPath();ctx.arc(X(q),Y(q),3*d,0,TAU);ctx.fill();ctx.fillText(n,X(q)+6*d,Y(q)+14*d)})}},
+ {name:'Measure',gives:'→ sound',text:'Divide any length by the radius and you have a frequency ratio. The vesica\'s √3 lands 18 cents from a harmonic seventh.',Hw:1.6,k:0,play:true,
+  setup(C){C.circle({x:-.5,y:0},1,{once:true,given:true});C.circle({x:.5,y:0},1,{once:true})},
+  extra(ctx,X,Y,s,P,d){ctx.strokeStyle=P.clay;ctx.lineWidth=2.4*d;ctx.beginPath();ctx.moveTo(X({x:0}),Y({y:-R3/2}));ctx.lineTo(X({x:0}),Y({y:R3/2}));ctx.stroke();ctx.strokeStyle=P.ink;ctx.lineWidth=1.3*d;ctx.beginPath();ctx.moveTo(X({x:-.5}),Y({y:0}));ctx.lineTo(X({x:.5}),Y({y:0}));ctx.stroke();
+    ctx.font=`${12*d}px IBM Plex Mono, monospace`;ctx.fillStyle=P.clay;ctx.fillText('√3',X({x:.07}),Y({y:.5}));ctx.fillStyle=P.ink;ctx.fillText('1',X({x:.2}),Y({y:-.14}))}},
+];
+const partsEl=$('#parts');
+partsEl.innerHTML=PARTS.map((p,i)=>`<article class="panel part"><canvas data-i="${i}" aria-label="${p.name} construction"></canvas><div class="top"><h3>${p.name}</h3><span class="gives">${p.gives}</span></div><p>${p.text}</p>${p.play?'<button data-play>Hear √3 against 1</button>':''}</article>`).join('');
+const partModels=PARTS.map(p=>{const C=new Cons();p.setup(C);return{C,nSteps:0}});
+function drawParts(){const P=pal();partsEl.querySelectorAll('canvas').forEach(cv=>{const i=+cv.dataset.i,p=PARTS[i],m=partModels[i];const W=sizeCanvas(cv);
+  m.ink=p.k?inkFor(m.C,p.k,false):null;m.fill=p.k?raster(m.C,p.k,W,p.Hw,P).off:null;drawScene(cv.getContext('2d'),W,m,{lens:'construction',Hw:p.Hw,extra:p.extra})})}
+partsEl.addEventListener('click',e=>{if(e.target.matches('[data-play]')){tone(220,0,2);tone(220*R3,.5,2);tone(220,1.3,2.4,.14);tone(220*R3,1.3,2.4,.14)}});
+
+/* ================= part 2: the machine ================= */
+const S={seed:7,steps:5,sym:6,mirror:true,k:2,lens:'construction',tracery:true,sound:true};
+let M=null,anim=null;
+function readUI(){S.seed=Math.max(1,parseInt($('#seed').value)||1);S.steps=+$('#steps').value;S.sym=+$('#sym').value;S.mirror=$('#mirror').checked;S.k=+$('#depth').value;S.tracery=$('#tracery').checked;S.sound=$('#sound').checked;S.lens=document.querySelector('input[name=lens]:checked').value}
+function writeUI(){$('#seed').value=S.seed;$('#steps').value=S.steps;$('#sym').value=S.sym;$('#mirror').checked=S.mirror;$('#depth').value=S.k;$('#tracery').checked=S.tracery;document.querySelector(`input[name=lens][value=${S.lens}]`).checked=true}
+function compute(){const b=build(S.seed,S.steps,S.sym,S.mirror);M=b;M.ink=inkFor(M.C,S.k,S.tracery);M.Hw=clamp(Math.max(M.ink.ext,1)*1.1,1.12,3);}
+function view(){return S.lens==='construction'?Math.max(M.Hw,1.25):M.Hw}
+function rasterMain(){const cv=$('#main'),W=sizeCanvas(cv);const r=raster(M.C,S.k,W,view(),pal());M.fill=r.off;M.maxD=r.maxD;
+  const dm=$('#depth');dm.max=Math.max(2,Math.min(12,r.maxD));$('#depthOut').textContent=`${S.k} circle${S.k>1?'s':''}`}
+function drawMain(t=null){const cv=$('#main'),W=cv.width,ctx=cv.getContext('2d');
+  if(S.lens==='tile'){drawTile(ctx,W);return}
+  drawScene(ctx,W,M,{lens:S.lens,Hw:view(),t,labels:true})}
+function drawTile(ctx,W){const P=pal();const T=Math.round(W*.42);const off=document.createElement('canvas');off.width=off.height=T;const r=raster(M.C,S.k,T,M.Hw,P);
+  drawScene(off.getContext('2d'),T,{...M,fill:r.off},{lens:'emblem',Hw:M.Hw,thin:true});
+  ctx.clearRect(0,0,W,W);const ext=Math.max(M.ink.ext,.3)/M.Hw*T/2;const sp=ext*2*.94;const hexLattice=S.sym%3===0;const dy=hexLattice?sp*Math.sqrt(3)/2:sp;
+  let row=0;for(let y=-sp;y<W+sp;y+=dy,row++){const ox=hexLattice&&row%2?sp/2:0;for(let x=-sp+ox;x<W+sp;x+=sp)ctx.drawImage(off,x-T/2+W/2%sp,y-T/2+W/2%dy)}}
+function renderRecipe(cur=-1){$('#recipe').innerHTML=M.recipe.map((r,i)=>`<li class="${i===cur?'cur':''}"><span>${r.text}${r.move!=='line'?`<span class="r">r = ${fmtR(r.r)}</span>`:''}</span></li>`).join('');
+  $('#recipeHead').textContent=`Recipe · seed ${S.seed}${S.sym>1?` · every move repeated ${S.sym}×`:''}${S.mirror?', mirrored':''}`;
+  $('#recipeBox').classList.toggle('playing',cur>=0)}
+function renderStats(){const nC=M.C.circles.length,nS=M.C.segs.length,nP=M.C.pts.length;$('#stats').innerHTML=`<span>${nC} circles</span><span>${nS} lines</span><span>${nP} points</span><span>${M.ink.arcs.length+M.ink.lines.length} pieces kept</span>${M.ink.arcs.length?'':`<span style="color:var(--clay)">Nothing sits inside exactly ${S.k} circles. Lower the depth.</span>`}`}
+function render(){stopAnim();readUI();$('#stepsOut').textContent=S.steps;compute();rasterMain();drawMain();renderRecipe();renderStats()}
+function stopAnim(){if(anim){cancelAnimationFrame(anim.raf);anim=null}}
+function replay(){stopAnim();if(S.lens==='tile'){document.querySelector('input[name=lens][value=construction]').checked=true;S.lens='construction';rasterMain()}
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){drawMain();return}
+  const start=performance.now(),per=1000;let lastStep=-1;audio();
+  anim={raf:0};const loop=now=>{const t=(now-start)/per;const step=Math.floor(t);
+    if(step!==lastStep&&step<=M.nSteps+1){lastStep=step;renderRecipe(Math.min(step,M.recipe.length-1));
+      if(S.sound){if(step<M.recipe.length)tone(pitch(M.recipe[step].r),0,1.3,.17);else{[1,5/4,3/2].forEach((x,i)=>tone(BASE*x/2*(1+i*0),i*.06,2.2,.1))}}}
+    drawMain(Math.min(t,M.nSteps+1.0001));
+    if(t<M.nSteps+1.2)anim.raf=requestAnimationFrame(loop);else{renderRecipe();anim=null}};
+  anim.raf=requestAnimationFrame(loop)}
+['steps','sym','mirror','tracery','sound'].forEach(id=>$('#'+id).addEventListener('input',render));
+$('#depth').addEventListener('input',()=>{stopAnim();readUI();M.ink=inkFor(M.C,S.k,S.tracery);M.Hw=clamp(Math.max(M.ink.ext,1)*1.1,1.12,3);rasterMain();drawMain();renderStats();if(S.sound)tone(BASE*[1,9/8,5/4,4/3,3/2,5/3,15/8,2,9/4,5/2,8/3,3][S.k-1]/2,0,.9,.12)});
+document.querySelectorAll('input[name=lens]').forEach(r=>r.addEventListener('change',()=>{stopAnim();readUI();rasterMain();drawMain()}));
+$('#seed').addEventListener('change',render);
+$('#seedPrev').onclick=()=>{$('#seed').value=Math.max(1,S.seed-1);render()};
+$('#seedNext').onclick=()=>{$('#seed').value=S.seed+1;render()};
+$('#seedRand').onclick=()=>{$('#seed').value=1+Math.floor(Math.random()*99999);render();replay()};
+$('#replay').onclick=replay;
+async function copyText(txt,btn,label){const ta=$('#svgOut');try{await navigator.clipboard.writeText(txt);btn.textContent='Copied';setTimeout(()=>btn.textContent=label,1500);ta.hidden=true}catch(e){ta.hidden=false;ta.value=txt;ta.focus();ta.select()}}
+$('#copyRecipe').onclick=e=>copyText(`Compass Grammar · seed ${S.seed} · ${S.sym}-fold${S.mirror?' mirrored':''} · keep depth ${S.k}\n`+M.recipe.map((r,i)=>`(${i+1}) ${r.text}`).join('\n'),e.target,'Copy recipe');
+$('#copySvg').onclick=e=>{const H=M.Hw,f=v=>v.toFixed(5);let d='';for(const A of M.ink.arcs){const K=A.K;let a0=A.a0,a1=A.a1;const pt=a=>`${f(K.c.x+K.r*Math.cos(a))} ${f(-(K.c.y+K.r*Math.sin(a)))}`;if(a1-a0>=TAU-1e-6){const m=a0+Math.PI;d+=`M${pt(a0)}A${f(K.r)} ${f(K.r)} 0 0 0 ${pt(m)}A${f(K.r)} ${f(K.r)} 0 0 0 ${pt(a0)}`;continue}d+=`M${pt(a0)}A${f(K.r)} ${f(K.r)} 0 ${a1-a0>Math.PI?1:0} 0 ${pt(a1)}`}
+  for(const L of M.ink.lines){const S2=L.S,p=t=>`${f(S2.p.x+(S2.q.x-S2.p.x)*t)} ${f(-(S2.p.y+(S2.q.y-S2.p.y)*t))}`;d+=`M${p(L.t0)}L${p(L.t1)}`}
+  copyText(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${f(-H)} ${f(-H)} ${f(2*H)} ${f(2*H)}" width="200mm" height="200mm"><!-- Compass Grammar seed ${S.seed}, ${S.sym}-fold${S.mirror?' mirrored':''}, depth ${S.k} --><path d="${d}" fill="none" stroke="#c2173e" stroke-width="${f(H/200)}" stroke-linecap="round"/></svg>`,e.target,'Copy SVG')};
+
+/* ================= part 3: gallery ================= */
+const SYMS=[6,4,8,3,12,5,6,4,2,6,8,3];let galStart=1;
+function gallery(){const g=$('#gallery');const items=[];for(let i=0;i<24;i++){const seed=galStart+i*37,sym=SYMS[i%SYMS.length],k=2+(i%3===2?1:0),steps=4+(i%4);items.push({seed,sym,k,steps,mirror:i%5!==4})}
+  g.innerHTML=items.map((it,i)=>`<button class="seedcard" data-i="${i}" aria-label="Seed ${it.seed}, ${it.sym}-fold"><canvas></canvas><span><b>${it.seed}</b><i>${it.sym}× · k ${it.k}</i></span></button>`).join('');
+  g._items=items;const cards=[...g.querySelectorAll('.seedcard')];let i=0;
+  const P=pal();const next=()=>{if(i>=cards.length)return;const it=items[i],cv=cards[i].querySelector('canvas');const W=sizeCanvas(cv);const b=build(it.seed,it.steps,it.sym,it.mirror);let ink=inkFor(b.C,it.k,true);if(!ink.arcs.length){it.k=1;ink=inkFor(b.C,1,true);cards[i].querySelector('i').textContent=`${it.sym}× · k 1`}
+    const Hw=clamp(Math.max(ink.ext,.6)*1.08,.7,3);drawScene(cv.getContext('2d'),W,{...b,ink,fill:raster(b.C,it.k,W,Hw,P).off},{lens:'emblem',Hw,thin:true});i++;setTimeout(next,0)};next()}
+$('#gallery').addEventListener('click',e=>{const c=e.target.closest('.seedcard');if(!c)return;const it=$('#gallery')._items[+c.dataset.i];Object.assign(S,{seed:it.seed,steps:it.steps,sym:it.sym,mirror:it.mirror,k:it.k,lens:'construction'});writeUI();render();
+  document.querySelector('.machine').scrollIntoView({behavior:'smooth',block:'start'});setTimeout(replay,500)});
+$('#moreSeeds').onclick=()=>{galStart+=24*37;gallery()};
+
+/* ================= system tokens ================= */
+const LENGTHS=[['½','halve',.5],['√2 − 1','corner arcs',R2-1],['√3 / 2','vesica',R3/2],['1','circle',1],['√2','diagonal',R2],['φ','walk + join',PHI],['√3','vesica',R3],['2','vesica',2]];
+$('#lengths').innerHTML='<tr><th>Length</th><th>From</th><th>Value</th><th>Sounds like</th></tr>'+LENGTHS.map(([n,f,v])=>{const iv=nearestIv(v);return`<tr><td>${n}</td><td>${f}</td><td>${v.toFixed(4)}</td><td class="c">${iv.iv[0]}/${iv.iv[1]} ${iv.cents>=0?'+':'−'}${Math.abs(iv.cents).toFixed(0)}¢</td></tr>`}).join('');
+$('#space').innerHTML=[8,11.3,16,22.6,32,45.3,64,90.5].map((v,i)=>`<div><span>g${i+1} · ${v}</span><b style="width:${v}px;max-width:100%"></b></div>`).join('');
+
+/* ================= start ================= */
+writeUI();render();drawParts();gallery();
+let rz;new ResizeObserver(()=>{clearTimeout(rz);rz=setTimeout(()=>{drawParts();if(!anim){rasterMain();drawMain()}},120)}).observe(document.querySelector('.wrap'));
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{drawParts();rasterMain();drawMain();gallery()});
+})();
+</script>
+</body></html>
