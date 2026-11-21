@@ -1,0 +1,380 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>
+<title>Off Center</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: same drafting sheet as Compass Grammar. A short thesis, then a two-column field of live specimens, each tagged with the move it grows from. */
+:root{
+  --paper:#e9ece8; --sheet:#f6f7f4; --ink:#15181a; --graphite:#78828a; --rule:#cdd3cf; --clay:#c2173e; --glaze:#1f6e64;
+  --display:"Instrument Serif","Iowan Old Style",Georgia,serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --t-1:13.45px; --t0:16px; --t1:19.03px; --t2:22.63px; --t3:26.91px; --t4:32px; --t5:38.05px; --t6:45.25px; --t8:64px;
+  --g1:8px; --g2:11.3px; --g3:16px; --g4:22.6px; --g5:32px; --g6:45.3px; --g7:64px; --g8:90.5px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#101315;--sheet:#171b1e;--ink:#e4e9e6;--graphite:#7d888f;--rule:#2a3035;--clay:#ff4a6d;--glaze:#58c4b3;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#101315;--sheet:#171b1e;--ink:#e4e9e6;--graphite:#7d888f;--rule:#2a3035;--clay:#ff4a6d;--glaze:#58c4b3;color-scheme:dark}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:var(--t0);line-height:1.55;
+  background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);background-size:45.25px 45.25px;background-attachment:fixed}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:var(--g6) var(--g8)}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.05;text-wrap:balance;margin:0}
+h1{font-size:clamp(var(--t6),7.5vw,90.5px);letter-spacing:-.01em}
+h2{font-size:clamp(var(--t4),4.4vw,var(--t6))}
+h3{font-size:var(--t4)}
+h1 em,h2 em,h3 em{color:var(--clay)}
+p{margin:0}
+.lede{max-width:66ch;font-size:var(--t1);margin-top:var(--g3)}
+.eyebrow{font-family:var(--mono);font-size:var(--t-1);letter-spacing:.08em;text-transform:uppercase;color:var(--graphite)}
+.note{font-size:14px;color:var(--graphite)}
+header{display:grid;gap:var(--g2)}
+.ideas4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--g4);margin-top:var(--g6)}
+@media (max-width:900px){.ideas4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.ideas4{grid-template-columns:minmax(0,1fr)}}
+.ideas4 article{border-top:1px solid var(--ink);padding-top:var(--g2);display:grid;gap:4px;align-content:start}
+.ideas4 h3{font-size:var(--t2)}
+.ideas4 p{font-size:14.5px}
+.demos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--g4);margin-top:var(--g7)}
+@media (max-width:860px){.demos{grid-template-columns:minmax(0,1fr)}}
+.demo{background:var(--sheet);border:1px solid var(--rule);padding:var(--g4);display:grid;gap:var(--g3);align-content:start}
+.demo canvas{width:100%;aspect-ratio:1/1;display:block;touch-action:manipulation}
+.demo .tags{display:flex;flex-wrap:wrap;gap:6px var(--g3);font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase}
+.demo .tags .from{color:var(--clay)}
+.demo .tags .kind{color:var(--graphite)}
+.demo .math{font-size:14px;color:var(--graphite);border-left:2px solid var(--clay);padding-left:var(--g2)}
+.demo .math b{color:var(--ink);font-weight:500}
+.read{font-family:var(--mono);font-size:13.5px;font-variant-numeric:tabular-nums;color:var(--ink);min-height:1.4em}
+.read em{color:var(--clay);font-style:normal}
+.ctl{display:grid;grid-template-columns:1fr auto;gap:2px var(--g2);align-items:center}
+.ctl label{font-size:15px}
+.ctl output{font-family:var(--mono);font-size:14px;color:var(--clay);font-variant-numeric:tabular-nums}
+.ctl input[type=range]{grid-column:1/-1;width:100%;accent-color:var(--clay)}
+.row{display:flex;flex-wrap:wrap;gap:var(--g1);align-items:center}
+.checks label{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:15px}
+.checks input{accent-color:var(--clay);width:16px;height:16px}
+button{font:500 14px/1 var(--body);color:var(--ink);background:transparent;border:1px solid var(--ink);padding:10px 14px;cursor:pointer;transition:background .15s,color .15s}
+button:hover{background:var(--ink);color:var(--paper)}
+button.primary{background:var(--clay);border-color:var(--clay);color:#fff}
+button.primary:hover{filter:brightness(1.1);background:var(--clay);color:#fff}
+button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--clay);outline-offset:2px}
+select{font:500 14px var(--body);padding:8px 10px;border:1px solid var(--ink);background:var(--paper);color:var(--ink)}
+.further{margin-top:var(--g8);display:grid;gap:var(--g4)}
+.further ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:var(--g3) var(--g5)}
+.further li{border-top:1px solid var(--rule);padding-top:var(--g2);font-size:15px}
+.further li b{font-family:var(--display);font-weight:400;font-size:var(--t2);display:block;line-height:1.1;margin-bottom:4px}
+footer{margin-top:var(--g8);padding-top:var(--g3);border-top:1px solid var(--rule);font-size:14px;color:var(--graphite);max-width:70ch}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Compass Grammar, part two</p>
+    <h1>Off <em>Center</em></h1>
+    <p class="lede">The circle designs were one output of four deeper ideas. Pull those ideas loose and they grow cells, mazes, shells, foam, curves and warped space just as easily.</p>
+  </header>
+
+  <div class="ideas4">
+    <article><p class="eyebrow">Idea 1</p><h3>Exact moves</h3><p>Every point comes from earlier points by compass or straightedge. Nothing is placed by eye.</p></article>
+    <article><p class="eyebrow">Idea 2</p><h3>Keep by counting</h3><p>Choose what survives by counting: circles that overlap, neighbors that touch, generations since the start.</p></article>
+    <article><p class="eyebrow">Idea 3</p><h3>Recipes, not outlines</h3><p>Store the rule and the steps. The result can be regrown at any size or with one step changed.</p></article>
+    <article><p class="eyebrow">Idea 4</p><h3>Lengths you can build</h3><p>√2, √3, φ and their friends. The same ratios turn up in shells, paper, music and crystals.</p></article>
+  </div>
+
+  <div class="demos">
+
+    <article class="demo" id="d-cells">
+      <div class="tags"><span class="from">From the vesica</span><span class="kind">Organic · cells</span></div>
+      <h3>Cells that <em>settle</em> into hexagons</h3>
+      <p>The line through a vesica's two points is the perpendicular bisector: everything on one side is nearer one center. Draw it between every pair of seeds and you get Voronoi cells, the pattern of giraffe skin, dragonfly wings and dried mud. Let each seed drift to the middle of its cell and the mess relaxes toward a honeycomb.</p>
+      <canvas id="cellsCv" aria-label="Voronoi cells; tap to add a seed"></canvas>
+      <p class="read" id="cellsRead"></p>
+      <div class="ctl"><label for="cellsN">Seeds</label><output id="cellsNOut" for="cellsN"></output><input type="range" id="cellsN" min="10" max="240" value="70"></div>
+      <div class="row"><button class="primary" id="cellsRelax" aria-pressed="false">Relax</button><button id="cellsScatter">Scatter</button><span class="note">Tap the drawing to add a seed.</span></div>
+      <p class="math"><b>Keep by counting:</b> red cells have exactly six neighbors. Relaxing raises their share, because six is what flat space prefers.</p>
+    </article>
+
+    <article class="demo" id="d-maze">
+      <div class="tags"><span class="from">From corner arcs</span><span class="kind">Pattern · meanders</span></div>
+      <h3>A maze made of <em>quarter circles</em></h3>
+      <p>Put two quarter arcs in opposite corners of a square, then turn each tile at random. The arcs always connect across tile edges, so they form unbroken rivers and loops: Truchet tiles. Tap a tile to turn it.</p>
+      <canvas id="mazeCv" aria-label="Truchet tile meander; tap a tile to rotate it"></canvas>
+      <p class="read" id="mazeRead"></p>
+      <div class="ctl"><label for="mazeN">Tiles across</label><output id="mazeNOut" for="mazeN"></output><input type="range" id="mazeN" min="3" max="30" value="10"></div>
+      <div class="ctl"><label for="mazeBias">Chance a tile is turned</label><output id="mazeBiasOut" for="mazeBias"></output><input type="range" id="mazeBias" min="0" max="100" value="50"></div>
+      <div class="row"><button id="mazeShuffle">Shuffle</button></div>
+      <p class="math"><b>Always two colors:</b> color each region by the checkerboard parity of the grid corner inside it, and no two neighbors ever match, however the tiles turn.</p>
+    </article>
+
+    <article class="demo" id="d-spiral">
+      <div class="tags"><span class="from">From the diagonal</span><span class="kind">Growth · shells</span></div>
+      <h3>Spirals from <em>right angles</em></h3>
+      <p>The diagonal move turns 1 into √2. Repeat it on its own result, always stepping one unit at right angles, and you climb through √3, √4, √5 in a snail shell called the Spiral of Theodorus. Or stack squares on the long side of a rectangle and join their corners with quarter arcs for the golden spiral.</p>
+      <canvas id="spiralCv" aria-label="Spiral construction"></canvas>
+      <p class="read" id="spiralRead"></p>
+      <div class="row" role="group" aria-label="Spiral type"><button id="spTheo" aria-pressed="true">Square roots</button><button id="spGold" aria-pressed="false">Golden squares</button></div>
+      <div class="ctl"><label for="spN">Steps</label><output id="spNOut" for="spN"></output><input type="range" id="spN" min="1" max="60" value="16"></div>
+      <p class="math"><b>Keep by counting:</b> in the root spiral, red triangles end on whole numbers (√4 = 2, √9 = 3 …). In the golden one, squares follow 1, 1, 2, 3, 5, 8 and the rectangle closes in on φ.</p>
+    </article>
+
+    <article class="demo" id="d-foam">
+      <div class="tags"><span class="from">From join</span><span class="kind">Special maths · foam</span></div>
+      <h3>Foam where every bubble <em>touches three</em></h3>
+      <p>Join was a circle through three points. Ask instead for the circle that touches three circles, and fill every gap with one. The result is an Apollonian gasket: foam that never ends, built by compass at every scale.</p>
+      <canvas id="foamCv" aria-label="Apollonian gasket"></canvas>
+      <p class="read" id="foamRead"></p>
+      <div class="ctl"><label for="foamA">First bubble's share of the width</label><output id="foamAOut" for="foamA"></output><input type="range" id="foamA" min="0.12" max="0.5" step="0.01" value="0.5"></div>
+      <div class="ctl"><label for="foamG">Keep generation</label><output id="foamGOut" for="foamG"></output><input type="range" id="foamG" min="0" max="7" value="2"></div>
+      <p class="math"><b>Integers inside:</b> set the share to 0.50 and the curvatures (1 ÷ radius) start −1, 2, 2, 3. From then on every bubble's curvature is a whole number, printed inside it.</p>
+    </article>
+
+    <article class="demo" id="d-env">
+      <div class="tags"><span class="from">From the circle, repeated</span><span class="kind">Curves · envelopes</span></div>
+      <h3>A heart nobody <em>drew</em></h3>
+      <p>Draw many circles, each centered on the first circle and passing through one fixed point. None of them is a heart, but together they outline one: the cardioid, the shape of light on the bottom of a coffee cup. Move the point and the family changes.</p>
+      <canvas id="envCv" aria-label="Envelope of circles"></canvas>
+      <p class="read" id="envRead"></p>
+      <div class="ctl"><label for="envF">Fixed point's distance from center</label><output id="envFOut" for="envF"></output><input type="range" id="envF" min="0" max="2" step="0.01" value="1"></div>
+      <div class="ctl"><label for="envN">Circles</label><output id="envNOut" for="envN"></output><input type="range" id="envN" min="6" max="160" value="64"></div>
+      <div class="checks"><label><input type="checkbox" id="envNeph"> Instead, make each circle touch the horizontal axis</label></div>
+      <p class="math"><b>Outlines without outlines:</b> the curve is an envelope, a shape defined only by what touches it. A point inside gives a dimpled limaçon, a point outside gives one with an inner loop, and touching the axis gives a nephroid.</p>
+    </article>
+
+    <article class="demo" id="d-inv">
+      <div class="tags"><span class="from">From the compass alone</span><span class="kind">Special maths · warping</span></div>
+      <h3>A circle that works as a <em>mirror</em></h3>
+      <p>Circle inversion swaps inside and outside: a point near the rim stays put, a point near the center flies out to infinity. Lines become circles. Here the flower-of-life lattice is reflected into a lens. Drag the lens around.</p>
+      <canvas id="invCv" aria-label="Circle inversion lens; drag to move"></canvas>
+      <p class="read" id="invRead"></p>
+      <div class="ctl"><label for="invR">Lens radius</label><output id="invROut" for="invR"></output><input type="range" id="invR" min="0.15" max="0.95" step="0.01" value="0.55"></div>
+      <div class="ctl"><label for="invL">Lattice spacing</label><output id="invLOut" for="invL"></output><input type="range" id="invL" min="0.15" max="0.6" step="0.01" value="0.32"></div>
+      <p class="math"><b>Compass only:</b> inversion needs no straightedge. In 1797 Mascheroni showed that every straightedge-and-compass construction can be done with the compass alone, using exactly this trick.</p>
+    </article>
+
+    <article class="demo" id="d-hyp">
+      <div class="tags"><span class="from">From join, at right angles</span><span class="kind">Other geometry · hyperbolic</span></div>
+      <h3>Straight lines in <em>curved space</em></h3>
+      <p>Inside this disk, the straight lines are arcs that meet the rim at right angles, and the rim is infinitely far away. That is the Poincaré model of hyperbolic geometry, the space of coral, lettuce leaves and Escher's Circle Limit prints. Each arc is a compass construction.</p>
+      <canvas id="hypCv" aria-label="Hyperbolic lines in the Poincaré disk"></canvas>
+      <p class="read" id="hypRead"></p>
+      <div class="ctl"><label for="hypN">Lines</label><output id="hypNOut" for="hypN"></output><input type="range" id="hypN" min="1" max="24" value="5"></div>
+      <div class="row"><label class="note" for="hypK">Repeat</label><select id="hypK"><option value="1">once</option><option value="3">3 times</option><option value="5">5 times</option><option value="7" selected>7 times</option><option value="8">8 times</option><option value="12">12 times</option></select><button id="hypSeed">New lines</button></div>
+      <p class="math"><b>Keep by counting:</b> regions on the inside of an odd number of arcs are red. Seven-fold repeats are not possible as flat tilings, but they are easy here.</p>
+    </article>
+
+    <article class="demo" id="d-rw">
+      <div class="tags"><span class="from">From vesica arcs</span><span class="kind">Objects · constant width</span></div>
+      <h3>Rolling without being <em>round</em></h3>
+      <p>Take an equilateral triangle and replace each side with an arc centered on the opposite corner. The result is the same width in every direction, so it rolls between two boards that never tilt. Engineers use it for drills that cut square holes, and Britain uses the seven-sided version for its 20p and 50p coins.</p>
+      <canvas id="rwCv" aria-label="Reuleaux polygon rolling between two lines"></canvas>
+      <p class="read" id="rwRead"></p>
+      <div class="row" role="group" aria-label="Sides"><button data-n="3" aria-pressed="true">3 sides</button><button data-n="5" aria-pressed="false">5</button><button data-n="7" aria-pressed="false">7</button><button data-n="9" aria-pressed="false">9</button><button id="rwPause">Pause</button></div>
+      <p class="math"><b>Width stays fixed, center doesn't:</b> the red track shows the center bobbing as the shape turns while the top board stays level.</p>
+    </article>
+  </div>
+
+  <section class="further">
+    <div><p class="eyebrow">Further</p><h2>Where else the four ideas <em>lead</em></h2></div>
+    <ul>
+      <li><b>Quasicrystals</b>The pentagon is constructible, so φ is too. Penrose tilings never repeat yet have five-fold order, and they can be grown by recipe, splitting each tile by φ.</li>
+      <li><b>Branching growth</b>Treat a move as a rule that runs again on its own output, like an L-system. Each branch is a halving or a √2 step, giving trees, coral and river deltas.</li>
+      <li><b>Phyllotaxis</b>Walk the compass by the golden angle instead of 60°. Points never line up, and they pack into the spirals of a sunflower head or pinecone.</li>
+      <li><b>Spheres and solids</b>A vesica spun around its axis is two spheres meeting in a circle. Sphere moves build the Platonic solids, and keep-by-counting carves their overlaps.</li>
+      <li><b>Tuning lattices</b>Lengths are ratios and ratios are pitches. A grid of 3/2 by 5/4 steps is a map of just intonation, and walking it is composing.</li>
+      <li><b>Knots and interlace</b>Arcs that cross can go over or under in turn. The same arcs become Celtic knotwork and woven patterns.</li>
+    </ul>
+  </section>
+
+  <footer>Companion to Compass Grammar. Every specimen on this page is drawn from exact constructions computed live in your browser.</footer>
+</div>
+
+<script>
+(()=>{
+const TAU=Math.PI*2,R2=Math.SQRT2,R3=Math.sqrt(3),PHI=(1+Math.sqrt(5))/2;
+const $=s=>document.querySelector(s);
+const DPR=()=>Math.min(2,window.devicePixelRatio||1);
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const hex=h=>{h=h.replace('#','');if(h.length===3)h=h.split('').map(c=>c+c).join('');return[0,2,4].map(i=>parseInt(h.slice(i,i+2),16))};
+let P;function pal(){P={ink:css('--ink'),clay:css('--clay'),gr:css('--graphite'),sheet:css('--sheet'),paper:css('--paper'),clayRGB:hex(css('--clay')),sheetRGB:hex(css('--sheet')),inkRGB:hex(css('--ink')),mono:'IBM Plex Mono, ui-monospace, monospace'};return P}
+function sizeCanvas(cv){const r=cv.getBoundingClientRect();const W=Math.max(60,Math.round(r.width*DPR()));if(cv.width!==W){cv.width=W;cv.height=W}return W}
+function hatch(ctx){const d=DPR(),p=Math.max(4,Math.round(5*d));const t=document.createElement('canvas');t.width=t.height=p;const c=t.getContext('2d');c.fillStyle=P.clay;c.fillRect(0,0,p,p);c.strokeStyle=P.sheet;c.lineWidth=Math.max(1,.9*d);c.beginPath();c.moveTo(0,p);c.lineTo(p,0);c.moveTo(-1,1);c.lineTo(1,-1);c.moveTo(p-1,p+1);c.lineTo(p+1,p-1);c.stroke();return ctx.createPattern(t,'repeat')}
+function view(W,Hw,cx=0,cy=0){const s=W/(2*Hw);return{s,X:x=>W/2+(x-cx)*s,Y:y=>W/2-(y-cy)*s}}
+let ac=null,master=null;
+function audio(){if(!ac){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ac=new A();master=ac.createGain();master.gain.value=.6;master.connect(ac.destination)}if(ac.state==='suspended')ac.resume();return ac}
+function tone(f,when=0,dur=.9,g=.14){const a=audio();if(!a)return;const t=a.currentTime+when+.01;const o=a.createOscillator(),e=a.createGain();o.type='sine';o.frequency.value=f;e.gain.setValueAtTime(0,t);e.gain.linearRampToValueAtTime(g,t+.01);e.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(e).connect(master);o.start(t);o.stop(t+dur+.05)}
+function mulberry(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const bindRange=(id,fn,fmt=v=>v)=>{const el=$('#'+id),out=$('#'+id+'Out');const up=()=>{if(out)out.textContent=fmt(+el.value);fn(+el.value)};el.addEventListener('input',up);if(out)out.textContent=fmt(+el.value);return el};
+
+/* ============ 1. cells: Voronoi by bisector clipping, Lloyd relaxation ============ */
+const cells={sites:[],polys:[],relax:false,raf:0};
+function scatter(n){const R=Math.random;cells.sites=[];for(let i=0;i<n;i++)cells.sites.push({x:R()*1.9-.95,y:R()*1.9-.95})}
+function voronoi(){const S=cells.sites,n=S.length;const out=[];
+  for(let i=0;i<n;i++){const si=S[i];let poly=[{x:-1,y:-1,t:-1},{x:1,y:-1,t:-1},{x:1,y:1,t:-1},{x:-1,y:1,t:-1}];
+    const order=[];for(let j=0;j<n;j++)if(j!==i)order.push([j,(S[j].x-si.x)**2+(S[j].y-si.y)**2]);order.sort((a,b)=>a[1]-b[1]);
+    for(const [j,d2] of order){let mr=0;for(const v of poly)mr=Math.max(mr,(v.x-si.x)**2+(v.y-si.y)**2);if(d2>4*mr+1e-12)break;
+      const sj=S[j],nx=sj.x-si.x,ny=sj.y-si.y,mx=(si.x+sj.x)/2,my=(si.y+sj.y)/2;const f=v=>(v.x-mx)*nx+(v.y-my)*ny;const np=[];
+      for(let k=0;k<poly.length;k++){const a=poly[k],b=poly[(k+1)%poly.length],da=f(a),db=f(b);
+        if(da<=0){np.push(a);if(db>0){const t=da/(da-db);np.push({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t,t:j})}}
+        else if(db<=0){const t=da/(da-db);np.push({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t,t:a.t})}}
+      poly=np;if(poly.length<3)break}
+    let A=0,cx=0,cy=0;for(let k=0;k<poly.length;k++){const a=poly[k],b=poly[(k+1)%poly.length],c=a.x*b.y-b.x*a.y;A+=c;cx+=(a.x+b.x)*c;cy+=(a.y+b.y)*c}A/=2;
+    const nb=new Set(poly.filter(v=>v.t>=0).map(v=>v.t));out.push({poly,c:A?{x:cx/(6*A),y:cy/(6*A)}:si,nb:nb.size,edge:poly.some(v=>v.t<0)})}
+  cells.polys=out}
+function drawCells(){const cv=$('#cellsCv'),W=sizeCanvas(cv),ctx=cv.getContext('2d'),d=DPR();const {s,X,Y}=view(W,1.03);ctx.clearRect(0,0,W,W);const hp=hatch(ctx);
+  let hexN=0,inner=0;
+  for(const c of cells.polys){ctx.beginPath();c.poly.forEach((v,k)=>k?ctx.lineTo(X(v.x),Y(v.y)):ctx.moveTo(X(v.x),Y(v.y)));ctx.closePath();
+    if(!c.edge){inner++;if(c.nb===6){hexN++;ctx.fillStyle=hp;ctx.fill()}}
+    ctx.strokeStyle=P.ink;ctx.globalAlpha=.75;ctx.lineWidth=1.1*d;ctx.stroke();ctx.globalAlpha=1}
+  ctx.fillStyle=P.ink;for(const p of cells.sites){ctx.beginPath();ctx.arc(X(p.x),Y(p.y),1.8*d,0,TAU);ctx.fill()}
+  ctx.strokeStyle=P.ink;ctx.lineWidth=1.6*d;ctx.strokeRect(X(-1),Y(1),2*s,2*s);
+  $('#cellsRead').innerHTML=`${cells.sites.length} cells · <em>${inner?Math.round(100*hexN/inner):0}% hexagons</em> away from the edge`}
+function cellsStep(){let mv=0;cells.polys.forEach((c,i)=>{const p=cells.sites[i];const dx=c.c.x-p.x,dy=c.c.y-p.y;mv=Math.max(mv,Math.hypot(dx,dy));p.x+=dx*.35;p.y+=dy*.35});voronoi();drawCells();
+  if(cells.relax&&mv>2e-4)cells.raf=requestAnimationFrame(cellsStep);else setRelax(false)}
+function setRelax(on){cells.relax=on;$('#cellsRelax').setAttribute('aria-pressed',on);$('#cellsRelax').textContent=on?'Stop':'Relax';cancelAnimationFrame(cells.raf);if(on){if(reduced){for(let i=0;i<60;i++){cells.polys.forEach((c,k)=>{cells.sites[k].x=c.c.x;cells.sites[k].y=c.c.y});voronoi()}drawCells();setRelax(false)}else cells.raf=requestAnimationFrame(cellsStep)}}
+bindRange('cellsN',v=>{setRelax(false);scatter(v);voronoi();drawCells()});
+$('#cellsRelax').onclick=()=>setRelax(!cells.relax);
+$('#cellsScatter').onclick=()=>{setRelax(false);scatter(+$('#cellsN').value);voronoi();drawCells()};
+$('#cellsCv').addEventListener('pointerdown',e=>{const r=e.currentTarget.getBoundingClientRect();const x=((e.clientX-r.left)/r.width*2-1)*1.03,y=(1-(e.clientY-r.top)/r.height*2)*1.03;if(Math.abs(x)<1&&Math.abs(y)<1&&cells.sites.length<400){cells.sites.push({x,y});voronoi();drawCells();tone(440,0,.3,.08)}});
+
+/* ============ 2. maze: Truchet tiles with guaranteed two-coloring ============ */
+const maze={n:10,o:[],bias:.5};
+function shuffleMaze(){maze.o=[];for(let i=0;i<maze.n*maze.n;i++)maze.o.push(Math.random()<maze.bias?1:0)}
+function drawMaze(){const cv=$('#mazeCv'),W=sizeCanvas(cv),ctx=cv.getContext('2d'),d=DPR();ctx.clearRect(0,0,W,W);const hp=hatch(ctx);const n=maze.n,s=W/n;
+  const col=c=>c?hp:P.sheet;let loops=0;
+  for(let j=0;j<n;j++)for(let i=0;i<n;i++){const o=maze.o[j*n+i],x=i*s,y=j*s;const cornerC=o===0?(i+j)%2:(i+j+1)%2;
+    ctx.fillStyle=col(1-cornerC);ctx.fillRect(x,y,s+.5,s+.5);
+    const corners=o===0?[[x,y,0],[x+s,y+s,Math.PI]]:[[x+s,y,Math.PI/2],[x,y+s,-Math.PI/2]];
+    ctx.fillStyle=col(cornerC);for(const [cx,cy,a] of corners){ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,s/2,a,a+Math.PI/2);ctx.closePath();ctx.fill()}
+    ctx.strokeStyle=P.ink;ctx.lineWidth=Math.max(1.2*d,s*.045);ctx.beginPath();for(const [cx,cy,a] of corners){ctx.moveTo(cx+s/2*Math.cos(a),cy+s/2*Math.sin(a));ctx.arc(cx,cy,s/2,a,a+Math.PI/2)}ctx.stroke()}
+  ctx.strokeStyle=P.ink;ctx.lineWidth=1.6*d;ctx.strokeRect(0,0,W,W);
+  $('#mazeRead').innerHTML=`${n*n} tiles · 2 orientations each · <em>2<sup>${n*n}</sup></em> possible mazes`}
+bindRange('mazeN',v=>{maze.n=v;shuffleMaze();drawMaze()});
+bindRange('mazeBias',v=>{maze.bias=v/100;shuffleMaze();drawMaze()},v=>v+'%');
+$('#mazeShuffle').onclick=()=>{shuffleMaze();drawMaze()};
+$('#mazeCv').addEventListener('pointerdown',e=>{const r=e.currentTarget.getBoundingClientRect();const i=Math.floor((e.clientX-r.left)/r.width*maze.n),j=Math.floor((e.clientY-r.top)/r.height*maze.n);if(i<0||j<0||i>=maze.n||j>=maze.n)return;const k=j*maze.n+i;maze.o[k]^=1;drawMaze();tone(maze.o[k]?392:294,0,.35,.09)});
+
+/* ============ 3. spirals ============ */
+const sp={mode:'theo',n:16};
+function drawSpiral(){const cv=$('#spiralCv'),W=sizeCanvas(cv),ctx=cv.getContext('2d'),d=DPR();ctx.clearRect(0,0,W,W);const hp=hatch(ctx);ctx.lineJoin='round';ctx.lineCap='round';
+  if(sp.mode==='theo'){const n=sp.n;const v=[{x:1,y:0}];for(let k=1;k<=n;k++){const p=v[k-1],L=Math.hypot(p.x,p.y);v.push({x:p.x-p.y/L,y:p.y+p.x/L})}
+    const Hw=Math.sqrt(n+1)*1.08+.15;const {X,Y}=view(W,Hw);
+    for(let k=0;k<n;k++){const a=v[k],b=v[k+1];ctx.beginPath();ctx.moveTo(X(0),Y(0));ctx.lineTo(X(a.x),Y(a.y));ctx.lineTo(X(b.x),Y(b.y));ctx.closePath();const sq=Number.isInteger(Math.sqrt(k+2));if(sq){ctx.fillStyle=hp;ctx.fill()}ctx.strokeStyle=P.gr;ctx.lineWidth=.9*d;ctx.globalAlpha=.8;ctx.stroke();ctx.globalAlpha=1}
+    ctx.strokeStyle=P.ink;ctx.lineWidth=2*d;ctx.beginPath();ctx.moveTo(X(v[0].x),Y(v[0].y));for(const p of v)ctx.lineTo(X(p.x),Y(p.y));ctx.stroke();
+    ctx.font=`${11*d}px ${P.mono}`;ctx.fillStyle=P.ink;const step=n>30?3:1;for(let k=0;k<v.length;k+=step){const p=v[k],L=Math.hypot(p.x,p.y),m=k+1;const lbl=Number.isInteger(Math.sqrt(m))?String(Math.sqrt(m)):'√'+m;if(n>36&&!Number.isInteger(Math.sqrt(m)))continue;ctx.fillStyle=Number.isInteger(Math.sqrt(m))?P.clay:P.ink;ctx.fillText(lbl,X(p.x*(1+.22/L))-8*d,Y(p.y*(1+.22/L))+4*d)}
+    const turns=Math.atan2(v[n].y,v[n].x);let ang=0;for(let k=0;k<n;k++)ang+=Math.atan(1/Math.sqrt(k+1));
+    $('#spiralRead').innerHTML=`last spoke <em>√${n+1} = ${Math.sqrt(n+1).toFixed(4)}</em> · ${(ang/TAU).toFixed(2)} turns`}
+  else{const n=Math.min(sp.n,16);const fib=[1,1];while(fib.length<n)fib.push(fib[fib.length-1]+fib[fib.length-2]);
+    const sq=[{x:0,y:0,s:1,dir:3}];let bb={x:0,y:0,w:1,h:1};for(let k=1;k<n;k++){const dir=(k-1)%4;let q;
+      if(dir===0)q={x:bb.x+bb.w,y:bb.y,s:bb.h};else if(dir===1)q={x:bb.x,y:bb.y+bb.h,s:bb.w};else if(dir===2)q={x:bb.x-bb.h,y:bb.y,s:bb.h};else q={x:bb.x,y:bb.y-bb.w,s:bb.w};q.dir=dir;sq.push(q);
+      const x0=Math.min(bb.x,q.x),y0=Math.min(bb.y,q.y),x1=Math.max(bb.x+bb.w,q.x+q.s),y1=Math.max(bb.y+bb.h,q.y+q.s);bb={x:x0,y:y0,w:x1-x0,h:y1-y0}}
+    const Hw=Math.max(bb.w,bb.h)/2*1.08;const {s,X,Y}=view(W,Hw,bb.x+bb.w/2,bb.y+bb.h/2);
+    sq.forEach((q,k)=>{if(k===n-1){ctx.fillStyle=hp;ctx.globalAlpha=.9;ctx.fillRect(X(q.x),Y(q.y+q.s),q.s*s,q.s*s);ctx.globalAlpha=1}ctx.strokeStyle=P.gr;ctx.lineWidth=1*d;ctx.strokeRect(X(q.x),Y(q.y+q.s),q.s*s,q.s*s);
+      if(q.s*s>22*d){ctx.fillStyle=P.gr;ctx.font=`${Math.min(14,q.s*s/d/5)*d}px ${P.mono}`;ctx.fillText(String(fib[k]),X(q.x)+5*d,Y(q.y+q.s)+14*d)}});
+    ctx.strokeStyle=P.ink;ctx.lineWidth=2.4*d;ctx.beginPath();
+    for(const q of sq){let cx,cy,a0;if(q.dir===0){cx=q.x;cy=q.y+q.s;a0=-Math.PI/2}else if(q.dir===1){cx=q.x;cy=q.y;a0=0}else if(q.dir===2){cx=q.x+q.s;cy=q.y;a0=Math.PI/2}else{cx=q.x+q.s;cy=q.y+q.s;a0=Math.PI}
+      ctx.moveTo(X(cx+q.s*Math.cos(a0)),Y(cy+q.s*Math.sin(a0)));ctx.arc(X(cx),Y(cy),q.s*s,-a0,-(a0+Math.PI/2),true)}ctx.stroke();
+    const r=Math.max(bb.w,bb.h)/Math.min(bb.w,bb.h);$('#spiralRead').innerHTML=`rectangle ${bb.w} × ${bb.h} · ratio <em>${r.toFixed(6)}</em> · φ = ${PHI.toFixed(6)}`}}
+bindRange('spN',v=>{sp.n=v;drawSpiral()});
+function spMode(m){sp.mode=m;$('#spTheo').setAttribute('aria-pressed',m==='theo');$('#spGold').setAttribute('aria-pressed',m==='gold');$('#spN').max=m==='theo'?60:16;if(+$('#spN').value>+$('#spN').max)$('#spN').value=$('#spN').max;sp.n=+$('#spN').value;$('#spNOut').textContent=sp.n;drawSpiral()}
+$('#spTheo').onclick=()=>spMode('theo');$('#spGold').onclick=()=>spMode('gold');
+
+/* ============ 4. foam: Apollonian gasket by Descartes / Vieta jumping ============ */
+const foam={a:.5,g:2,list:[]};
+const cx=(re,im)=>({re,im}),cadd=(a,b)=>cx(a.re+b.re,a.im+b.im),cmul=(a,b)=>cx(a.re*b.re-a.im*b.im,a.re*b.im+a.im*b.re),csc=(a,k)=>cx(a.re*k,a.im*k);
+function buildFoam(minR){const a=foam.a;const L=[];
+  const c0={k:-1,kz:cx(0,0),g:-1},c1={k:1/a,kz:csc(cx(-1+a,0),1/a),g:0},c2={k:1/(1-a),kz:csc(cx(a,0),1/(1-a)),g:0};
+  const k3=c0.k+c1.k+c2.k+2*Math.sqrt(c0.k*c1.k+c1.k*c2.k+c2.k*c0.k);
+  const z1=-1+a,z2=a;const im=2*Math.sqrt(c1.k*c2.k*Math.abs(z1*z2));const z3=cx((c1.k*z1+c2.k*z2)/k3,im/k3);
+  const c3={k:k3,kz:csc(z3,k3),g:1};const c4={k:k3,kz:csc(cx(z3.re,-z3.im),k3),g:1};
+  L.push(c0,c1,c2,c3,c4);
+  const jump=(A,B,C,D)=>({k:2*(A.k+B.k+C.k)-D.k,kz:cadd(csc(cadd(cadd(A.kz,B.kz),C.kz),2),csc(D.kz,-1))});
+  const stack=[];for(const top of[c3,c4]){stack.push([c0,c1,top,c2,2],[c0,c2,top,c1,2],[c1,c2,top,c0,2])}
+  while(stack.length&&L.length<9000){const [A,B,C,D,g]=stack.pop();const N=jump(A,B,C,D);if(!(N.k>0)||1/N.k<minR)continue;N.g=g;L.push(N);stack.push([A,B,N,C,g+1],[A,C,N,B,g+1],[B,C,N,A,g+1])}
+  foam.list=L}
+function drawFoam(){const cv=$('#foamCv'),W=sizeCanvas(cv),ctx=cv.getContext('2d'),d=DPR();const {s,X,Y}=view(W,1.03);buildFoam(.7*d/s);ctx.clearRect(0,0,W,W);const hp=hatch(ctx);
+  let kept=0,ints=true;
+  for(const c of foam.list){if(c.g<0)continue;const r=1/c.k,z={x:c.kz.re/c.k,y:c.kz.im/c.k};ctx.beginPath();ctx.arc(X(z.x),Y(z.y),r*s,0,TAU);
+    if(c.g===foam.g){ctx.fillStyle=hp;ctx.fill();kept++}ctx.strokeStyle=P.ink;ctx.globalAlpha=r*s>3*d?.8:.45;ctx.lineWidth=(r*s>3*d?1:.6)*d;ctx.stroke();ctx.globalAlpha=1;
+    if(Math.abs(c.k-Math.round(c.k))>1e-6)ints=false}
+  ctx.strokeStyle=P.ink;ctx.lineWidth=1.8*d;ctx.beginPath();ctx.arc(X(0),Y(0),s,0,TAU);ctx.stroke();
+  if(ints){ctx.textAlign='center';ctx.textBaseline='middle';for(const c of foam.list){if(c.g<0)continue;const r=1/c.k;const fs=Math.min(15,r*s/d*.55);if(fs<7)continue;ctx.font=`${fs*d}px ${P.mono}`;ctx.fillStyle=c.g===foam.g?P.sheet:P.ink;ctx.fillText(String(Math.round(c.k)),X(c.kz.re/c.k),Y(c.kz.im/c.k))}ctx.textAlign='start';ctx.textBaseline='alphabetic'}
+  $('#foamRead').innerHTML=`${foam.list.length-1} bubbles drawn · ${kept} in generation ${foam.g} · <em>${ints?'all curvatures are whole numbers':'curvatures are not whole numbers at this share'}</em>`}
+bindRange('foamA',v=>{foam.a=v;drawFoam()},v=>v.toFixed(2));
+bindRange('foamG',v=>{foam.g=v;drawFoam()});
+
+/* ============ 5. envelopes ============ */
+function drawEnv(){const cv=$('#envCv'),W=sizeCanvas(cv),ctx=cv.getContext('2d'),d=DPR();const f=+$('#envF').value,n=+$('#envN').value,neph=$('#envNeph').checked;
+  const Hw=neph?2.2:Math.max(2.25,(1+1+f)*1.05);const {s,X,Y}=view(W,Hw,neph?0:(f>1.2?-.3:0));ctx.clearRect(0,0,W,W);
+  ctx.strokeStyle=P.clay;ctx.lineWidth=1*d;ctx.globalAlpha=clamp(9/n,.14,.6);
+  for(let i=0;i<n;i++){const t=i/n*TAU,c={x:Math.cos(t),y:Math.sin(t)};const r=neph?Math.abs(c.y):Math.hypot(c.x-f,c.y);ctx.beginPath();ctx.arc(X(c.x),Y(c.y),r*s,0,TAU);ctx.stroke()}
+  ctx.globalAlpha=1;ctx.strokeStyle=P.ink;ctx.lineWidth=1.6*d;ctx.beginPath();ctx.arc(X(0),Y(0),s,0,TAU);ctx.stroke();
+  if(neph){ctx.lineWidth=1*d;ctx.beginPath();ctx.moveTo(X(-Hw),Y(0));ctx.lineTo(X(Hw),Y(0));ctx.stroke()}
+  else{ctx.fillStyle=P.ink;ctx.beginPath();ctx.arc(X(f),Y(0),3.5*d,0,TAU);ctx.fill()}
+  const name=neph?'a nephroid (two cusps)':Math.abs(f-1)<.015?'a cardioid (one cusp)':f<.015?'a circle of radius 2':f<1?'a dimpled limaçon':'a limaçon with an inner loop';
+  $('#envRead').innerHTML=`${n} circles · the outline is <em>${name}</em>`;$('#envF').disabled=neph}
+bindRange('envF',drawEnv,v=>v.toFixed(2));bindRange('envN',drawEnv);$('#envNeph').addEventListener('input',drawEnv);
+
+/* ============ 6. inversion lens over a flower-of-life lattice ============ */
+const inv={c:{x:.18,y:.1},R:.55,L:.32,drag:false,raf:0};
+const off=document.createElement('canvas');
+function drawInv(){const cv=$('#invCv'),W=sizeCanvas(cv),ctx=cv.getContext('2d'),d=DPR();const css=Math.round(W/d);const G=Math.min(560,css);off.width=off.height=G;const oc=off.getContext('2d');const img=oc.createImageData(G,G),D=img.data;
+  const Hw=1.05,L=inv.L,R2i=inv.R*inv.R,{c}=inv;const h=Math.sqrt(3)/2;const [cr,cg,cb]=P.clayRGB,[sr,sg,sb]=P.sheetRGB,[ir,ig,ib]=P.inkRGB;
+  for(let py=0;py<G;py++)for(let px=0;px<G;px++){let x=((px+.5)/G*2-1)*Hw,y=(1-(py+.5)/G*2)*Hw;const dx=x-c.x,dy=y-c.y,r2=dx*dx+dy*dy;let inside=r2<R2i;
+    if(inside){const k=R2i/Math.max(r2,1e-9);x=c.x+dx*k;y=c.y+dy*k}
+    const j0=Math.floor(y/(L*h)),i0=Math.floor(x/L-j0/2);let dep=0;
+    if(Math.abs(x)<60&&Math.abs(y)<60){for(let j=j0-1;j<=j0+2;j++)for(let i=i0-2;i<=i0+2;i++){const lx=(i+j/2)*L,ly=j*L*h;const ex=x-lx,ey=y-ly;if(ex*ex+ey*ey<L*L)dep++}}
+    const o=(py*G+px)*4;let r=sr,g=sg,b=sb;
+    if(dep%2===0&&dep>0){const stripe=((px+py)%5)===0;if(!stripe){r=cr;g=cg;b=cb}}
+    if(inside){r=r*.84+ir*.16;g=g*.84+ig*.16;b=b*.84+ib*.16}
+    D[o]=r;D[o+1]=g;D[o+2]=b;D[o+3]=255}
+  oc.putImageData(img,0,0);ctx.imageSmoothingEnabled=true;ctx.clearRect(0,0,W,W);ctx.drawImage(off,0,0,W,W);
+  const {s,X,Y}=view(W,Hw);ctx.strokeStyle=P.ink;ctx.lineWidth=2*d;ctx.beginPath();ctx.arc(X(c.x),Y(c.y),inv.R*s,0,TAU);ctx.stroke();ctx.fillStyle=P.ink;ctx.beginPath();ctx.arc(X(c.x),Y(c.y),2.5*d,0,TAU);ctx.fill();
+  $('#invRead').innerHTML=`lens at (${c.x.toFixed(2)}, ${c.y.toFixed(2)}) · a point at distance d goes to <em>r² ÷ d</em>`}
+function invSched(){if(!inv.raf)inv.raf=requestAnimationFrame(()=>{inv.raf=0;drawInv()})}
+bindRange('invR',v=>{inv.R=v;invSched()},v=>v.toFixed(2));bindRange('invL',v=>{inv.L=v;invSched()},v=>v.toFixed(2));
+const invPt=e=>{const r=$('#invCv').getBoundingClientRect();return{x:clamp(((e.clientX-r.left)/r.width*2-1)*1.05,-1,1),y:clamp((1-(e.clientY-r.top)/r.height*2)*1.05,-1,1)}};
+$('#invCv').addEventListener('pointerdown',e=>{inv.drag=true;e.currentTarget.setPointerCapture(e.pointerId);inv.c=invPt(e);invSched()});
+$('#invCv').addEventListener('pointermove',e=>{if(!inv.drag)return;inv.c=invPt(e);invSched()});
+$('#invCv').addEventListener('pointerup',()=>inv.drag=false);$('#invCv').addEventListener('pointercancel',()=>inv.drag=false);
+$('#invCv').style.touchAction='none';
+
+/* ============ 7. hyperbolic lines in the Poincaré disk ============ */
+const hyp={seed:3};
+function drawHyp(){const cv=$('#hypCv'),W=sizeCanvas(cv),ctx=cv.getContext('2d'),d=DPR();const n=+$('#hypN').value,k=+$('#hypK').value;const R=mulberry(hyp.seed*7717+n);const {s,X,Y}=view(W,1.04);
+  const geos=[];for(let i=0;i<n;i++){const a=R()*TAU,D=.35+R()*(Math.PI-.55);for(let j=0;j<k;j++){const al=a+j*TAU/k,mu=al+D/2;const dist=1/Math.cos(D/2),rad=Math.tan(D/2);geos.push({x:dist*Math.cos(mu),y:dist*Math.sin(mu),r:rad})}}
+  ctx.clearRect(0,0,W,W);const hp=hatch(ctx);ctx.save();ctx.beginPath();ctx.arc(X(0),Y(0),s,0,TAU);ctx.clip();
+  ctx.fillStyle=P.sheet;ctx.fillRect(0,0,W,W);const path=new Path2D();for(const g of geos){path.moveTo(X(g.x)+g.r*s,Y(g.y));path.arc(X(g.x),Y(g.y),g.r*s,0,TAU)}ctx.fillStyle=hp;ctx.fill(path,'evenodd');
+  ctx.strokeStyle=P.ink;ctx.lineWidth=1.2*d;ctx.stroke(path);ctx.restore();
+  ctx.strokeStyle=P.ink;ctx.lineWidth=2.2*d;ctx.beginPath();ctx.arc(X(0),Y(0),s,0,TAU);ctx.stroke();
+  $('#hypRead').innerHTML=`${geos.length} hyperbolic lines · <em>each one meets the rim at 90°</em>`}
+bindRange('hypN',drawHyp);$('#hypK').addEventListener('input',drawHyp);$('#hypSeed').onclick=()=>{hyp.seed++;drawHyp()};
+
+/* ============ 8. Reuleaux polygons rolling between boards ============ */
+const rw={n:3,th:0,run:!reduced,last:performance.now(),trail:[]};
+function reuleaux(n,rho){const v=[];for(let i=0;i<n;i++){const a=Math.PI/2+i*TAU/n;v.push({x:rho*Math.cos(a),y:rho*Math.sin(a)})}const pts=[];const h=(n+1)/2;
+  for(let i=0;i<n;i++){const A=v[i],B=v[(i+1)%n],C=v[(i+h)%n];const r=Math.hypot(A.x-C.x,A.y-C.y);let a0=Math.atan2(A.y-C.y,A.x-C.x),a1=Math.atan2(B.y-C.y,B.x-C.x);let dA=a1-a0;while(dA>Math.PI)dA-=TAU;while(dA<-Math.PI)dA+=TAU;for(let k=0;k<120;k++){const t=a0+dA*k/120;pts.push({x:C.x+r*Math.cos(t),y:C.y+r*Math.sin(t)})}}
+  const w=Math.hypot(v[0].x-v[(h)%n].x,v[0].y-v[h%n].y);return{pts,w,v}}
+function drawRW(){const cv=$('#rwCv'),W=sizeCanvas(cv),ctx=cv.getContext('2d'),d=DPR();const {s,X,Y}=view(W,1.1);const R=reuleaux(rw.n,.62);const c=Math.cos(rw.th),sn=Math.sin(rw.th);
+  const rot=R.pts.map(p=>({x:p.x*c-p.y*sn,y:p.x*sn+p.y*c}));let mn=1e9,mx=-1e9;for(const p of rot){mn=Math.min(mn,p.y);mx=Math.max(mx,p.y)}const base=-R.w/2-.05;const dy=base-mn;
+  rw.trail.push({t:rw.th,y:dy});if(rw.trail.length>240)rw.trail.shift();
+  ctx.clearRect(0,0,W,W);const hp=hatch(ctx);
+  ctx.beginPath();rot.forEach((p,i)=>i?ctx.lineTo(X(p.x),Y(p.y+dy)):ctx.moveTo(X(p.x),Y(p.y+dy)));ctx.closePath();ctx.fillStyle=hp;ctx.fill();ctx.strokeStyle=P.ink;ctx.lineWidth=1.6*d;ctx.stroke();
+  ctx.strokeStyle=P.ink;ctx.lineWidth=3*d;for(const yy of[base,base+R.w]){ctx.beginPath();ctx.moveTo(X(-1.05),Y(yy));ctx.lineTo(X(1.05),Y(yy));ctx.stroke()}
+  ctx.strokeStyle=P.clay;ctx.lineWidth=1.6*d;ctx.beginPath();rw.trail.forEach((q,i)=>{const x=X(-1+1.9*(i/240)),y=Y(q.y);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.globalAlpha=.85;ctx.stroke();ctx.globalAlpha=1;
+  ctx.fillStyle=P.clay;ctx.beginPath();ctx.arc(X(0),Y(dy),3.5*d,0,TAU);ctx.fill();
+  $('#rwRead').innerHTML=`width <em>${(mx-mn).toFixed(4)}</em> at every angle · center height ${dy.toFixed(4)}`}
+function rwLoop(now){const dt=Math.min(.05,(now-rw.last)/1000);rw.last=now;if(rw.run){rw.th+=dt*.7;drawRW()}requestAnimationFrame(rwLoop)}
+document.querySelectorAll('#d-rw [data-n]').forEach(b=>b.onclick=()=>{rw.n=+b.dataset.n;rw.trail=[];document.querySelectorAll('#d-rw [data-n]').forEach(x=>x.setAttribute('aria-pressed',x===b));drawRW()});
+$('#rwPause').onclick=()=>{rw.run=!rw.run;$('#rwPause').textContent=rw.run?'Pause':'Roll'};if(!rw.run)$('#rwPause').textContent='Roll';
+
+/* ============ start ============ */
+function drawAll(){pal();drawCells();drawMaze();drawSpiral();drawFoam();drawEnv();drawInv();drawHyp();drawRW()}
+pal();scatter(70);voronoi();shuffleMaze();drawAll();requestAnimationFrame(rwLoop);
+let rz;new ResizeObserver(()=>{clearTimeout(rz);rz=setTimeout(drawAll,120)}).observe(document.querySelector('.demos'));
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',drawAll);
+})();
+</script>
+</body></html>
