@@ -1,0 +1,261 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>
+<title>Grafted Faces</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a type specimen book on the drafting sheet. Shared input, then one plate per face with its construction drawn behind. */
+:root{
+  --paper:#e9ece8; --sheet:#f6f7f4; --ink:#15181a; --graphite:#78828a; --rule:#cdd3cf; --clay:#c2173e;
+  --display:"Instrument Serif","Iowan Old Style",Georgia,serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --t-1:13.45px; --t0:16px; --t1:19.03px; --t2:22.63px; --t3:26.91px; --t4:32px; --t6:45.25px;
+  --g1:8px; --g2:11.3px; --g3:16px; --g4:22.6px; --g5:32px; --g6:45.3px; --g7:64px; --g8:90.5px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#101315;--sheet:#171b1e;--ink:#e4e9e6;--graphite:#7d888f;--rule:#2a3035;--clay:#ff4a6d;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#101315;--sheet:#171b1e;--ink:#e4e9e6;--graphite:#7d888f;--rule:#2a3035;--clay:#ff4a6d;color-scheme:dark}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:var(--t0);line-height:1.55;
+  background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);background-size:45.25px 45.25px;background-attachment:fixed}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:var(--g6) var(--g8)}
+h1,h2{font-family:var(--display);font-weight:400;line-height:1.05;text-wrap:balance;margin:0}
+h1{font-size:clamp(var(--t6),7.5vw,90.5px);letter-spacing:-.01em}
+h1 em{color:var(--clay)}
+h2{font-size:clamp(var(--t4),4.4vw,var(--t6))}
+p{margin:0}
+.lede{max-width:64ch;font-size:var(--t1);margin-top:var(--g3)}
+.eyebrow{font-family:var(--mono);font-size:var(--t-1);letter-spacing:.08em;text-transform:uppercase;color:var(--graphite)}
+header{display:grid;gap:var(--g2)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;margin-top:var(--g5);background:var(--paper);border-block:1px solid var(--ink);padding-block:var(--g2);display:flex;flex-wrap:wrap;gap:var(--g2) var(--g4);align-items:center}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.bar label{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--graphite)}
+.bar input[type=text]{flex:1 1 260px;min-width:0;font:400 var(--t3)/1.2 var(--display);padding:6px 10px;border:1px solid var(--ink);background:var(--sheet);color:var(--ink);text-transform:uppercase;letter-spacing:.04em}
+.bar .checks{display:flex;align-items:center;gap:8px;font-size:15px;cursor:pointer;text-transform:none;letter-spacing:0;font-family:var(--body);color:var(--ink)}
+.bar input[type=checkbox]{accent-color:var(--clay);width:16px;height:16px}
+input:focus-visible{outline:2px solid var(--clay);outline-offset:2px}
+.plate{margin-top:var(--g7);background:var(--sheet);border:1px solid var(--rule);padding:var(--g5) var(--g4)}
+.plate-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:var(--g3) var(--g6);align-items:end;margin-bottom:var(--g5)}
+@media (max-width:760px){.plate-head{grid-template-columns:minmax(0,1fr)}}
+.plate-head .t{display:grid;gap:6px}
+.plate-head .from{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--clay)}
+.plate-head p.d{font-size:15.5px;max-width:62ch}
+.rule{display:flex;flex-wrap:wrap;gap:6px var(--g3);margin-top:var(--g1);font-family:var(--mono);font-size:12.5px;color:var(--graphite)}
+.rule span::before{content:"";display:inline-block;width:7px;height:7px;background:var(--clay);margin-right:6px;vertical-align:1px}
+canvas{display:block;width:100%;max-width:100%}
+.specimen{border-top:1px solid var(--rule);padding-top:var(--g4)}
+.alpha{border-top:1px solid var(--rule);padding-top:var(--g4);margin-top:var(--g4)}
+.cap{font-family:var(--mono);font-size:12px;color:var(--graphite);margin-bottom:var(--g2);letter-spacing:.06em;text-transform:uppercase}
+footer{margin-top:var(--g8);padding-top:var(--g3);border-top:1px solid var(--rule);font-size:14px;color:var(--graphite);max-width:72ch}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Compass Grammar · type studies, part three</p>
+    <h1>Grafted <em>Faces</em></h1>
+    <p class="lede">Traditional capitals, with thick stems, thin hairlines and round bowls, where the compass grid touches only one part of each letter. In each face, a single detail is grafted on from a construction and the rest stays conventional. The red parts are the grafts.</p>
+  </header>
+
+  <div class="bar">
+    <label for="txt">Set</label>
+    <input type="text" id="txt" value="Quiet Geometry" maxlength="40" autocomplete="off" spellcheck="false" aria-label="Text to set in all five faces">
+    <label class="checks"><input type="checkbox" id="grid" checked> Highlight the grafts</label>
+  </div>
+
+  <article class="plate" id="p-lancet">
+    <div class="plate-head">
+      <div class="t"><span class="from">Face 1 · Graft: serifs · from the vesica</span><h2>Lancet</h2></div>
+      <div><p class="d">A bracketed roman where only the serifs are geometric. Each serif is half a vesica: an arc whose radius equals the serif's own width, so it rises exactly 13.4% of that width. Small arcs bracket it to the stem. Arms and round endings get the same half-vesica, standing upright.</p>
+      <div class="rule"><span>serif = half a vesica</span><span>brackets are quarter arcs</span><span>everything else is a normal roman</span></div></div>
+    </div>
+    <div class="specimen"><p class="cap">Your text</p><canvas id="lancetText" aria-label="Your text set in Lancet"></canvas></div>
+    <div class="alpha"><p class="cap">A to Z</p><canvas id="lancetAlpha" aria-label="Lancet alphabet"></canvas></div>
+  </article>
+  <article class="plate" id="p-coil">
+    <div class="plate-head">
+      <div class="t"><span class="from">Face 2 · Graft: terminals · from the golden spiral</span><h2>Coil</h2></div>
+      <div><p class="d">A high-contrast Didone with hairline serifs. Only where a curve ends, on C, G, J and S, does it keep turning: a hairline spiral of quarter arcs shrinking by φ, ending in a ball. The squares show the whirl each curl is drawn in.</p>
+      <div class="rule"><span>quarter arcs shrinking by φ</span><span>ball at the eye</span><span>hairline serifs stay plain</span></div></div>
+    </div>
+    <div class="specimen"><p class="cap">Your text</p><canvas id="coilText" aria-label="Your text set in Coil"></canvas></div>
+    <div class="alpha"><p class="cap">A to Z</p><canvas id="coilAlpha" aria-label="Coil alphabet"></canvas></div>
+  </article>
+  <article class="plate" id="p-octavo">
+    <div class="plate-head">
+      <div class="t"><span class="from">Face 3 · Graft: ink traps · from the sacred cut</span><h2>Octavo</h2></div>
+      <div><p class="d">A heavy grotesque, plain everywhere except where strokes meet. Each join is cut by a small circle centered on the corner, the same move that found the octagon. At small sizes the cuts fill in with ink; large, they become the face's signature.</p>
+      <div class="rule"><span>circles centered on corners</span><span>only at joins</span><span>plain terminals</span></div></div>
+    </div>
+    <div class="specimen"><p class="cap">Your text</p><canvas id="octavoText" aria-label="Your text set in Octavo"></canvas></div>
+    <div class="alpha"><p class="cap">A to Z</p><canvas id="octavoAlpha" aria-label="Octavo alphabet"></canvas></div>
+  </article>
+  <article class="plate" id="p-horizon">
+    <div class="plate-head">
+      <div class="t"><span class="from">Face 4 · Graft: stroke endings · from one pair of circles per line</span><h2>Horizon</h2></div>
+      <div><p class="d">A plain sans whose stroke ends are all cut by the same two concentric circles, one for the cap line and one for the baseline. Each line of text gets its own pair, so short words arch more and long lines barely curve. No letter is distorted, only trimmed.</p>
+      <div class="rule"><span>one circle pair per line</span><span>every ending cut by it</span><span>tighter arc for shorter lines</span></div></div>
+    </div>
+    <div class="specimen"><p class="cap">Your text</p><canvas id="horizonText" aria-label="Your text set in Horizon"></canvas></div>
+    <div class="alpha"><p class="cap">A to Z</p><canvas id="horizonAlpha" aria-label="Horizon alphabet"></canvas></div>
+  </article>
+  <article class="plate" id="p-lens">
+    <div class="plate-head">
+      <div class="t"><span class="from">Face 5 · Graft: crossbars and arms · from the vesica</span><h2>Lens</h2></div>
+      <div><p class="d">A sans with ordinary stems and bowls, where every crossbar and free arm is a vesica lens: thickest in the middle, pointed where it meets the stem or ends in air. The H's bar, the arms of E and F, and the top of T all become leaves.</p>
+      <div class="rule"><span>bars are lenses</span><span>arms taper to points</span><span>stems stay straight</span></div></div>
+    </div>
+    <div class="specimen"><p class="cap">Your text</p><canvas id="lensText" aria-label="Your text set in Lens"></canvas></div>
+    <div class="alpha"><p class="cap">A to Z</p><canvas id="lensAlpha" aria-label="Lens alphabet"></canvas></div>
+  </article>
+
+  <footer>Follows Five Faces and Drawn Faces. Display capitals only, drawn live in your browser. Turn off the highlight to see each face as plain type.</footer>
+</div>
+<script>
+(()=>{
+const TAU=Math.PI*2,R3=Math.sqrt(3),PHI=(1+Math.sqrt(5))/2,DEG=Math.PI/180,VS=1-R3/2;
+const $=s=>document.querySelector(s);
+const DPR=()=>Math.min(2,window.devicePixelRatio||1);
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+let P;const pal=()=>P={ink:css('--ink'),clay:css('--clay'),gr:css('--graphite'),sheet:css('--sheet')};
+const ALPHA='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const hl=()=>$('#grid').checked;
+const text=()=>$('#txt').value.toUpperCase().replace(/[^A-Z ]/g,'').replace(/\s+/g,' ').trim()||'QUIET';
+
+/* ================= a conventional capital kit (cap height 10) ================= */
+function makeKit(S,h,ext=0){const tn=h<1?Math.max(h*1.4,.5):h;
+  const K={S,h,tn,polys:[],rings:[],ends:[],arms:[],terms:[],joins:[]};
+  const E=(y)=>y<=.01?-ext:y>=9.99?10+ext:y;
+  K.poly=pts=>K.polys.push(pts);
+  K.stem=(x,y0,y1,t=S)=>{K.poly([[x-t/2,E(y0)],[x+t/2,E(y0)],[x+t/2,E(y1)],[x-t/2,E(y1)]]);if(y0<=.01)K.ends.push({x,y:0,w:t,top:false});if(y1>=9.99)K.ends.push({x,y:10,w:t,top:true})};
+  K.diag=(p,q,t,e=[1,1])=>{const ex=(a,b)=>{if(!(a[1]<=.01||a[1]>=9.99)||!ext)return a;const k=(E(a[1])-a[1])/(a[1]-b[1]);return[a[0]+(a[0]-b[0])*k,E(a[1])]};
+    const p2=ex(p,q),q2=ex(q,p);K.poly([[p2[0]-t/2,p2[1]],[p2[0]+t/2,p2[1]],[q2[0]+t/2,q2[1]],[q2[0]-t/2,q2[1]]]);
+    [[p,e[0]],[q,e[1]]].forEach(([a,on])=>{if(on&&(a[1]<=.01||a[1]>=9.99))K.ends.push({x:a[0],y:a[1],w:t,top:a[1]>5,diag:true})})};
+  // horizontal of thickness h. role: link (part of a bowl), bar (between strokes), arm (free end)
+  K.arm=(x0,x1,yc,role,free=null,vside='mid')=>{K.arms.push({x0,x1,yc,role,free,vside})};
+  K.ring=(cx,cy,rx,ry,a0=0,a1=360,t=[0,0],thinRight=0)=>{K.rings.push({cx,cy,rx,ry,a0,a1,idx:thinRight?(S-thinRight)/2:0,irx:thinRight?rx-(S+thinRight)/2:rx-S});const add=(a,dir)=>K.terms.push({cx,cy,rx,ry,a,dir,S,h});if(t[0])add(a0,-1);if(t[1])add(a1,1)};
+  K.join=(x,y)=>K.joins.push({x,y});
+  return K}
+
+const G={
+ A:K=>{const {S,tn}=K;K.diag([1.2,0],[3.6,10],tn);K.diag([6,0],[3.6,10],S);const y=3.2;K.arm(1.2+2.4*y/10,6-2.4*y/10,y,'bar');K.join(3.6,8.1);return 7.2},
+ B:K=>{const {S,h}=K,L=S/2;K.stem(L,0,10);const m=5.15;K.arm(L,3.2,10-h/2,'link');K.arm(L,3.2,m,'link');K.arm(L,3.45,h/2,'link');
+   const t=m-h/2,b=m+h/2;K.ring(3.2,(10+t)/2,2.35,(10-t)/2,-90,90);K.ring(3.45,b/2,2.65,b/2,-90,90);return 6.1},
+ C:K=>{K.ring(3.7,5,3.6,5.15,42,318,[1,1]);return 7.1},
+ D:K=>{const {S,h}=K,L=S/2;K.stem(L,0,10);K.arm(L,2.8,10-h/2,'link');K.arm(L,2.8,h/2,'link');K.ring(2.8,5,3.6,5,-90,90);return 6.4},
+ E:K=>{const {S,h}=K,L=S/2;K.stem(L,0,10);K.arm(L,5.2,10-h/2,'arm','r','top');K.arm(L,4.4,5.1,'bar','r','mid');K.arm(L,5.6,h/2,'arm','r','bottom');return 5.6},
+ F:K=>{const {S,h}=K,L=S/2;K.stem(L,0,10);K.arm(L,5.2,10-h/2,'arm','r','top');K.arm(L,4.4,4.9,'bar','r','mid');return 5.2},
+ G:K=>{const {S,h}=K;K.ring(3.75,5,3.6,5.15,40,360,[1,0]);K.stem(7.35-S/2,.9,4.5);K.arm(4.4,7.35,4.5-h/2,'bar','l','mid');return 7.35},
+ H:K=>{const {S}=K,L=S/2;K.stem(L,0,10);K.stem(6.3,0,10);K.arm(L,6.3,5.3,'bar');return 6.3+L},
+ I:K=>{K.stem(K.S/2,0,10);return K.S},
+ J:K=>{const {S}=K;K.stem(3.9-S/2,2.75,10);K.ring(1.9,2.75,2.0,2.9,180,360,[1,0]);return 3.9},
+ K:K=>{const {S,tn}=K,L=S/2;K.stem(L,0,10);K.diag([1.6,3.4],[6.2,10],tn,[0,1]);K.diag([3.0,5.3],[6.6,0],S,[0,1]);K.join(S+.25,4.4);return 6.6},
+ L:K=>{const {S,h}=K,L=S/2;K.stem(L,0,10);K.arm(L,5.4,h/2,'arm','r','bottom');return 5.4},
+ M:K=>{const {S,tn}=K;K.stem(.9,0,10,tn);K.diag([.9,10],[4.5,0],S,[1,0]);K.diag([8.1,10],[4.5,0],tn,[1,0]);K.stem(8.1,0,10);K.join(4.5,1.9);K.join(1.5,8.2);K.join(7.5,8.2);return 8.1+S/2},
+ N:K=>{const {S,tn}=K;K.stem(.9,0,10,tn);K.diag([.9,10],[6.2,0],S,[0,0]);K.stem(6.2,0,10,tn);K.join(1.5,8.1);K.join(5.6,1.9);return 6.2+tn/2},
+ O:K=>{K.ring(3.75,5,3.75,5.15);return 7.5},
+ P:K=>{const {S,h}=K,L=S/2;K.stem(L,0,10);const m=4.6;K.arm(L,3,10-h/2,'link');K.arm(L,3,m,'link');const t=m-h/2;K.ring(3,(10+t)/2,2.7,(10-t)/2,-90,90);return 5.7},
+ Q:K=>{const {S}=K;K.ring(3.75,5,3.75,5.15);K.diag([4.3,1],[6.9,-1.9],S,[0,0]);return 7.5},
+ R:K=>{const {S,h}=K,L=S/2;K.stem(L,0,10);const m=4.6;K.arm(L,3,10-h/2,'link');K.arm(L,3,m,'link');const t=m-h/2;K.ring(3,(10+t)/2,2.7,(10-t)/2,-90,90);K.diag([3.1,m],[6.3,0],S,[0,1]);K.join(3.6,m-.9);return 6.3},
+ S:K=>{K.ring(3.3,7.4,3.0,2.75,25,270,[1,0]);K.ring(3.5,2.65,3.2,2.8,205,450,[1,0]);return 6.7},
+ T:K=>{const {S,h}=K;K.arm(0,6.6,10-h/2,'arm','both','top');K.stem(3.3,0,9.9);return 6.6},
+ U:K=>{const {S,tn}=K,L=S/2;K.stem(L,3.1,10);K.stem(6.6-tn/2,3.1,10,tn);K.ring(3.3,3.1,3.3,3.25,180,360,[0,0],tn);return 6.6},
+ V:K=>{const {S,tn}=K;K.diag([.9,10],[3.7,0],S,[1,0]);K.diag([6.5,10],[3.7,0],tn,[1,0]);K.join(3.7,1.9);return 7},
+ W:K=>{const {S,tn}=K;K.diag([.7,10],[2.7,0],S,[1,0]);K.diag([4.8,10],[2.7,0],tn,[0,0]);K.diag([4.8,10],[6.9,0],S,[0,0]);K.diag([9,10],[6.9,0],tn,[1,0]);K.join(2.7,1.9);K.join(6.9,1.9);K.join(4.8,8.1);return 9.6},
+ X:K=>{const {S,tn}=K;K.diag([.9,10],[6.1,0],S);K.diag([6,10],[.9,0],tn);return 7},
+ Y:K=>{const {S,tn}=K;K.diag([.9,10],[3.5,5],S,[1,0]);K.diag([6.1,10],[3.5,5],tn,[1,0]);K.stem(3.5,0,5.3);K.join(3.5,6.1);return 7},
+ Z:K=>{const {S,h}=K;K.arm(.4,5.9,10-h/2,'arm','l','top');K.arm(0,6.2,h/2,'arm','r','bottom');K.diag([5.7,10-h],[.6,h],S,[0,0]);return 6.2}};
+
+/* ================= geometry helpers ================= */
+function arcSag(p,q,h,n=24){const dx=q[0]-p[0],dy=q[1]-p[1],c=Math.hypot(dx,dy);if(Math.abs(h)<1e-5)return{pts:[p,q],circ:null};const nx=-dy/c,ny=dx/c;const r=(c*c/4+h*h)/(2*Math.abs(h));
+  const ap=[(p[0]+q[0])/2+nx*h,(p[1]+q[1])/2+ny*h];const sg=Math.sign(h);const ce=[ap[0]-nx*sg*r,ap[1]-ny*sg*r];
+  const nrm=a=>{while(a>Math.PI)a-=TAU;while(a<=-Math.PI)a+=TAU;return a};const a0=Math.atan2(p[1]-ce[1],p[0]-ce[0]),aA=Math.atan2(ap[1]-ce[1],ap[0]-ce[0]),a1=Math.atan2(q[1]-ce[1],q[0]-ce[0]);
+  const tot=nrm(aA-a0)+nrm(a1-aA);const pts=[];for(let i=0;i<=n;i++){const a=a0+tot*i/n;pts.push([ce[0]+r*Math.cos(a),ce[1]+r*Math.sin(a)])}return{pts,circ:{c:ce,r}}}
+// half-vesica: chord p→q, bulging toward t, rising chord×(1−√3/2); its circle has radius = chord
+function halfVesica(p,q,t){const dx=q[0]-p[0],dy=q[1]-p[1],c=Math.hypot(dx,dy);const nx=-dy/c,ny=dx/c;const m=[(p[0]+q[0])/2,(p[1]+q[1])/2];const sg=((t[0]-m[0])*nx+(t[1]-m[1])*ny)>0?1:-1;const A=arcSag(p,q,sg*c*VS);return{poly:A.pts,circ:A.circ}}
+function lensPoly(p,q,thick){const A=arcSag(p,q,thick/2),B=arcSag(p,q,-thick/2);return{poly:[...A.pts,...B.pts.slice().reverse()],circs:[A.circ,B.circ]}}
+const circlePoly=(c,r,n=28)=>Array.from({length:n},(_,i)=>[c[0]+r*Math.cos(i/n*TAU),c[1]+r*Math.sin(i/n*TAU)]);
+function termGeom(t){const {cx,cy,rx,ry,a,dir,S,h}=t;const ca=Math.cos(a*DEG),sa=Math.sin(a*DEG);const Po=[cx+rx*ca,cy+ry*sa],Pi=[cx+(rx-S)*ca,cy+(ry-h)*sa];
+  let T=[-rx*sa*dir,ry*ca*dir];const l=Math.hypot(...T);T=[T[0]/l,T[1]/l];return{Po,Pi,M:[(Po[0]+Pi[0])/2,(Po[1]+Pi[1])/2],T,w:Math.hypot(Po[0]-Pi[0],Po[1]-Pi[1])}}
+
+/* ================= the five grafts ================= */
+const FACES={
+ lancet:{S:1.5,h:.42,sb:1.7,
+  graft(K){const add=[],circs=[];
+    for(const e of K.ends){const ws=e.w+(e.diag?2.4:2.2);const y=e.top?10:0,tw=e.top?[e.x,5]:[e.x,5];const hv=halfVesica([e.x-ws/2,y],[e.x+ws/2,y],tw);add.push(hv.poly);circs.push(hv.circ);
+      if(!e.diag){const r=hv.circ.r,cc=hv.circ.c;for(const sd of[-1,1]){const sx=e.x+sd*e.w/2;const yy=cc[1]+(e.top?-1:1)*Math.sqrt(Math.max(0,r*r-(sx+sd*.75-cc[0])**2));const b=.75,dy=e.top?-1:1;
+        const ctr=[sx+sd*b,yy+dy*b];const pts=[[sx,yy+dy*b],[sx,yy-dy*.05],[sx+sd*b,yy-dy*.05]];for(let i=0;i<=10;i++){const ang=Math.atan2(-dy,0)+(sd*dy>0?-1:1)*0;}
+        const a0=Math.atan2((yy)-ctr[1],(sx+sd*b)-ctr[0]),a1=Math.atan2((yy+dy*b)-ctr[1],sx-ctr[0]);let da=a1-a0;while(da>Math.PI)da-=TAU;while(da<-Math.PI)da+=TAU;for(let i=0;i<=10;i++){const a=a0+da*i/10;pts.push([ctr[0]+b*Math.cos(a),ctr[1]+b*Math.sin(a)])}
+        add.push(pts);circs.push({c:ctr,r:b})}}}
+    for(const a of K.arms){if(a.role!=='arm'&&!(a.role==='bar'&&a.free))continue;const ends=a.free==='both'?['l','r']:[a.free];
+      for(const s of ends){const xe=s==='r'?a.x1:a.x0,inward=s==='r'?-1:1;const len=a.vside==='mid'?1.7:2.5;let p,q;
+        if(a.vside==='top'){p=[xe,10];q=[xe,10-len]}else if(a.vside==='bottom'){p=[xe,0];q=[xe,len]}else{p=[xe,a.yc-len/2];q=[xe,a.yc+len/2]}
+        const hv=halfVesica(p,q,[xe+inward,(p[1]+q[1])/2]);add.push(hv.poly);circs.push(hv.circ)}}
+    for(const t of K.terms){const g=termGeom(t);const up=g.Po[1]>t.cy?-1:1;const p=[g.Po[0]+.02,g.Po[1]+(up<0?.15:-.15)*0],q=[g.Po[0],g.Po[1]+up*2.3];const hv=halfVesica(p,q,[t.cx,t.cy]);add.push(hv.poly);circs.push(hv.circ)}
+    return{add,circs}}},
+ coil:{S:1.75,h:.22,sb:1.6,
+  graft(K){const ink=[],add=[],circs=[],squares=[];const h=K.h;
+    for(const e of K.ends){const ws=e.w+2.2;const y0=e.top?10-h:0;ink.push([[e.x-ws/2,y0],[e.x+ws/2,y0],[e.x+ws/2,y0+h],[e.x-ws/2,y0+h]])}
+    for(const a of K.arms){if(a.role!=='arm'&&!(a.role==='bar'&&a.free))continue;const ends=a.free==='both'?['l','r']:[a.free];
+      for(const s of ends){const xe=s==='r'?a.x1:a.x0;const x0=s==='r'?xe-h:xe;const len=a.vside==='mid'?1.6:2.3;let y0,y1;if(a.vside==='top'){y0=10-len;y1=10}else if(a.vside==='bottom'){y0=0;y1=len}else{y0=a.yc-len/2;y1=a.yc+len/2}ink.push([[x0,y0],[x0+h,y0],[x0+h,y1],[x0,y1]])}}
+    for(const t of K.terms){const g=termGeom(t);const toC=[t.cx-g.M[0],t.cy-g.M[1]];const turn=(g.T[0]*toC[1]-g.T[1]*toC[0])>0?1:-1;
+      let x=g.M[0],y=g.M[1],H=Math.atan2(g.T[1],g.T[0]),r=1.6;const L=[],R=[];const w0=Math.max(h*2.2,.42),w1=h*1.1;let step=0;const total=3*12;
+      const push=()=>{const w=w0+(w1-w0)*Math.min(1,step/total*1.6);const nx=-Math.sin(H),ny=Math.cos(H);L.push([x+nx*w/2,y+ny*w/2]);R.push([x-nx*w/2,y-ny*w/2]);step++};push();
+      for(let qd=0;qd<3;qd++){const cx=x-Math.sin(H)*turn*r,cy=y+Math.cos(H)*turn*r;const a0=Math.atan2(y-cy,x-cx);const sx=x,sy=y;
+        for(let j=1;j<=12;j++){const a=a0+turn*(Math.PI/2)*j/12;x=cx+r*Math.cos(a);y=cy+r*Math.sin(a);H+=turn*(Math.PI/2)/12;push()}
+        squares.push([[cx,cy],[sx,sy],[sx+x-cx,sy+y-cy],[x,y]]);r/=PHI}
+      add.push([...L,...R.reverse()]);add.push(circlePoly([x,y],.58));circs.push({c:[x,y],r:.58})}
+    return{ink,add,circs,squares}}},
+ octavo:{S:1.95,h:1.55,sb:1.3,
+  graft(K){const sub=[],circs=[];const r=.62,S=K.S,h=K.h;
+    for(const j of K.joins){sub.push(circlePoly([j.x,j.y],r));circs.push({c:[j.x,j.y],r})}
+    for(const a of K.arms){if(a.role==='arm'||a.role==='link'||a.role==='bar'){const ys=a.vside==='top'?[a.yc-h/2]:a.vside==='bottom'?[a.yc+h/2]:[a.yc-h/2,a.yc+h/2];
+      const xs=[];if(a.x0<S)xs.push(S);if(a.role==='bar'&&!a.free)xs.push(a.x1-S/2);
+      for(const x of xs)for(const y of ys){sub.push(circlePoly([x,y],r));circs.push({c:[x,y],r})}}}
+    return{sub,circs}}},
+ horizon:{S:1.55,h:1.1,sb:1.3,ext:1.6,graft(){return{}}},
+ lens:{S:1.6,h:.5,sb:1.3,
+  graft(K){const add=[],circs=[];for(const a of K.arms){if(a.role==='link')continue;const th=1.25;const L=lensPoly([a.x0,a.yc+(a.vside==='top'?-.15:a.vside==='bottom'?.15:0)],[a.x1,a.yc+(a.vside==='top'?-.15:a.vside==='bottom'?.15:0)],th);add.push(L.poly);circs.push(...L.circs)}return{add,circs}}}
+};
+
+/* ================= rendering ================= */
+function glyphFor(face,ch){const F=FACES[face];const K=makeKit(F.S,F.h,F.ext||0);const w=G[ch](K);const g=F.graft(K)||{};return{K,w,g}}
+function wrap(str,adv,spaceAdv,maxU){const words=str.split(' ');const lines=[];let cur=[],w=0;
+  for(const wd of words){const ww=[...wd].reduce((s,c)=>s+adv(c),0);if(cur.length&&w+spaceAdv+ww>maxU){lines.push(cur);cur=[];w=0}if(cur.length){cur.push(' ');w+=spaceAdv}cur.push(...wd);w+=ww}if(cur.length)lines.push(cur);return lines}
+function render(cv,str,face,capPx){const F=FACES[face];const s=capPx/10,d=DPR();const W=cv.getBoundingClientRect().width||600;const cache={};const gl=c=>cache[c]||(cache[c]=glyphFor(face,c));
+  const adv=c=>gl(c).w+F.sb*1.2;const space=3.6;const padL=1.6,padR=1.6;const lines=wrap(str,adv,space,W/s-padL-padR);const lineH=15.5;
+  const H=Math.ceil(lines.length*lineH*s);cv.style.height=H+'px';cv.width=Math.round(W*d);cv.height=Math.round(H*d);const ctx=cv.getContext('2d');ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,W,H);
+  const lay=document.createElement('canvas');lay.width=cv.width;lay.height=cv.height;const lc=lay.getContext('2d');
+  lines.forEach((ln,li)=>{const base=(li*lineH+12.6)*s;let x=padL;const placed=[];for(const c of ln){if(c===' '){x+=space;continue}placed.push([c,x]);x+=adv(c)}const lineW=x-padL;
+    const X=(ox,u)=>(ox+u)*s,Y=v=>base-v*s;const path=(c2,pts,ox)=>{c2.beginPath();pts.forEach((p,i)=>i?c2.lineTo(X(ox,p[0]),Y(p[1])):c2.moveTo(X(ox,p[0]),Y(p[1])));c2.closePath()};
+    // construction (under)
+    ctx.save();ctx.scale(1,1);
+    if(hl()){ctx.strokeStyle=P.gr;ctx.lineWidth=.7;ctx.globalAlpha=.42;for(const [c,ox] of placed){const g=gl(c).g;for(const cc of (g.circs||[])){if(!cc||cc.r>14)continue;ctx.beginPath();ctx.arc(X(ox,cc.c[0]),Y(cc.c[1]),cc.r*s,0,TAU);ctx.stroke()}for(const q of (g.squares||[])){ctx.beginPath();q.forEach((p,i)=>i?ctx.lineTo(X(ox,p[0]),Y(p[1])):ctx.moveTo(X(ox,p[0]),Y(p[1])));ctx.closePath();ctx.stroke()}}ctx.globalAlpha=1}
+    ctx.restore();
+    // letters on a layer
+    lc.setTransform(d,0,0,d,0,0);lc.clearRect(0,0,W,H);lc.save();
+    let hz=null;if(face==='horizon'){const half=Math.max(lineW/2,8);const dip=1.1;const Rout=Math.max(14,(half*half+dip*dip)/(2*dip));const cxl=padL+lineW/2;hz={c:[cxl,10-Rout],Ro:Rout,Ri:Rout-10};
+      lc.beginPath();lc.arc(cxl*s,Y(10-Rout),Rout*s,0,TAU);lc.arc(cxl*s,Y(10-Rout),(Rout-10)*s,0,TAU,true);lc.clip('evenodd')}
+    for(const [c,ox] of placed){const {K,g}=gl(c);lc.fillStyle=P.ink;
+      for(const p of K.polys){path(lc,p,ox);lc.fill()}
+      for(const r of K.rings){lc.beginPath();if(r.a1-r.a0>=360){lc.ellipse(X(ox,r.cx),Y(r.cy),r.rx*s,r.ry*s,0,0,TAU);lc.ellipse(X(ox,r.cx+r.idx),Y(r.cy),r.irx*s,(r.ry-K.h)*s,0,0,TAU,true);lc.fill('evenodd')}
+        else{lc.ellipse(X(ox,r.cx),Y(r.cy),r.rx*s,r.ry*s,0,-r.a0*DEG,-r.a1*DEG,true);lc.ellipse(X(ox,r.cx+r.idx),Y(r.cy),r.irx*s,(r.ry-K.h)*s,0,-r.a1*DEG,-r.a0*DEG,false);lc.closePath();lc.fill()}}
+      const armsAsRects=face!=='lens';for(const a of K.arms){if(!armsAsRects&&a.role!=='link')continue;path(lc,[[a.x0,a.yc-K.h/2],[a.x1,a.yc-K.h/2],[a.x1,a.yc+K.h/2],[a.x0,a.yc+K.h/2]],ox);lc.fill()}
+      for(const p of (g.ink||[])){path(lc,p,ox);lc.fill()}
+      lc.fillStyle=hl()?P.clay:P.ink;for(const p of (g.add||[])){path(lc,p,ox);lc.fill()}
+      if(g.sub){lc.globalCompositeOperation='destination-out';for(const p of g.sub){path(lc,p,ox);lc.fill()}lc.globalCompositeOperation='source-over'}}
+    lc.restore();
+    ctx.setTransform(1,0,0,1,0,0);ctx.drawImage(lay,0,0);ctx.setTransform(d,0,0,d,0,0);
+    // highlights over the letters
+    if(hl()&&face==='octavo'){ctx.strokeStyle=P.clay;ctx.lineWidth=1.3;for(const [c,ox] of placed)for(const cc of (gl(c).g.circs||[])){ctx.beginPath();ctx.arc(X(ox,cc.c[0]),Y(cc.c[1]),cc.r*s,0,TAU);ctx.stroke()}}
+    if(hz&&hl()){ctx.strokeStyle=P.clay;ctx.lineWidth=1.3;ctx.globalAlpha=.9;for(const R of [hz.Ro,hz.Ri]){ctx.beginPath();ctx.arc(hz.c[0]*s,Y(hz.c[1]),R*s,0,TAU);ctx.stroke()}ctx.globalAlpha=1}
+  })}
+function capFor(cv,big){const W=cv.getBoundingClientRect().width||600;return big?Math.max(38,Math.min(84,W/12)):Math.max(24,Math.min(44,W/30))}
+function drawAll(){pal();const t=text();for(const f of Object.keys(FACES)){render($('#'+f+'Text'),t,f,capFor($('#'+f+'Text'),true));render($('#'+f+'Alpha'),ALPHA,f,capFor($('#'+f+'Alpha'),false))}}
+let raf=0;const sched=()=>{if(!raf)raf=requestAnimationFrame(()=>{raf=0;drawAll()})};
+$('#txt').addEventListener('input',sched);$('#grid').addEventListener('input',sched);
+let rz;new ResizeObserver(()=>{clearTimeout(rz);rz=setTimeout(drawAll,100)}).observe(document.querySelector('.wrap'));
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',drawAll);
+drawAll();
+})();
+</script>
+</body></html>
