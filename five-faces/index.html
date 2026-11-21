@@ -1,0 +1,260 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>
+<title>Five Faces</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a type specimen book on the same drafting sheet. One shared input, then five full-width plates, each with its grid shown. */
+:root{
+  --paper:#e9ece8; --sheet:#f6f7f4; --ink:#15181a; --graphite:#78828a; --rule:#cdd3cf; --clay:#c2173e;
+  --display:"Instrument Serif","Iowan Old Style",Georgia,serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --t-1:13.45px; --t0:16px; --t1:19.03px; --t2:22.63px; --t3:26.91px; --t4:32px; --t6:45.25px;
+  --g1:8px; --g2:11.3px; --g3:16px; --g4:22.6px; --g5:32px; --g6:45.3px; --g7:64px; --g8:90.5px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#101315;--sheet:#171b1e;--ink:#e4e9e6;--graphite:#7d888f;--rule:#2a3035;--clay:#ff4a6d;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#101315;--sheet:#171b1e;--ink:#e4e9e6;--graphite:#7d888f;--rule:#2a3035;--clay:#ff4a6d;color-scheme:dark}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:var(--t0);line-height:1.55;
+  background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);background-size:45.25px 45.25px;background-attachment:fixed}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:var(--g6) var(--g8)}
+h1,h2{font-family:var(--display);font-weight:400;line-height:1.05;text-wrap:balance;margin:0}
+h1{font-size:clamp(var(--t6),7.5vw,90.5px);letter-spacing:-.01em}
+h1 em,h2 em{color:var(--clay)}
+h2{font-size:clamp(var(--t4),4.4vw,var(--t6))}
+p{margin:0}
+.lede{max-width:64ch;font-size:var(--t1);margin-top:var(--g3)}
+.eyebrow{font-family:var(--mono);font-size:var(--t-1);letter-spacing:.08em;text-transform:uppercase;color:var(--graphite)}
+header{display:grid;gap:var(--g2)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;margin-top:var(--g5);background:var(--paper);border-block:1px solid var(--ink);padding-block:var(--g2);display:flex;flex-wrap:wrap;gap:var(--g2) var(--g4);align-items:center}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.bar label{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--graphite)}
+.bar input[type=text]{flex:1 1 260px;min-width:0;font:400 var(--t3)/1.2 var(--display);padding:6px 10px;border:1px solid var(--ink);background:var(--sheet);color:var(--ink);text-transform:uppercase;letter-spacing:.04em}
+.bar .checks{display:flex;align-items:center;gap:8px;font-size:15px;cursor:pointer;text-transform:none;letter-spacing:0;font-family:var(--body);color:var(--ink)}
+.bar input[type=checkbox]{accent-color:var(--clay);width:16px;height:16px}
+input:focus-visible,button:focus-visible{outline:2px solid var(--clay);outline-offset:2px}
+.plate{margin-top:var(--g7);background:var(--sheet);border:1px solid var(--rule);padding:var(--g5) var(--g4)}
+.plate-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:var(--g3) var(--g6);align-items:end;margin-bottom:var(--g5)}
+@media (max-width:760px){.plate-head{grid-template-columns:minmax(0,1fr)}}
+.plate-head .t{display:grid;gap:6px}
+.plate-head .from{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--clay)}
+.plate-head p.d{font-size:15.5px;max-width:62ch}
+.rule{display:flex;flex-wrap:wrap;gap:6px var(--g3);margin-top:var(--g1);font-family:var(--mono);font-size:12.5px;color:var(--graphite)}
+.rule span::before{content:"";display:inline-block;width:7px;height:7px;background:var(--clay);margin-right:6px;vertical-align:1px}
+canvas{display:block;width:100%;max-width:100%}
+.specimen{border-top:1px solid var(--rule);padding-top:var(--g4)}
+.alpha{border-top:1px solid var(--rule);padding-top:var(--g4);margin-top:var(--g4)}
+.cap{font-family:var(--mono);font-size:12px;color:var(--graphite);margin-bottom:var(--g2);letter-spacing:.06em;text-transform:uppercase}
+.orbit{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--g4);border-top:1px solid var(--rule);padding-top:var(--g4)}
+@media (max-width:760px){.orbit{grid-template-columns:minmax(0,1fr)}}
+.orbit canvas{aspect-ratio:1/1}
+footer{margin-top:var(--g8);padding-top:var(--g3);border-top:1px solid var(--rule);font-size:14px;color:var(--graphite);max-width:72ch}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Compass Grammar · type studies</p>
+    <h1>Five <em>Faces</em></h1>
+    <p class="lede">Five typefaces, each built on a grid from the earlier experiments, and none of them on a rectangle. The first four share one simple letter skeleton, so you can see what the grid alone does to it. The fifth is drawn from scratch out of vesica arcs.</p>
+  </header>
+
+  <div class="bar">
+    <label for="txt">Set</label>
+    <input type="text" id="txt" value="Compass Grammar" maxlength="40" autocomplete="off" spellcheck="false" aria-label="Text to set in all five faces">
+    <label class="checks"><input type="checkbox" id="grid" checked> Show the grid</label>
+  </div>
+
+  <article class="plate" id="p-orbit">
+    <div class="plate-head">
+      <div class="t"><span class="from">Face 1 · from the walk</span><h2>Orbit</h2></div>
+      <div><p class="d">A polar grid of rings and spokes. Letters stand on a circle, so every horizontal stroke becomes an arc on a ring and every vertical becomes a spoke. Words close into seals, coins and clock faces.</p>
+      <div class="rule"><span>rings = cap lines</span><span>spokes = stems</span><span>text closes on itself</span></div></div>
+    </div>
+    <div class="orbit"><div><p class="cap">Your text</p><canvas id="orbitText" aria-label="Your text set in Orbit"></canvas></div><div><p class="cap">A to Z</p><canvas id="orbitAlpha" aria-label="Orbit alphabet"></canvas></div></div>
+  </article>
+
+  <article class="plate" id="p-seed">
+    <div class="plate-head">
+      <div class="t"><span class="from">Face 2 · from the sunflower</span><h2>Seedhead</h2></div>
+      <div><p class="d">Each letter is a sunflower head of seeds placed by the golden angle. The skeleton decides which seeds ripen. No two seeds share a row or column, so the letters have no pixel grid at all, only a spiral.</p>
+      <div class="rule"><span>137.5° per seed</span><span>lit if near the skeleton</span><span>one head per letter</span></div></div>
+    </div>
+    <div class="specimen"><p class="cap">Your text</p><canvas id="seedText" aria-label="Your text set in Seedhead"></canvas></div>
+    <div class="alpha"><p class="cap">A to Z</p><canvas id="seedAlpha" aria-label="Seedhead alphabet"></canvas></div>
+  </article>
+
+  <article class="plate" id="p-comb">
+    <div class="plate-head">
+      <div class="t"><span class="from">Face 3 · from the cells</span><h2>Comb</h2></div>
+      <div><p class="d">A honeycomb, the shape the Voronoi cells settled into when relaxed. Letters are filled in cell by cell. Stems step in a gentle zigzag, and diagonals at 60° come out perfectly clean.</p>
+      <div class="rule"><span>hexagonal cells</span><span>one grid for the whole line</span><span>diagonals at 60°</span></div></div>
+    </div>
+    <div class="specimen"><p class="cap">Your text</p><canvas id="combText" aria-label="Your text set in Comb"></canvas></div>
+    <div class="alpha"><p class="cap">A to Z</p><canvas id="combAlpha" aria-label="Comb alphabet"></canvas></div>
+  </article>
+
+  <article class="plate" id="p-pent">
+    <div class="plate-head">
+      <div class="t"><span class="from">Face 4 · from the Penrose tiling</span><h2>Pentad</h2></div>
+      <div><p class="d">Drawn on a lattice of the Penrose tiling's thick rhombus. Its 72° sides lean every stem 18°, and every 45° corner of the skeleton becomes a pentagon angle of 36° or 126°. An italic that comes from the grid, not a slant.</p>
+      <div class="rule"><span>72° rhombus lattice</span><span>stems lean 18°</span><span>corners at 36° and 126°</span></div></div>
+    </div>
+    <div class="specimen"><p class="cap">Your text</p><canvas id="pentText" aria-label="Your text set in Pentad"></canvas></div>
+    <div class="alpha"><p class="cap">A to Z</p><canvas id="pentAlpha" aria-label="Pentad alphabet"></canvas></div>
+  </article>
+
+  <article class="plate" id="p-mand">
+    <div class="plate-head">
+      <div class="t"><span class="from">Face 5 · from the vesica</span><h2>Mandorla</h2></div>
+      <div><p class="d">Every curve is an arc of a circle, and curves meet in points, never in smooth joins. The O is a true vesica, M and W are pairs of equilateral arches, and S is an ogee. The faint circles are the compass settings each letter needs.</p>
+      <div class="rule"><span>O is a vesica</span><span>arches are equilateral</span><span>joins are pointed</span></div></div>
+    </div>
+    <div class="specimen"><p class="cap">Your text</p><canvas id="mandText" aria-label="Your text set in Mandorla"></canvas></div>
+    <div class="alpha"><p class="cap">A to Z</p><canvas id="mandAlpha" aria-label="Mandorla alphabet"></canvas></div>
+  </article>
+
+  <footer>Companion to Compass Grammar and Off Center. These are display concepts: capitals only, drawn live from their grids in your browser.</footer>
+</div>
+
+<script>
+(()=>{
+const TAU=Math.PI*2,R3=Math.sqrt(3),PHI=(1+Math.sqrt(5))/2,GA=TAU/(PHI*PHI);
+const $=s=>document.querySelector(s);
+const DPR=()=>Math.min(2,window.devicePixelRatio||1);
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+let P;const pal=()=>P={ink:css('--ink'),clay:css('--clay'),gr:css('--graphite'),sheet:css('--sheet')};
+const ALPHA='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const showGrid=()=>$('#grid').checked;
+const text=()=>$('#txt').value.toUpperCase().replace(/[^A-Z ]/g,'').replace(/\s+/g,' ').trim()||'COMPASS';
+
+/* ---------- shared skeleton (3 wide × 4 tall, chamfered corners) ---------- */
+const SK={A:[3,'0,0 0,3 1,4 2,4 3,3 3,0|0,2 3,2'],B:[3,'0,0 0,4 2,4 3,3 2,2 0,2|2,2 3,1 2,0 0,0'],C:[3,'3,4 1,4 0,3 0,1 1,0 3,0'],D:[3,'0,0 0,4 2,4 3,3 3,1 2,0 0,0'],
+E:[3,'3,4 0,4 0,0 3,0|0,2 2,2'],F:[3,'3,4 0,4 0,0|0,2 2,2'],G:[3,'3,4 1,4 0,3 0,1 1,0 3,0 3,2 2,2'],H:[3,'0,0 0,4|3,0 3,4|0,2 3,2'],I:[0,'0,0 0,4'],J:[3,'3,4 3,1 2,0 1,0 0,1'],
+K:[3,'0,0 0,4|3,4 1,2 3,0|0,2 1,2'],L:[3,'0,4 0,0 3,0'],M:[4,'0,0 0,4 2,2 4,4 4,0'],N:[3,'0,0 0,4 3,0 3,4'],O:[3,'1,0 2,0 3,1 3,3 2,4 1,4 0,3 0,1 1,0'],P:[3,'0,0 0,4 2,4 3,3 2,2 0,2'],
+Q:[3,'1,0 2,0 3,1 3,3 2,4 1,4 0,3 0,1 1,0|2,1 3,0'],R:[3,'0,0 0,4 2,4 3,3 2,2 0,2|1,2 3,0'],S:[3,'3,4 1,4 0,3 1,2 2,2 3,1 2,0 0,0'],T:[3,'0,4 3,4|1.5,4 1.5,0'],U:[3,'0,4 0,1 1,0 2,0 3,1 3,4'],
+V:[3,'0,4 1.5,0 3,4'],W:[4,'0,4 1,0 2,2 3,0 4,4'],X:[3,'0,0 3,4|0,4 3,0'],Y:[3,'0,4 1.5,2 3,4|1.5,2 1.5,0'],Z:[3,'0,4 3,4 0,0 3,0']};
+const skel={};for(const k in SK){const [w,s]=SK[k];skel[k]={w,paths:s.split('|').map(p=>p.split(' ').map(q=>{const [x,y]=q.split(',').map(Number);return{x,y}}))}}
+function segDist(px,py,a,b){const dx=b.x-a.x,dy=b.y-a.y,l=dx*dx+dy*dy;let t=l?((px-a.x)*dx+(py-a.y)*dy)/l:0;t=Math.max(0,Math.min(1,t));return Math.hypot(px-a.x-t*dx,py-a.y-t*dy)}
+function skDist(g,x,y){let d=1e9;for(const p of g.paths)for(let i=1;i<p.length;i++)d=Math.min(d,segDist(x,y,p[i-1],p[i]));return d}
+
+/* ---------- row layout: wrap words to a width in units ---------- */
+function wrap(str,adv,spaceAdv,maxU){const words=str.split(' ');const lines=[];let cur=[],w=0;
+  for(const wd of words){const ww=[...wd].reduce((s,c)=>s+adv(c),0);if(cur.length&&w+spaceAdv+ww>maxU){lines.push(cur);cur=[];w=0}if(cur.length){cur.push(' ');w+=spaceAdv}cur.push(...wd);w+=ww}if(cur.length)lines.push(cur);return lines}
+function setup(cv,cssH){const W=cv.getBoundingClientRect().width||600,d=DPR();cv.style.height=cssH+'px';cv.width=Math.round(W*d);cv.height=Math.round(cssH*d);const ctx=cv.getContext('2d');ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,W,cssH);return{ctx,W}}
+// generic row renderer: font = {adv(c), space, lineH (units), top, bottom, draw(ctx, ch, ox, base, s, lineIndex)}
+function renderRow(cv,str,font,capPx){const s=capPx/4;const W0=cv.getBoundingClientRect().width||600;const maxU=W0/s-font.padL-font.padR;
+  const lines=wrap(str,font.adv,font.space,maxU);const lh=font.lineH*s;const H=Math.ceil(lines.length*lh+ (font.extra||0)*s);
+  const {ctx,W}=setup(cv,H);
+  lines.forEach((ln,li)=>{const base=(li*font.lineH+font.top)*s;let x=font.padL;if(font.before)font.before(ctx,ln,x,base,s,W);for(const c of ln){if(c===' '){x+=font.space;continue}font.draw(ctx,c,x,base,s);x+=font.adv(c)}})}
+
+/* ============ 1. ORBIT: skeleton on a polar grid ============ */
+function drawOrbit(cv,str){const W=cv.getBoundingClientRect().width||500;const {ctx}=setup(cv,W);const cx=W/2,cy=W/2,Rmax=W/2-6;
+  const glyphs=[...str];const adv=c=>c===' '?2.2:skel[c].w+1.25;const tw=glyphs.reduce((s,c)=>s+adv(c),0)+2.2;
+  const k=TAU/tw;const Rb=Rmax/(1+4*k*1.05);const u=Rb*k;const R=y=>Rb+y*u;
+  const pt=(gx,y)=>{const th=Math.PI/2-gx*k;const r=R(y);return[cx+r*Math.cos(th),cy-r*Math.sin(th)]};
+  if(showGrid()){ctx.strokeStyle=P.gr;ctx.lineWidth=.7;ctx.globalAlpha=.45;for(let y=0;y<=4;y++){ctx.beginPath();ctx.arc(cx,cy,R(y),0,TAU);ctx.stroke()}
+    ctx.globalAlpha=.25;for(let i=0;i<Math.round(tw*2);i++){const gx=i/2;const a=pt(gx,0),b=pt(gx,4);ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke()}ctx.globalAlpha=1}
+  ctx.strokeStyle=P.clay;ctx.lineWidth=Math.max(1.2,u*.42);ctx.lineCap='round';ctx.lineJoin='round';let x=1.1;
+  for(const c of glyphs){if(c===' '){x+=2.2;continue}const g=skel[c];for(const p of g.paths){ctx.beginPath();let first=true;for(let i=1;i<p.length;i++){const a=p[i-1],b=p[i];const n=Math.max(2,Math.ceil(Math.hypot(b.x-a.x,b.y-a.y)*8));for(let j=first?0:1;j<=n;j++){const t=j/n;const q=pt(x+a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t);first?ctx.moveTo(q[0],q[1]):ctx.lineTo(q[0],q[1]);first=false}}ctx.stroke()}x+=adv(c)}
+  // separator dot where the text closes
+  const d=pt(tw-1.1,2);ctx.fillStyle=P.clay;ctx.beginPath();ctx.arc(d[0],d[1],Math.max(2,u*.35),0,TAU);ctx.fill();
+  ctx.strokeStyle=P.ink;ctx.lineWidth=1;ctx.globalAlpha=.6;ctx.beginPath();ctx.arc(cx,cy,Math.max(3,Rb*.04),0,TAU);ctx.stroke();ctx.globalAlpha=1}
+
+/* ============ 2. SEEDHEAD: skeleton sampled by sunflower seeds ============ */
+const seedR=c=>Math.hypot(Math.max(skel[c].w,1.4)/2,2)+.45;
+const SEED={padL:.4,padR:.4,space:2.2,lineH:6.6,top:5.6,adv:c=>2*seedR(c)*.96,
+  draw(ctx,c,ox,base,s){const g=skel[c],rD=seedR(c),cxu=ox+rD,cyu=2;const N=Math.round(Math.PI*rD*rD/.075);const offx=cxu-g.w/2;
+    for(let i=0;i<N;i++){const r=rD*Math.sqrt((i+.5)/N),t=i*GA;const xu=cxu+r*Math.cos(t),yu=cyu+r*Math.sin(t);const on=skDist(g,xu-offx,yu)<.4;
+      if(!on&&!showGrid())continue;ctx.fillStyle=on?P.clay:P.gr;ctx.globalAlpha=on?1:.5;ctx.beginPath();ctx.arc(xu*s,base-yu*s,(on?.13*(1-.25*r/rD):.065*(1-.3*r/rD))*s,0,TAU);ctx.fill()}ctx.globalAlpha=1}};
+
+/* ============ 3. COMB: skeleton filled into one hexagonal grid ============ */
+const CR=.25,CW=R3*CR,CH=1.5*CR;
+const COMB={padL:.6,padR:.6,space:2.2,lineH:6.4,top:5.2,adv:c=>skel[c].w+1.5,
+  before(ctx,ln,x0,base,s,W){// one hex grid for the whole line; find which letter owns each cell
+    const spans=[];let x=x0;for(const c of ln){if(c===' '){x+=2.2;continue}spans.push([x,c]);x+=COMB.adv(c)}
+    const yTop=4.7,yBot=-.7;const hex=(cx,cy,r)=>{ctx.beginPath();for(let k=0;k<6;k++){const a=Math.PI/6+k*TAU/6;const px=(cx+r*Math.cos(a))*s,py=base-(cy+r*Math.sin(a))*s;k?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath()};
+    const cols=Math.ceil(W/s/CW)+2;
+    for(let row=Math.floor(yBot/CH);row<=Math.ceil(yTop/CH);row++)for(let col=-1;col<cols;col++){const cx=(col+(row&1?.5:0))*CW,cy=row*CH;
+      let on=false;for(const [sx,c] of spans){if(cx<sx-.8||cx>sx+skel[c].w+.8)continue;if(skDist(skel[c],cx-sx,cy)<.42){on=true;break}}
+      if(on){hex(cx,cy,CR*.9);ctx.fillStyle=P.clay;ctx.fill()}else if(showGrid()&&cy>yBot&&cy<yTop){hex(cx,cy,CR*.9);ctx.strokeStyle=P.gr;ctx.globalAlpha=.3;ctx.lineWidth=.6;ctx.stroke();ctx.globalAlpha=1}}},
+  draw(){}};
+
+/* ============ 4. PENTAD: skeleton on the 72° Penrose-rhombus lattice ============ */
+const C72=Math.cos(TAU/5),S72=Math.sin(TAU/5);
+const pmap=(x,y)=>({x:x+C72*y,y:S72*y});
+const PENT={padL:.5,padR:1.8,space:2.2,lineH:6.2,top:5,adv:c=>skel[c].w+1.25,
+  before(ctx,ln,x0,base,s,W){if(!showGrid())return;ctx.strokeStyle=P.gr;ctx.lineWidth=.7;ctx.globalAlpha=.4;const maxX=W/s;
+    for(let b=0;b<=4;b++){const y=base-S72*b*s;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+    for(let a=-2;a<maxX+1;a++){const p=pmap(a,0),q=pmap(a,4);ctx.beginPath();ctx.moveTo(p.x*s,base-p.y*s);ctx.lineTo(q.x*s,base-q.y*s);ctx.stroke()}ctx.globalAlpha=1},
+  draw(ctx,c,ox,base,s){const g=skel[c];ctx.strokeStyle=P.clay;ctx.lineWidth=.44*s;ctx.lineCap='butt';ctx.lineJoin='miter';ctx.miterLimit=4;
+    for(const p of g.paths){ctx.beginPath();p.forEach((q,i)=>{const m=pmap(q.x,q.y);const X=(ox+m.x)*s,Y=base-m.y*s;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)});ctx.stroke()}}};
+
+/* ============ 5. MANDORLA: drawn from vesica arcs ============ */
+const MR=4/R3; // vesica radius for a 4-tall O
+function arcC(c,r,d0,d1,n=28){const pts=[];for(let i=0;i<=n;i++){const a=(d0+(d1-d0)*i/n)*Math.PI/180;pts.push({x:c.x+r*Math.cos(a),y:c.y+r*Math.sin(a)})}return{pts,circ:{c,r}}}
+function arcT(p,q,r,tw,n=28){const d=Math.hypot(q.x-p.x,q.y-p.y);r=Math.max(r,d/2+1e-6);const h=Math.sqrt(r*r-d*d/4);const m={x:(p.x+q.x)/2,y:(p.y+q.y)/2};const nx=-(q.y-p.y)/d,ny=(q.x-p.x)/d;
+  const c1={x:m.x+nx*h,y:m.y+ny*h},c2={x:m.x-nx*h,y:m.y-ny*h};const c=Math.hypot(c1.x-tw.x,c1.y-tw.y)<Math.hypot(c2.x-tw.x,c2.y-tw.y)?c1:c2;
+  let a0=Math.atan2(p.y-c.y,p.x-c.x),a1=Math.atan2(q.y-c.y,q.x-c.x),da=a1-a0;while(da>Math.PI)da-=TAU;while(da<-Math.PI)da+=TAU;const pts=[];for(let i=0;i<=n;i++){const a=a0+da*i/n;pts.push({x:c.x+r*Math.cos(a),y:c.y+r*Math.sin(a)})}return{pts,circ:{c,r}}}
+const ln=(p,q)=>({pts:[p,q]});
+const V=(x,y)=>({x,y});
+function chain(...parts){const pts=[];const circs=[];parts.forEach((pt,i)=>{pts.push(...(i?pt.pts.slice(1):pt.pts));if(pt.circ)circs.push(pt.circ)});return{pts,circs}}
+function atY(pts,y){let best=pts[0],bd=1e9;for(const p of pts){const d=Math.abs(p.y-y);if(d<bd){bd=d;best=p}}return best}
+const cL=V(MR,2),cR=V(0,2),OW=MR; // O: left arc centered right, right arc centered left
+const MG={};
+(()=>{const ys=4-R3;// equilateral arch spring for span 2
+  const leftO=arcC(cL,MR,120,240),rightO=arcC(cR,MR,60,-60);
+  const legA1=arcT(V(0,0),V(1.1,4),5,V(5,1)),legA2=arcT(V(2.2,0),V(1.1,4),5,V(-3,1));
+  MG.A={w:2.2,ch:[chain(legA1),chain(legA2),chain(ln(atY(legA1.pts,1.35),atY(legA2.pts,1.35)))]};
+  MG.B={w:1.45,ch:[chain(ln(V(0,0),V(0,4))),chain(arcT(V(0,4),V(1.2,3.05),1.9,V(0,3)),arcT(V(1.2,3.05),V(0,2.1),1.9,V(0,3))),chain(arcT(V(0,2.1),V(1.45,1.05),2.1,V(0,1)),arcT(V(1.45,1.05),V(0,0),2.1,V(0,1)))]};
+  MG.C={w:OW,ch:[chain(arcC(cR,MR,42,60),arcC(cL,MR,120,240),arcC(cR,MR,-60,-42))]};
+  MG.D={w:1.3,ch:[chain(ln(V(0,0),V(0,4)),arcT(V(0,4),V(0,0),2.2,V(-2,2)))]};
+  MG.E={w:OW,ch:[chain(arcC(cR,MR,42,60),arcC(cL,MR,120,240),arcC(cR,MR,-60,-42)),chain(ln(V(0,2),V(1.45,2)))]};
+  MG.F={w:1.75,ch:[chain(ln(V(0,0),V(0,4)),arcT(V(0,4),V(1.75,3.55),2.2,V(.9,1.5))),chain(ln(V(0,2.05),V(1.25,2.05)))]};
+  MG.G={w:OW,ch:[chain(arcC(cR,MR,42,60),arcC(cL,MR,120,240),arcC(cR,MR,-60,0),ln(V(MR,2),V(1.25,2)))]};
+  MG.H={w:2,ch:[chain(ln(V(0,0),V(0,4))),chain(ln(V(2,0),V(2,4))),chain(ln(V(0,2),V(2,2)))]};
+  MG.I={w:0,ch:[chain(ln(V(0,0),V(0,4)))]};
+  MG.J={w:1.35,ch:[chain(ln(V(1.35,4),V(1.35,1.15)),arcT(V(1.35,1.15),V(0,.75),1.05,V(.6,1.6)))]};
+  MG.K={w:1.9,ch:[chain(ln(V(0,0),V(0,4))),chain(arcT(V(1.9,4),V(0,1.75),3.6,V(2.6,1.2))),chain(arcT(V(.62,2.5),V(1.95,0),3.6,V(2.6,3)))]};
+  MG.L={w:1.65,ch:[chain(ln(V(0,4),V(0,0)),ln(V(0,0),V(1.65,0)))]};
+  const sp=1.25,ysM=4-sp*R3/2;
+  MG.M={w:2.5,ch:[chain(ln(V(0,0),V(0,ysM)),arcC(V(sp,ysM),sp,180,120),arcC(V(0,ysM),sp,60,0),ln(V(sp,ysM),V(sp,1))),chain(arcC(V(2*sp,ysM),sp,180,120),arcC(V(sp,ysM),sp,60,0),ln(V(2*sp,ysM),V(2*sp,0)))]};
+  const ywM=sp*R3/2;
+  MG.W={w:2.5,ch:[chain(ln(V(0,4),V(0,ywM)),arcC(V(sp,ywM),sp,180,240),arcC(V(0,ywM),sp,-60,0),ln(V(sp,ywM),V(sp,3))),chain(arcC(V(2*sp,ywM),sp,180,240),arcC(V(sp,ywM),sp,-60,0),ln(V(2*sp,ywM),V(2*sp,4)))]};
+  MG.N={w:2,ch:[chain(ln(V(0,0),V(0,4)),arcT(V(0,4),V(2,0),4.6,V(3.5,4)),ln(V(2,0),V(2,4)))]};
+  MG.O={w:OW,ch:[chain(leftO),chain(rightO)]};
+  MG.P={w:1.45,ch:[chain(ln(V(0,0),V(0,4))),chain(arcT(V(0,4),V(1.45,2.95),2,V(0,2.9)),arcT(V(1.45,2.95),V(0,1.9),2,V(0,2.9)))]};
+  MG.Q={w:OW,ch:[chain(leftO),chain(rightO),chain(ln(V(1.45,.55),V(2.3,-.35)))]};
+  MG.R={w:1.75,ch:[chain(ln(V(0,0),V(0,4))),chain(arcT(V(0,4),V(1.45,2.95),2,V(0,2.9)),arcT(V(1.45,2.95),V(0,1.9),2,V(0,2.9))),chain(arcT(V(.35,1.9),V(1.75,0),2.6,V(2.6,2)))]};
+  MG.S={w:2,ch:[chain(arcT(V(1.9,3.55),V(.05,3.05),1.25,V(1,2)),arcT(V(.05,3.05),V(1,2),1.15,V(1.6,3)),arcT(V(1,2),V(1.95,.95),1.15,V(.4,1)),arcT(V(1.95,.95),V(.05,.45),1.25,V(1,2)))]};
+  MG.T={w:2.2,ch:[chain(ln(V(0,4),V(2.2,4))),chain(ln(V(1.1,4),V(1.1,0)))]};
+  MG.U={w:2,ch:[chain(ln(V(0,4),V(0,R3)),arcC(V(2,R3),2,180,240)),chain(ln(V(2,4),V(2,R3)),arcC(V(0,R3),2,0,-60))]};
+  MG.V={w:2.2,ch:[chain(arcT(V(0,4),V(1.1,0),5,V(5,3))),chain(arcT(V(2.2,4),V(1.1,0),5,V(-3,3)))]};
+  MG.X={w:2.2,ch:[chain(arcT(V(0,4),V(2.2,0),3.6,V(-1.5,-.5))),chain(arcT(V(2.2,4),V(0,0),3.6,V(3.7,-.5)))]};
+  MG.Y={w:2.2,ch:[chain(arcT(V(0,4),V(1.1,1.9),2.6,V(2.6,4))),chain(arcT(V(2.2,4),V(1.1,1.9),2.6,V(-.4,4))),chain(ln(V(1.1,1.9),V(1.1,0)))]};
+  MG.Z={w:2,ch:[chain(ln(V(0,4),V(2,4)),arcT(V(2,4),V(0,0),4.6,V(-1.5,-.5)),ln(V(0,0),V(2,0)))]};
+})();
+const MAND={padL:.5,padR:.5,space:2.2,lineH:6.2,top:5,adv:c=>MG[c].w+1.15,
+  draw(ctx,c,ox,base,s){const g=MG[c];
+    if(showGrid()){ctx.save();ctx.beginPath();ctx.rect((ox-.6)*s,base-4.9*s,(g.w+1.2)*s,5.8*s);ctx.clip();ctx.strokeStyle=P.gr;ctx.globalAlpha=.35;ctx.lineWidth=.7;
+      const seen=new Set();for(const ch of g.ch)for(const cc of ch.circs){const k=cc.c.x.toFixed(3)+cc.c.y.toFixed(3)+cc.r.toFixed(3);if(seen.has(k))continue;seen.add(k);ctx.beginPath();ctx.arc((ox+cc.c.x)*s,base-cc.c.y*s,cc.r*s,0,TAU);ctx.stroke()}ctx.restore();ctx.globalAlpha=1}
+    ctx.strokeStyle=P.clay;ctx.lineWidth=.4*s;ctx.lineCap='butt';ctx.lineJoin='miter';ctx.miterLimit=6;
+    for(const ch of g.ch){ctx.beginPath();ch.pts.forEach((q,i)=>{const X=(ox+q.x)*s,Y=base-q.y*s;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)});ctx.stroke()}}};
+
+/* ---------- draw everything ---------- */
+function capFor(cv,big){const W=cv.getBoundingClientRect().width||600;return big?Math.max(34,Math.min(78,W/13)):Math.max(22,Math.min(40,W/30))}
+function drawAll(){pal();const t=text();
+  drawOrbit($('#orbitText'),t);drawOrbit($('#orbitAlpha'),ALPHA);
+  renderRow($('#seedText'),t,SEED,capFor($('#seedText'),true)*.8);renderRow($('#seedAlpha'),ALPHA,SEED,capFor($('#seedAlpha'),false)*.9);
+  renderRow($('#combText'),t,COMB,capFor($('#combText'),true));renderRow($('#combAlpha'),ALPHA,COMB,capFor($('#combAlpha'),false));
+  renderRow($('#pentText'),t,PENT,capFor($('#pentText'),true));renderRow($('#pentAlpha'),ALPHA,PENT,capFor($('#pentAlpha'),false));
+  renderRow($('#mandText'),t,MAND,capFor($('#mandText'),true));renderRow($('#mandAlpha'),ALPHA,MAND,capFor($('#mandAlpha'),false))}
+let raf=0;const sched=()=>{if(!raf)raf=requestAnimationFrame(()=>{raf=0;drawAll()})};
+$('#txt').addEventListener('input',sched);$('#grid').addEventListener('input',sched);
+let rz;new ResizeObserver(()=>{clearTimeout(rz);rz=setTimeout(drawAll,100)}).observe(document.querySelector('.wrap'));
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',drawAll);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(drawAll);
+drawAll();
+})();
+</script>
+</body></html>
