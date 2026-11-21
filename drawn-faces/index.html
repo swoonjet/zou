@@ -1,0 +1,293 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>
+<title>Drawn Faces</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a type specimen book on the drafting sheet. Shared input, then one plate per face with its construction drawn behind. */
+:root{
+  --paper:#e9ece8; --sheet:#f6f7f4; --ink:#15181a; --graphite:#78828a; --rule:#cdd3cf; --clay:#c2173e;
+  --display:"Instrument Serif","Iowan Old Style",Georgia,serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --t-1:13.45px; --t0:16px; --t1:19.03px; --t2:22.63px; --t3:26.91px; --t4:32px; --t6:45.25px;
+  --g1:8px; --g2:11.3px; --g3:16px; --g4:22.6px; --g5:32px; --g6:45.3px; --g7:64px; --g8:90.5px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#101315;--sheet:#171b1e;--ink:#e4e9e6;--graphite:#7d888f;--rule:#2a3035;--clay:#ff4a6d;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#101315;--sheet:#171b1e;--ink:#e4e9e6;--graphite:#7d888f;--rule:#2a3035;--clay:#ff4a6d;color-scheme:dark}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:var(--t0);line-height:1.55;
+  background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);background-size:45.25px 45.25px;background-attachment:fixed}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:var(--g6) var(--g8)}
+h1,h2{font-family:var(--display);font-weight:400;line-height:1.05;text-wrap:balance;margin:0}
+h1{font-size:clamp(var(--t6),7.5vw,90.5px);letter-spacing:-.01em}
+h1 em{color:var(--clay)}
+h2{font-size:clamp(var(--t4),4.4vw,var(--t6))}
+p{margin:0}
+.lede{max-width:64ch;font-size:var(--t1);margin-top:var(--g3)}
+.eyebrow{font-family:var(--mono);font-size:var(--t-1);letter-spacing:.08em;text-transform:uppercase;color:var(--graphite)}
+header{display:grid;gap:var(--g2)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;margin-top:var(--g5);background:var(--paper);border-block:1px solid var(--ink);padding-block:var(--g2);display:flex;flex-wrap:wrap;gap:var(--g2) var(--g4);align-items:center}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.bar label{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--graphite)}
+.bar input[type=text]{flex:1 1 260px;min-width:0;font:400 var(--t3)/1.2 var(--display);padding:6px 10px;border:1px solid var(--ink);background:var(--sheet);color:var(--ink);text-transform:uppercase;letter-spacing:.04em}
+.bar .checks{display:flex;align-items:center;gap:8px;font-size:15px;cursor:pointer;text-transform:none;letter-spacing:0;font-family:var(--body);color:var(--ink)}
+.bar input[type=checkbox]{accent-color:var(--clay);width:16px;height:16px}
+input:focus-visible{outline:2px solid var(--clay);outline-offset:2px}
+.plate{margin-top:var(--g7);background:var(--sheet);border:1px solid var(--rule);padding:var(--g5) var(--g4)}
+.plate-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:var(--g3) var(--g6);align-items:end;margin-bottom:var(--g5)}
+@media (max-width:760px){.plate-head{grid-template-columns:minmax(0,1fr)}}
+.plate-head .t{display:grid;gap:6px}
+.plate-head .from{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--clay)}
+.plate-head p.d{font-size:15.5px;max-width:62ch}
+.rule{display:flex;flex-wrap:wrap;gap:6px var(--g3);margin-top:var(--g1);font-family:var(--mono);font-size:12.5px;color:var(--graphite)}
+.rule span::before{content:"";display:inline-block;width:7px;height:7px;background:var(--clay);margin-right:6px;vertical-align:1px}
+canvas{display:block;width:100%;max-width:100%}
+.specimen{border-top:1px solid var(--rule);padding-top:var(--g4)}
+.alpha{border-top:1px solid var(--rule);padding-top:var(--g4);margin-top:var(--g4)}
+.cap{font-family:var(--mono);font-size:12px;color:var(--graphite);margin-bottom:var(--g2);letter-spacing:.06em;text-transform:uppercase}
+footer{margin-top:var(--g8);padding-top:var(--g3);border-top:1px solid var(--rule);font-size:14px;color:var(--graphite);max-width:72ch}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Compass Grammar · type studies, part two</p>
+    <h1>Drawn <em>Faces</em></h1>
+    <p class="lede">Four faces where the construction is the letter. Every curve is one whole arc you could set on a compass, and where strokes meet, and at what angle, comes from the geometry, not from a grid of small pieces. Mandorla returns from the first set; three new faces join it.</p>
+  </header>
+
+  <div class="bar">
+    <label for="txt">Set</label>
+    <input type="text" id="txt" value="Sacred Geometry" maxlength="40" autocomplete="off" spellcheck="false" aria-label="Text to set in all four faces">
+    <label class="checks"><input type="checkbox" id="grid" checked> Show the construction</label>
+  </div>
+
+  <article class="plate" id="p-mand">
+    <div class="plate-head">
+      <div class="t"><span class="from">Face 1 · From the vesica</span><h2>Mandorla</h2></div>
+      <div><p class="d">Every curve is an arc of a circle, and curves meet in points, never in smooth joins. The O is a true vesica, M and W are pairs of equilateral arches, and S is an ogee.</p>
+      <div class="rule"><span>O is a vesica</span><span>arches are equilateral</span><span>joins are pointed</span></div></div>
+    </div>
+    <div class="specimen"><p class="cap">Your text</p><canvas id="mandText" aria-label="Your text set in Mandorla"></canvas></div>
+    <div class="alpha"><p class="cap">A to Z</p><canvas id="mandAlpha" aria-label="Mandorla alphabet"></canvas></div>
+  </article>
+  <article class="plate" id="p-lune">
+    <div class="plate-head">
+      <div class="t"><span class="from">Face 2 · From Hippocrates' lunes</span><h2>Lune</h2></div>
+      <div><p class="d">Every stroke is a crescent: the sliver between two arcs that share their ends. Its thickness swells and tapers on its own, so the face has the thick-and-thin rhythm of a pen, without one. Heavy strokes run down-left to up-right like a broad nib; hairlines run the other way.</p>
+      <div class="rule"><span>two arcs per stroke</span><span>contrast from geometry</span><span>pointed terminals</span></div></div>
+    </div>
+    <div class="specimen"><p class="cap">Your text</p><canvas id="luneText" aria-label="Your text set in Lune"></canvas></div>
+    <div class="alpha"><p class="cap">A to Z</p><canvas id="luneAlpha" aria-label="Lune alphabet"></canvas></div>
+  </article>
+  <article class="plate" id="p-whorl">
+    <div class="plate-head">
+      <div class="t"><span class="from">Face 3 · From the golden spiral</span><h2>Whorl</h2></div>
+      <div><p class="d">Every curve is a quarter circle. Where a stroke ends, it keeps turning, each quarter shrinking by φ, and curls into a small golden spiral. The faint squares are the whirling squares each curl is drawn in.</p>
+      <div class="rule"><span>quarter circles only</span><span>terminals shrink by φ</span><span>straights stay straight</span></div></div>
+    </div>
+    <div class="specimen"><p class="cap">Your text</p><canvas id="whorlText" aria-label="Your text set in Whorl"></canvas></div>
+    <div class="alpha"><p class="cap">A to Z</p><canvas id="whorlAlpha" aria-label="Whorl alphabet"></canvas></div>
+  </article>
+  <article class="plate" id="p-notch">
+    <div class="plate-head">
+      <div class="t"><span class="from">Face 4 · From the sacred cut</span><h2>Notch</h2></div>
+      <div><p class="d">The octagon was found by swinging arcs from the corners of a square. Here every corner of the letter gets the same move: a quarter arc centered on the corner itself, cutting it away. The result curves inward wherever other faces would round outward.</p>
+      <div class="rule"><span>arcs centered on corners</span><span>concave, never convex</span><span>heavy, upright, square</span></div></div>
+    </div>
+    <div class="specimen"><p class="cap">Your text</p><canvas id="notchText" aria-label="Your text set in Notch"></canvas></div>
+    <div class="alpha"><p class="cap">A to Z</p><canvas id="notchAlpha" aria-label="Notch alphabet"></canvas></div>
+  </article>
+
+  <footer>Follows Five Faces. Display capitals only, drawn live from their constructions in your browser.</footer>
+</div>
+<script>
+(()=>{
+const TAU=Math.PI*2,R3=Math.sqrt(3),PHI=(1+Math.sqrt(5))/2,DEG=Math.PI/180;
+const $=s=>document.querySelector(s);
+const DPR=()=>Math.min(2,window.devicePixelRatio||1);
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+let P;const pal=()=>P={ink:css('--ink'),clay:css('--clay'),gr:css('--graphite'),sheet:css('--sheet')};
+const ALPHA='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const showGrid=()=>$('#grid').checked;
+const text=()=>$('#txt').value.toUpperCase().replace(/[^A-Z ]/g,'').replace(/\s+/g,' ').trim()||'COMPASS';
+const MR=4/R3; // vesica radius for a 4-tall O
+function arcC(c,r,d0,d1,n=28){const pts=[];for(let i=0;i<=n;i++){const a=(d0+(d1-d0)*i/n)*Math.PI/180;pts.push({x:c.x+r*Math.cos(a),y:c.y+r*Math.sin(a)})}return{pts,circ:{c,r}}}
+function arcT(p,q,r,tw,n=28){const d=Math.hypot(q.x-p.x,q.y-p.y);r=Math.max(r,d/2+1e-6);const h=Math.sqrt(r*r-d*d/4);const m={x:(p.x+q.x)/2,y:(p.y+q.y)/2};const nx=-(q.y-p.y)/d,ny=(q.x-p.x)/d;
+  const c1={x:m.x+nx*h,y:m.y+ny*h},c2={x:m.x-nx*h,y:m.y-ny*h};const c=Math.hypot(c1.x-tw.x,c1.y-tw.y)<Math.hypot(c2.x-tw.x,c2.y-tw.y)?c1:c2;
+  let a0=Math.atan2(p.y-c.y,p.x-c.x),a1=Math.atan2(q.y-c.y,q.x-c.x),da=a1-a0;while(da>Math.PI)da-=TAU;while(da<-Math.PI)da+=TAU;const pts=[];for(let i=0;i<=n;i++){const a=a0+da*i/n;pts.push({x:c.x+r*Math.cos(a),y:c.y+r*Math.sin(a)})}return{pts,circ:{c,r}}}
+const ln=(p,q)=>({pts:[p,q]});
+const V=(x,y)=>({x,y});
+function chain(...parts){const pts=[];const circs=[];parts.forEach((pt,i)=>{pts.push(...(i?pt.pts.slice(1):pt.pts));if(pt.circ)circs.push(pt.circ)});return{pts,circs}}
+function atY(pts,y){let best=pts[0],bd=1e9;for(const p of pts){const d=Math.abs(p.y-y);if(d<bd){bd=d;best=p}}return best}
+const cL=V(MR,2),cR=V(0,2),OW=MR; // O: left arc centered right, right arc centered left
+const MG={};
+(()=>{const ys=4-R3;// equilateral arch spring for span 2
+  const leftO=arcC(cL,MR,120,240),rightO=arcC(cR,MR,60,-60);
+  const legA1=arcT(V(0,0),V(1.1,4),5,V(5,1)),legA2=arcT(V(2.2,0),V(1.1,4),5,V(-3,1));
+  MG.A={w:2.2,ch:[chain(legA1),chain(legA2),chain(ln(atY(legA1.pts,1.35),atY(legA2.pts,1.35)))]};
+  MG.B={w:1.45,ch:[chain(ln(V(0,0),V(0,4))),chain(arcT(V(0,4),V(1.2,3.05),1.9,V(0,3)),arcT(V(1.2,3.05),V(0,2.1),1.9,V(0,3))),chain(arcT(V(0,2.1),V(1.45,1.05),2.1,V(0,1)),arcT(V(1.45,1.05),V(0,0),2.1,V(0,1)))]};
+  MG.C={w:OW,ch:[chain(arcC(cR,MR,42,60),arcC(cL,MR,120,240),arcC(cR,MR,-60,-42))]};
+  MG.D={w:1.3,ch:[chain(ln(V(0,0),V(0,4)),arcT(V(0,4),V(0,0),2.2,V(-2,2)))]};
+  MG.E={w:OW,ch:[chain(arcC(cR,MR,42,60),arcC(cL,MR,120,240),arcC(cR,MR,-60,-42)),chain(ln(V(0,2),V(1.45,2)))]};
+  MG.F={w:1.75,ch:[chain(ln(V(0,0),V(0,4)),arcT(V(0,4),V(1.75,3.55),2.2,V(.9,1.5))),chain(ln(V(0,2.05),V(1.25,2.05)))]};
+  MG.G={w:OW,ch:[chain(arcC(cR,MR,42,60),arcC(cL,MR,120,240),arcC(cR,MR,-60,0),ln(V(MR,2),V(1.25,2)))]};
+  MG.H={w:2,ch:[chain(ln(V(0,0),V(0,4))),chain(ln(V(2,0),V(2,4))),chain(ln(V(0,2),V(2,2)))]};
+  MG.I={w:0,ch:[chain(ln(V(0,0),V(0,4)))]};
+  MG.J={w:1.35,ch:[chain(ln(V(1.35,4),V(1.35,1.15)),arcT(V(1.35,1.15),V(0,.75),1.05,V(.6,1.6)))]};
+  MG.K={w:1.9,ch:[chain(ln(V(0,0),V(0,4))),chain(arcT(V(1.9,4),V(0,1.75),3.6,V(2.6,1.2))),chain(arcT(V(.62,2.5),V(1.95,0),3.6,V(2.6,3)))]};
+  MG.L={w:1.65,ch:[chain(ln(V(0,4),V(0,0)),ln(V(0,0),V(1.65,0)))]};
+  const sp=1.25,ysM=4-sp*R3/2;
+  MG.M={w:2.5,ch:[chain(ln(V(0,0),V(0,ysM)),arcC(V(sp,ysM),sp,180,120),arcC(V(0,ysM),sp,60,0),ln(V(sp,ysM),V(sp,1))),chain(arcC(V(2*sp,ysM),sp,180,120),arcC(V(sp,ysM),sp,60,0),ln(V(2*sp,ysM),V(2*sp,0)))]};
+  const ywM=sp*R3/2;
+  MG.W={w:2.5,ch:[chain(ln(V(0,4),V(0,ywM)),arcC(V(sp,ywM),sp,180,240),arcC(V(0,ywM),sp,-60,0),ln(V(sp,ywM),V(sp,3))),chain(arcC(V(2*sp,ywM),sp,180,240),arcC(V(sp,ywM),sp,-60,0),ln(V(2*sp,ywM),V(2*sp,4)))]};
+  MG.N={w:2,ch:[chain(ln(V(0,0),V(0,4)),arcT(V(0,4),V(2,0),4.6,V(3.5,4)),ln(V(2,0),V(2,4)))]};
+  MG.O={w:OW,ch:[chain(leftO),chain(rightO)]};
+  MG.P={w:1.45,ch:[chain(ln(V(0,0),V(0,4))),chain(arcT(V(0,4),V(1.45,2.95),2,V(0,2.9)),arcT(V(1.45,2.95),V(0,1.9),2,V(0,2.9)))]};
+  MG.Q={w:OW,ch:[chain(leftO),chain(rightO),chain(ln(V(1.45,.55),V(2.3,-.35)))]};
+  MG.R={w:1.75,ch:[chain(ln(V(0,0),V(0,4))),chain(arcT(V(0,4),V(1.45,2.95),2,V(0,2.9)),arcT(V(1.45,2.95),V(0,1.9),2,V(0,2.9))),chain(arcT(V(.35,1.9),V(1.75,0),2.6,V(2.6,2)))]};
+  MG.S={w:2,ch:[chain(arcT(V(1.9,3.55),V(.05,3.05),1.25,V(1,2)),arcT(V(.05,3.05),V(1,2),1.15,V(1.6,3)),arcT(V(1,2),V(1.95,.95),1.15,V(.4,1)),arcT(V(1.95,.95),V(.05,.45),1.25,V(1,2)))]};
+  MG.T={w:2.2,ch:[chain(ln(V(0,4),V(2.2,4))),chain(ln(V(1.1,4),V(1.1,0)))]};
+  MG.U={w:2,ch:[chain(ln(V(0,4),V(0,R3)),arcC(V(2,R3),2,180,240)),chain(ln(V(2,4),V(2,R3)),arcC(V(0,R3),2,0,-60))]};
+  MG.V={w:2.2,ch:[chain(arcT(V(0,4),V(1.1,0),5,V(5,3))),chain(arcT(V(2.2,4),V(1.1,0),5,V(-3,3)))]};
+  MG.X={w:2.2,ch:[chain(arcT(V(0,4),V(2.2,0),3.6,V(-1.5,-.5))),chain(arcT(V(2.2,4),V(0,0),3.6,V(3.7,-.5)))]};
+  MG.Y={w:2.2,ch:[chain(arcT(V(0,4),V(1.1,1.9),2.6,V(2.6,4))),chain(arcT(V(2.2,4),V(1.1,1.9),2.6,V(-.4,4))),chain(ln(V(1.1,1.9),V(1.1,0)))]};
+  MG.Z={w:2,ch:[chain(ln(V(0,4),V(2,4)),arcT(V(2,4),V(0,0),4.6,V(-1.5,-.5)),ln(V(0,0),V(2,0)))]};
+})();
+
+/* ---------- layout ---------- */
+function wrap(str,adv,spaceAdv,maxU){const words=str.split(' ');const lines=[];let cur=[],w=0;
+  for(const wd of words){const ww=[...wd].reduce((s,c)=>s+adv(c),0);if(cur.length&&w+spaceAdv+ww>maxU){lines.push(cur);cur=[];w=0}if(cur.length){cur.push(' ');w+=spaceAdv}cur.push(...wd);w+=ww}if(cur.length)lines.push(cur);return lines}
+function setup(cv,cssH){const W=cv.getBoundingClientRect().width||600,d=DPR();cv.style.height=cssH+'px';cv.width=Math.round(W*d);cv.height=Math.round(cssH*d);const ctx=cv.getContext('2d');ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,W,cssH);return{ctx,W}}
+function renderRow(cv,str,font,capPx){const s=capPx/4;const W0=cv.getBoundingClientRect().width||600;const maxU=W0/s-font.padL-font.padR;
+  const lines=wrap(str,font.adv,font.space,maxU);const H=Math.ceil(lines.length*font.lineH*s);const {ctx}=setup(cv,H);
+  lines.forEach((ln,li)=>{const base=(li*font.lineH+font.top)*s;let x=font.padL;for(const c of ln){if(c===' '){x+=font.space;continue}font.draw(ctx,c,x,base,s);x+=font.adv(c)}})}
+function constructionCircles(ctx,circs,ox,base,s,clip){if(!showGrid())return;ctx.save();ctx.beginPath();ctx.rect(clip[0],clip[1],clip[2],clip[3]);ctx.clip();ctx.strokeStyle=P.gr;ctx.globalAlpha=.35;ctx.lineWidth=.7;
+  const seen=new Set();for(const cc of circs){if(cc.r>9)continue;const k=cc.c.x.toFixed(3)+','+cc.c.y.toFixed(3)+','+cc.r.toFixed(3);if(seen.has(k))continue;seen.add(k);ctx.beginPath();ctx.arc((ox+cc.c.x)*s,base-cc.c.y*s,cc.r*s,0,TAU);ctx.stroke()}ctx.restore();ctx.globalAlpha=1}
+const strokePts=(ctx,pts,ox,base,s)=>{ctx.beginPath();pts.forEach((q,i)=>{const X=(ox+q.x)*s,Y=base-q.y*s;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)})};
+
+/* ============ MANDORLA renderer ============ */
+const MAND={padL:.5,padR:.5,space:2.2,lineH:6.2,top:5,adv:c=>MG[c].w+1.15,
+  draw(ctx,c,ox,base,s){const g=MG[c];constructionCircles(ctx,g.ch.flatMap(x=>x.circs),ox,base,s,[(ox-.6)*s,base-4.9*s,(g.w+1.2)*s,5.8*s]);
+    ctx.strokeStyle=P.clay;ctx.lineWidth=.4*s;ctx.lineCap='butt';ctx.lineJoin='miter';ctx.miterLimit=6;for(const ch of g.ch){strokePts(ctx,ch.pts,ox,base,s);ctx.stroke()}}};
+
+/* ============ LUNE: every stroke is a crescent between two arcs ============ */
+// arc through p and q whose middle sits h to the left of p→q (h<0: to the right)
+function arcSag(p,q,h,n=30){const dx=q.x-p.x,dy=q.y-p.y,c=Math.hypot(dx,dy);if(Math.abs(h)<1e-4)return{pts:[p,q],circ:null};const nx=-dy/c,ny=dx/c;const r=(c*c/4+h*h)/(2*Math.abs(h));
+  const ap={x:(p.x+q.x)/2+nx*h,y:(p.y+q.y)/2+ny*h};const sg=Math.sign(h);const ce={x:ap.x-nx*sg*r,y:ap.y-ny*sg*r};
+  const nrm=a=>{while(a>Math.PI)a-=TAU;while(a<=-Math.PI)a+=TAU;return a};const a0=Math.atan2(p.y-ce.y,p.x-ce.x),aA=Math.atan2(ap.y-ce.y,ap.x-ce.x),a1=Math.atan2(q.y-ce.y,q.x-ce.x);
+  const tot=nrm(aA-a0)+nrm(a1-aA);const pts=[];for(let i=0;i<=n;i++){const a=a0+tot*i/n;pts.push({x:ce.x+r*Math.cos(a),y:ce.y+r*Math.sin(a)})}return{pts,circ:{c:ce,r}}}
+function lune(p,q,h1,h2){const A=arcSag(p,q,h1),B=arcSag(p,q,h2);return{poly:[...A.pts,...B.pts.slice().reverse()],circs:[A.circ,B.circ].filter(Boolean)}}
+const leaf=(p,q,w)=>lune(p,q,w/2,-w/2);
+const cres=(p,q,h,t)=>lune(p,q,h,h-Math.sign(h)*t);
+const TK=.36,TN=.1,v=(x,y)=>({x,y});
+const LU={
+ A:[2.3,[leaf(v(0,0),v(1.15,4),TN),leaf(v(2.3,0),v(1.15,4),TK),leaf(v(.38,1.35),v(1.92,1.35),.08)]],
+ B:[1.5,[leaf(v(0,0),v(0,4),TK),cres(v(0,4),v(0,2.05),1.2,.3),cres(v(0,2.05),v(0,0),1.45,TK)]],
+ C:[1.95,[cres(v(1.95,3.55),v(1.95,.45),-1.8,.4)]],
+ D:[1.8,[leaf(v(0,0),v(0,4),TK),cres(v(0,4),v(0,0),1.8,.38)]],
+ E:[1.85,[cres(v(1.85,3.5),v(1.85,.5),-1.7,.38),leaf(v(.3,2),v(1.5,2),TN)]],
+ F:[1.75,[leaf(v(0,0),v(0,4),TK),cres(v(0,4),v(1.75,3.6),.26,.11),leaf(v(0,2.05),v(1.3,2.05),TN)]],
+ G:[1.95,[cres(v(1.95,3.55),v(1.95,.45),-1.8,.4),leaf(v(1.05,1.85),v(2.05,1.85),.08),leaf(v(1.95,1.95),v(1.95,.45),.24)]],
+ H:[2.1,[leaf(v(0,0),v(0,4),TK),leaf(v(2.1,0),v(2.1,4),TK),leaf(v(0,2),v(2.1,2),TN)]],
+ I:[0,[leaf(v(0,0),v(0,4),TK)]],
+ J:[1.55,[cres(v(1.55,4),v(0,.5),.95,TK)]],
+ K:[2.05,[leaf(v(0,0),v(0,4),TK),leaf(v(1.95,4),v(.12,1.8),TN),leaf(v(.75,2.5),v(2.05,0),TK)]],
+ L:[1.7,[leaf(v(0,0),v(0,4),TK),leaf(v(0,.02),v(1.7,.02),TN)]],
+ M:[2.6,[leaf(v(0,0),v(.25,4),TN),leaf(v(.25,4),v(1.3,.6),TK),leaf(v(1.3,.6),v(2.35,4),TN),leaf(v(2.35,4),v(2.6,0),TK)]],
+ N:[2.1,[leaf(v(0,0),v(0,4),TN),leaf(v(0,4),v(2.1,0),TK),leaf(v(2.1,0),v(2.1,4),TN)]],
+ O:[2.3,[cres(v(1.2,4),v(1.2,0),-1.2,TK),cres(v(1.2,4),v(1.2,0),1.15,TN)]],
+ P:[1.35,[leaf(v(0,0),v(0,4),TK),cres(v(0,4),v(0,1.85),1.35,.3)]],
+ Q:[2.35,[cres(v(1.2,4),v(1.2,0),-1.2,TK),cres(v(1.2,4),v(1.2,0),1.15,TN),leaf(v(1.35,.45),v(2.4,-.45),.3)]],
+ R:[1.85,[leaf(v(0,0),v(0,4),TK),cres(v(0,4),v(0,1.85),1.35,.3),leaf(v(.45,1.85),v(1.85,0),TK)]],
+ S:[1.95,[cres(v(1.85,3.55),v(1,2),-.95,TK),cres(v(1,2),v(.15,.45),.95,TK)]],
+ T:[2.2,[leaf(v(0,3.98),v(2.2,3.98),TN),leaf(v(1.1,4),v(1.1,0),TK)]],
+ U:[2.2,[cres(v(0,4),v(1.1,0),-.5,TK),cres(v(2.2,4),v(1.1,0),.5,TN)]],
+ V:[2.3,[leaf(v(0,4),v(1.15,0),TK),leaf(v(2.3,4),v(1.15,0),TN)]],
+ W:[3.4,[leaf(v(0,4),v(.85,0),TK),leaf(v(.85,0),v(1.7,3.2),TN),leaf(v(1.7,3.2),v(2.55,0),TK),leaf(v(2.55,0),v(3.4,4),TN)]],
+ X:[2.3,[leaf(v(0,4),v(2.3,0),TK),leaf(v(2.3,4),v(0,0),TN)]],
+ Y:[2.3,[leaf(v(0,4),v(1.15,2),TK),leaf(v(2.3,4),v(1.15,2),TN),leaf(v(1.15,2),v(1.15,0),TK)]],
+ Z:[2.2,[leaf(v(0,3.98),v(2.2,3.98),TN),leaf(v(2.2,4),v(0,0),TK),leaf(v(0,.02),v(2.2,.02),TN)]]};
+const LUNE={padL:.5,padR:.5,space:2.2,lineH:6.2,top:5,adv:c=>LU[c][0]+1.1,
+  draw(ctx,c,ox,base,s){const [w,parts]=LU[c];constructionCircles(ctx,parts.flatMap(p=>p.circs),ox,base,s,[(ox-.6)*s,base-4.9*s,(w+1.2)*s,5.8*s]);
+    ctx.fillStyle=P.clay;for(const p of parts){strokePts(ctx,p.poly,ox,base,s);ctx.closePath();ctx.fill()}}};
+
+/* ============ WHORL: quarter circles, terminals spiral by φ ============ */
+function turtle(x,y,h,ops){const pts=[{x,y}],circs=[],sq=[];let H=h*DEG;
+  for(const op of ops){const k=op[0];
+    if(k==='F'){x+=op[1]*Math.cos(H);y+=op[1]*Math.sin(H);pts.push({x,y})}
+    else if(k==='T'){H=op[1]*DEG}
+    else{const n=k==='Q'?1:op[2],dir=k==='Q'?op[2]:op[3];let r=op[1];
+      for(let i=0;i<n;i++){const cx=x-Math.sin(H)*dir*r,cy=y+Math.cos(H)*dir*r;const a0=Math.atan2(y-cy,x-cx);const sx=x,sy=y;
+        for(let j=1;j<=14;j++){const a=a0+dir*(Math.PI/2)*j/14;pts.push({x:cx+r*Math.cos(a),y:cy+r*Math.sin(a)})}
+        x=pts[pts.length-1].x;y=pts[pts.length-1].y;H+=dir*Math.PI/2;circs.push({c:{x:cx,y:cy},r});sq.push([{x:cx,y:cy},{x:sx,y:sy},{x:sx+x-cx,y:sy+y-cy},{x,y}]);r/=PHI}}}
+  return{pts,circs,sq}}
+const lineW=(...p)=>({pts:p.map(([x,y])=>({x,y})),circs:[],sq:[]});
+const R1=2/PHI,SF=4-2*R1,r2=R1/PHI,r3=r2/PHI;
+const C_MAIN=()=>turtle(R1,4,180,[['Q',R1,1],['F',SF],['Q',R1,1],['S',r2,3,1]]);
+const C_TOP=()=>turtle(R1,4,0,[['S',r2,3,-1]]);
+const O_PATH=()=>turtle(2*R1,4-R1,90,[['Q',R1,1],['Q',R1,1],['F',SF],['Q',R1,1],['Q',R1,1],['F',SF]]);
+const WH={
+ A:[2.4,[lineW([0,0],[1.2,4],[2.4,0]),lineW([.42,1.4],[1.98,1.4])]],
+ B:[1.62,[turtle(0,0,90,[['F',4],['T',0],['F',.6],['Q',r2,-1],['F',2-2*r2],['Q',r2,-1],['F',.6]]),turtle(0,2,0,[['F',.85],['Q',r2,-1],['F',2-2*r2],['Q',r2,-1],['F',.85]])]],
+ C:[2.0,[C_MAIN(),C_TOP()]],
+ D:[1.74,[turtle(0,0,90,[['F',4],['T',0],['F',.5],['Q',R1,-1],['F',SF],['Q',R1,-1],['F',.5]])]],
+ E:[2.0,[C_MAIN(),C_TOP(),lineW([0,2],[1.5,2])]],
+ F:[2.05,[turtle(0,0,90,[['F',4-r3],['Q',r3,-1],['F',1.1],['S',r3,3,-1]]),lineW([0,2],[1.3,2])]],
+ G:[2.47,[turtle(R1,4,180,[['Q',R1,1],['F',SF],['Q',R1,1],['Q',R1,1],['F',2-R1],['T',180],['F',1.0]]),C_TOP()]],
+ H:[2.2,[lineW([0,0],[0,4]),lineW([2.2,0],[2.2,4]),lineW([0,2],[2.2,2])]],
+ I:[0,[lineW([0,0],[0,4])]],
+ J:[1.6,[turtle(1.6,4,270,[['F',4-r2],['S',r2,3,-1]])]],
+ K:[2.2,[lineW([0,0],[0,4]),lineW([2.1,4],[0,1.7]),lineW([.75,2.52],[2.2,0])]],
+ L:[1.78,[turtle(0,4,270,[['F',4],['T',0],['F',1.3],['S',r3,3,1]])]],
+ M:[2.6,[lineW([0,0],[0,4],[1.3,1.2],[2.6,4],[2.6,0])]],
+ N:[2.2,[lineW([0,0],[0,4],[2.2,0],[2.2,4])]],
+ O:[2*R1,[O_PATH()]],
+ P:[1.37,[turtle(0,0,90,[['F',4],['T',0],['F',.6],['Q',r2,-1],['F',2-2*r2],['Q',r2,-1],['F',.6]])]],
+ Q:[2*R1,[O_PATH(),turtle(1.55,.75,-45,[['F',.9],['S',r3,2,1]])]],
+ R:[1.85,[turtle(0,0,90,[['F',4],['T',0],['F',.6],['Q',r2,-1],['F',2-2*r2],['Q',r2,-1],['F',.6]]),lineW([.7,2],[1.85,0])]],
+ S:[2,[turtle(2,3,90,[['Q',1,1],['Q',1,1],['Q',1,1],['Q',1,-1],['Q',1,-1],['Q',1,-1],['S',1/PHI,3,-1]]),turtle(2,3,270,[['S',1/PHI,3,-1]])]],
+ T:[2.34,[turtle(0,4-r3,90,[['Q',r3,-1],['F',1.4],['Q',r3,-1]]),lineW([1.17,4],[1.17,0])]],
+ U:[2*R1,[turtle(0,4,270,[['F',4-R1],['Q',R1,1],['Q',R1,1],['F',4-R1]])]],
+ V:[2.4,[lineW([0,4],[1.2,0],[2.4,4])]],
+ W:[3.4,[lineW([0,4],[.85,0],[1.7,3],[2.55,0],[3.4,4])]],
+ X:[2.3,[lineW([0,0],[2.3,4]),lineW([0,4],[2.3,0])]],
+ Y:[2.3,[lineW([0,4],[1.15,2],[2.3,4]),lineW([1.15,2],[1.15,0])]],
+ Z:[2.2,[lineW([0,4],[2.2,4],[0,0],[2.2,0])]]};
+const WHORL={padL:.5,padR:.6,space:2.2,lineH:6.2,top:5,adv:c=>WH[c][0]+1.15,
+  draw(ctx,c,ox,base,s){const [w,parts]=WH[c];
+    if(showGrid()){ctx.strokeStyle=P.gr;ctx.lineWidth=.7;ctx.globalAlpha=.45;for(const p of parts)for(const q of p.sq){ctx.beginPath();q.forEach((pt,i)=>{const X=(ox+pt.x)*s,Y=base-pt.y*s;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)});ctx.closePath();ctx.stroke()}ctx.globalAlpha=1}
+    ctx.strokeStyle=P.clay;ctx.lineWidth=.34*s;ctx.lineCap='round';ctx.lineJoin='round';for(const p of parts){strokePts(ctx,p.pts,ox,base,s);ctx.stroke()}}};
+
+/* ============ NOTCH: square skeleton, every corner cut by an arc centered on it ============ */
+const SK={A:[3,'0,0 0,3 1,4 2,4 3,3 3,0|0,2 3,2'],B:[3,'0,0 0,4 2,4 3,3 2,2 0,2|2,2 3,1 2,0 0,0'],C:[3,'3,4 1,4 0,3 0,1 1,0 3,0'],D:[3,'0,0 0,4 2,4 3,3 3,1 2,0 0,0'],
+E:[3,'3,4 0,4 0,0 3,0|0,2 2,2'],F:[3,'3,4 0,4 0,0|0,2 2,2'],G:[3,'3,4 1,4 0,3 0,1 1,0 3,0 3,2 2,2'],H:[3,'0,0 0,4|3,0 3,4|0,2 3,2'],I:[0,'0,0 0,4'],J:[3,'3,4 3,1 2,0 1,0 0,1'],
+K:[3,'0,0 0,4|3,4 1,2 3,0|0,2 1,2'],L:[3,'0,4 0,0 3,0'],M:[4,'0,0 0,4 2,2 4,4 4,0'],N:[3,'0,0 0,4 3,0 3,4'],O:[3,'1,0 2,0 3,1 3,3 2,4 1,4 0,3 0,1 1,0'],P:[3,'0,0 0,4 2,4 3,3 2,2 0,2'],
+Q:[3,'1,0 2,0 3,1 3,3 2,4 1,4 0,3 0,1 1,0|2,1 3,0'],R:[3,'0,0 0,4 2,4 3,3 2,2 0,2|1,2 3,0'],S:[3,'3,4 1,4 0,3 1,2 2,2 3,1 2,0 0,0'],T:[3,'0,4 3,4|1.5,4 1.5,0'],U:[3,'0,4 0,1 1,0 2,0 3,1 3,4'],
+V:[3,'0,4 1.5,0 3,4'],W:[4,'0,4 1,0 2,2 3,0 4,4'],X:[3,'0,0 3,4|0,4 3,0'],Y:[3,'0,4 1.5,2 3,4|1.5,2 1.5,0'],Z:[3,'0,4 3,4 0,0 3,0']};
+const NO={};
+for(const k in SK){const [w,str]=SK[k];const ctr={x:w/2,y:2};const circs=[],parts=[];
+  for(const ps of str.split('|')){const p=ps.split(' ').map(q=>{const [x,y]=q.split(',').map(Number);return{x,y}});const out=[p[0]];
+    for(let i=1;i<p.length;i++){const a=p[i-1],b=p[i];const dx=b.x-a.x,dy=b.y-a.y;
+      if(Math.abs(Math.abs(dx)-1)<1e-9&&Math.abs(Math.abs(dy)-1)<1e-9){const c1={x:b.x,y:a.y},c2={x:a.x,y:b.y};const c=Math.hypot(c1.x-ctr.x,c1.y-ctr.y)>=Math.hypot(c2.x-ctr.x,c2.y-ctr.y)?c1:c2;
+        circs.push({c,r:1});const a0=Math.atan2(a.y-c.y,a.x-c.x),a1=Math.atan2(b.y-c.y,b.x-c.x);let da=a1-a0;while(da>Math.PI)da-=TAU;while(da<-Math.PI)da+=TAU;for(let j=1;j<=16;j++){const t=a0+da*j/16;out.push({x:c.x+Math.cos(t),y:c.y+Math.sin(t)})}}
+      else out.push(b)}parts.push(out)}
+  NO[k]={w,parts,circs}}
+const NOTCH={padL:.6,padR:.6,space:2.4,lineH:6.4,top:5.1,adv:c=>NO[c].w+1.5,
+  draw(ctx,c,ox,base,s){const g=NO[c];
+    if(showGrid()){ctx.strokeStyle=P.gr;ctx.lineWidth=.7;ctx.globalAlpha=.38;ctx.strokeRect(ox*s,base-4*s,Math.max(g.w,.02)*s,4*s);
+      constructionCircles(ctx,g.circs,ox,base,s,[(ox-1)*s,base-5*s,(g.w+2)*s,6*s]);ctx.globalAlpha=1}
+    ctx.strokeStyle=P.clay;ctx.lineWidth=.62*s;ctx.lineCap='square';ctx.lineJoin='miter';ctx.miterLimit=3;for(const p of g.parts){strokePts(ctx,p,ox,base,s);ctx.stroke()}}};
+
+/* ---------- draw ---------- */
+function capFor(cv,big){const W=cv.getBoundingClientRect().width||600;return big?Math.max(34,Math.min(80,W/13)):Math.max(22,Math.min(42,W/30))}
+function drawAll(){pal();const t=text();
+  for(const [k,F] of [['mand',MAND],['lune',LUNE],['whorl',WHORL],['notch',NOTCH]]){renderRow($('#'+k+'Text'),t,F,capFor($('#'+k+'Text'),true));renderRow($('#'+k+'Alpha'),ALPHA,F,capFor($('#'+k+'Alpha'),false))}}
+let raf=0;const sched=()=>{if(!raf)raf=requestAnimationFrame(()=>{raf=0;drawAll()})};
+$('#txt').addEventListener('input',sched);$('#grid').addEventListener('input',sched);
+let rz;new ResizeObserver(()=>{clearTimeout(rz);rz=setTimeout(drawAll,100)}).observe(document.querySelector('.wrap'));
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',drawAll);
+drawAll();
+})();
+</script>
+</body></html>
