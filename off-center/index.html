@@ -61,6 +61,7 @@ button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
 button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--clay);outline-offset:2px}
 select{font:500 14px var(--body);padding:8px 10px;border:1px solid var(--ink);background:var(--paper);color:var(--ink)}
 .further{margin-top:var(--g8);display:grid;gap:var(--g4)}
+.sec2{display:grid;gap:var(--g2);max-width:70ch}
 .further ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:var(--g3) var(--g5)}
 .further li{border-top:1px solid var(--rule);padding-top:var(--g2);font-size:15px}
 .further li b{font-family:var(--display);font-weight:400;font-size:var(--t2);display:block;line-height:1.1;margin-bottom:4px}
@@ -72,7 +73,7 @@ footer{margin-top:var(--g8);padding-top:var(--g3);border-top:1px solid var(--rul
   <header>
     <p class="eyebrow">Compass Grammar, part two</p>
     <h1>Off <em>Center</em></h1>
-    <p class="lede">The circle designs were one output of four deeper ideas. Pull those ideas loose and they grow cells, mazes, shells, foam, curves and warped space just as easily.</p>
+    <p class="lede">The circle designs were one output of four deeper ideas. Pull those ideas loose and they grow cells, mazes, shells, foam, sunflowers, quasicrystals, trees, solids, music and knots just as easily. Fourteen live specimens follow.</p>
   </header>
 
   <div class="ideas4">
@@ -175,16 +176,79 @@ footer{margin-top:var(--g8);padding-top:var(--g3);border-top:1px solid var(--rul
   </div>
 
   <section class="further">
-    <div><p class="eyebrow">Further</p><h2>Where else the four ideas <em>lead</em></h2></div>
-    <ul>
-      <li><b>Quasicrystals</b>The pentagon is constructible, so φ is too. Penrose tilings never repeat yet have five-fold order, and they can be grown by recipe, splitting each tile by φ.</li>
-      <li><b>Branching growth</b>Treat a move as a rule that runs again on its own output, like an L-system. Each branch is a halving or a √2 step, giving trees, coral and river deltas.</li>
-      <li><b>Phyllotaxis</b>Walk the compass by the golden angle instead of 60°. Points never line up, and they pack into the spirals of a sunflower head or pinecone.</li>
-      <li><b>Spheres and solids</b>A vesica spun around its axis is two spheres meeting in a circle. Sphere moves build the Platonic solids, and keep-by-counting carves their overlaps.</li>
-      <li><b>Tuning lattices</b>Lengths are ratios and ratios are pitches. A grid of 3/2 by 5/4 steps is a map of just intonation, and walking it is composing.</li>
-      <li><b>Knots and interlace</b>Arcs that cross can go over or under in turn. The same arcs become Celtic knotwork and woven patterns.</li>
-    </ul>
+    <div class="sec2"><p class="eyebrow">Part two · six more directions, built</p><h2>Further <em>out</em></h2><p class="lede" style="margin-top:var(--g2)">Sunflowers, quasicrystals, trees, solids, music and knots. Each is the same four ideas pointed somewhere new.</p></div>
   </section>
+  <div class="demos">
+
+    <article class="demo" id="d-phy">
+      <div class="tags"><span class="from">From the walk</span><span class="kind">Organic · phyllotaxis</span></div>
+      <h3>A walk that <em>never closes</em></h3>
+      <p>Walking the compass by 60° closes after six steps. Walk instead by 137.5°, the angle that splits a circle in the golden ratio, and let each step move slightly outward. The points never line up, and they pack into the seed spirals of a sunflower, a pinecone or a daisy.</p>
+      <canvas id="phyCv" aria-label="Phyllotaxis seed pattern"></canvas>
+      <p class="read" id="phyRead"></p>
+      <div class="ctl"><label for="phyAng">Turn per seed</label><output id="phyAngOut" for="phyAng"></output><input type="range" id="phyAng" min="130" max="145" step="0.001" value="137.508"></div>
+      <div class="ctl"><label for="phyN">Seeds</label><output id="phyNOut" for="phyN"></output><input type="range" id="phyN" min="50" max="2000" value="700"></div>
+      <div class="row"><label class="note" for="phyM">Color every</label><select id="phyM"><option>5</option><option>8</option><option>13</option><option selected>21</option><option>34</option><option>55</option></select><button id="phyGold">Golden angle</button><button class="primary" id="phySweep" aria-pressed="false">Sweep the angle</button></div>
+      <p class="math"><b>Keep by counting:</b> seeds are colored by their number mod 13, 21 or 34. Those are Fibonacci numbers, and at the golden angle each choice lights up exactly that many spiral arms. Nudge the angle and the spirals snap into straight spokes.</p>
+    </article>
+
+    <article class="demo" id="d-pen">
+      <div class="tags"><span class="from">From the pentagon, through φ</span><span class="kind">Special maths · quasicrystal</span></div>
+      <h3>Order that <em>never repeats</em></h3>
+      <p>The pentagon is constructible, so φ is too. Start with a wheel of ten golden triangles and split every triangle by φ, again and again. The result is a Penrose tiling: two rhombus shapes, five-fold symmetry everywhere, and no pattern that repeats by sliding. Real quasicrystals form this way, and their discovery won the 2011 Nobel Prize in Chemistry.</p>
+      <canvas id="penCv" aria-label="Penrose rhombus tiling"></canvas>
+      <p class="read" id="penRead"></p>
+      <div class="ctl"><label for="penG">Splits</label><output id="penGOut" for="penG"></output><input type="range" id="penG" min="0" max="8" value="5"></div>
+      <div class="ctl"><label for="penZ">Zoom into the center</label><output id="penZOut" for="penZ"></output><input type="range" id="penZ" min="1" max="6" step="0.1" value="1"></div>
+      <p class="math"><b>Recipe, not outline:</b> the tiling is stored as one rule applied n times. Count the two tile types after each split and their ratio closes in on φ.</p>
+    </article>
+
+    <article class="demo" id="d-br">
+      <div class="tags"><span class="from">From the diagonal and halving, repeated</span><span class="kind">Growth · branching</span></div>
+      <h3>Trees from <em>one rule</em></h3>
+      <p>Every branch makes two smaller branches at a fixed angle, using a constructible angle and a constructible shrink such as 1/√2 or 1/φ. Run the rule on its own output and you get trees, coral and river deltas. The Pythagoras tree does the same with squares: two squares on the legs of a right triangle, forever.</p>
+      <canvas id="brCv" aria-label="Branching growth"></canvas>
+      <p class="read" id="brRead"></p>
+      <div class="row" role="group" aria-label="Kind"><button id="brTree" aria-pressed="true">Branches</button><button id="brPyth" aria-pressed="false">Pythagoras tree</button></div>
+      <div class="row"><label class="note" for="brAng">Angle</label><select id="brAng"></select><label class="note" for="brS">Shrink</label><select id="brS"><option value="0.7071">1/√2</option><option value="0.618">1/φ</option><option value="0.5">1/2</option><option value="0.866">√3/2</option></select></div>
+      <div class="ctl"><label for="brD">Generations</label><output id="brDOut" for="brD"></output><input type="range" id="brD" min="1" max="13" value="10"></div>
+      <div class="ctl"><label for="brK">Keep generation</label><output id="brKOut" for="brK"></output><input type="range" id="brK" min="0" max="13" value="6"></div>
+      <p class="math" id="brMath"><b>Keep by counting:</b> the red generation is chosen by its distance from the trunk.</p>
+    </article>
+
+    <article class="demo" id="d-sol">
+      <div class="tags"><span class="from">From the vesica, spun</span><span class="kind">Other geometry · solids</span></div>
+      <h3>Five solids, four <em>numbers</em></h3>
+      <p>Spin a vesica about its axis and you get two spheres meeting in a circle. The same moves in 3D give the five Platonic solids, and every corner of every one sits at coordinates made only of 0, ±1, ±φ and ±1/φ. The red frames show each recipe: the icosahedron is three golden rectangles at right angles, and the dodecahedron is a cube with roofs. Drag to turn it.</p>
+      <canvas id="solCv" aria-label="Rotating Platonic solid; drag to turn"></canvas>
+      <p class="read" id="solRead"></p>
+      <div class="row" role="group" aria-label="Solid"><button data-s="tetra">Tetrahedron</button><button data-s="cube">Cube</button><button data-s="octa">Octahedron</button><button data-s="dodeca">Dodecahedron</button><button data-s="icosa">Icosahedron</button></div>
+      <p class="math"><b>Counting that never fails:</b> corners − edges + faces = 2 for every one of them (Euler's formula).</p>
+    </article>
+
+    <article class="demo" id="d-ton">
+      <div class="tags"><span class="from">From measure</span><span class="kind">Sound · tuning lattice</span></div>
+      <h3>A map you can <em>play</em></h3>
+      <p>Lengths are ratios, and ratios are pitches. Step right by a fifth (3/2) and up-right by a major third (5/4) and the plane fills with a lattice of just intonation. Every small triangle is a chord: pointing up is major, pointing down is minor. Tap a triangle to hear it, a dot to hear one note, or let it wander.</p>
+      <canvas id="tonCv" aria-label="Tuning lattice; tap triangles to play chords"></canvas>
+      <p class="read" id="tonRead"></p>
+      <div class="row"><button class="primary" id="tonWander" aria-pressed="false">Wander</button><span class="note">Each step flips one triangle across an edge, keeping two notes and moving one.</span></div>
+      <p class="math"><b>The comma:</b> the two red Es are the same note on a piano, but four fifths (81/64) and one third (5/4) miss each other by 21.5 cents. This small gap is why tuning systems exist.</p>
+    </article>
+
+    <article class="demo" id="d-knot">
+      <div class="tags"><span class="from">From delete by counting</span><span class="kind">Pattern · interlace</span></div>
+      <h3>Circles that <em>weave</em></h3>
+      <p>Where two strands cross, one goes over. To make every strand alternate over, under, over, use the same count that deleted regions in the machine: whether a crossing's corner is inside an odd or even number of circles decides who is on top. Any circle construction becomes Celtic-style knotwork.</p>
+      <canvas id="knotCv" aria-label="Woven circles"></canvas>
+      <p class="read" id="knotRead"></p>
+      <div class="ctl"><label for="knotN">Circles in the ring</label><output id="knotNOut" for="knotN"></output><input type="range" id="knotN" min="2" max="12" value="6"></div>
+      <div class="ctl"><label for="knotD">Ring size</label><output id="knotDOut" for="knotD"></output><input type="range" id="knotD" min="0.2" max="1.6" step="0.01" value="0.62"></div>
+      <div class="ctl"><label for="knotW">Ribbon width</label><output id="knotWOut" for="knotW"></output><input type="range" id="knotW" min="0.06" max="0.3" step="0.01" value="0.16"></div>
+      <div class="checks"><label><input type="checkbox" id="knotC" checked> Add a circle at the center</label></div>
+      <p class="math"><b>Why it always works:</b> any drawing of crossing curves can be colored like a checkerboard. Reading that coloring at each crossing gives a consistent over-under everywhere.</p>
+    </article>
+  </div>
 
   <footer>Companion to Compass Grammar. Every specimen on this page is drawn from exact constructions computed live in your browser.</footer>
 </div>
@@ -370,10 +434,133 @@ function rwLoop(now){const dt=Math.min(.05,(now-rw.last)/1000);rw.last=now;if(rw
 document.querySelectorAll('#d-rw [data-n]').forEach(b=>b.onclick=()=>{rw.n=+b.dataset.n;rw.trail=[];document.querySelectorAll('#d-rw [data-n]').forEach(x=>x.setAttribute('aria-pressed',x===b));drawRW()});
 $('#rwPause').onclick=()=>{rw.run=!rw.run;$('#rwPause').textContent=rw.run?'Pause':'Roll'};if(!rw.run)$('#rwPause').textContent='Roll';
 
+/* ============ 9. phyllotaxis ============ */
+const GOLD=360/(PHI*PHI);
+const ph={sweep:false,raf:0,t0:0};
+function nearFrac(x,qmax){let best={p:0,q:1,e:1};for(let q=1;q<=qmax;q++){const p=Math.round(x*q);const e=Math.abs(x-p/q);if(e<best.e-1e-12)best={p,q,e}}return best}
+function drawPhy(){const cv=$('#phyCv'),W=sizeCanvas(cv),ctx=cv.getContext('2d'),d=DPR();const {s,X,Y}=view(W,1.05);ctx.clearRect(0,0,W,W);
+  const ang=+$('#phyAng').value,n=+$('#phyN').value,m=+$('#phyM').value,a=ang*Math.PI/180;const rad=Math.max(1.1*d,.8*s/Math.sqrt(n));
+  for(let i=1;i<=n;i++){const r=Math.sqrt(i/n),t=i*a;const arm=(i%m)%2===0;ctx.fillStyle=arm?P.clay:P.ink;ctx.globalAlpha=arm?1:.5;ctx.beginPath();ctx.arc(X(r*Math.cos(t)),Y(r*Math.sin(t)),rad*(.5+.5*r),0,TAU);ctx.fill()}
+  ctx.globalAlpha=1;$('#phyAngOut').textContent=ang.toFixed(3)+'°';
+  if(Math.abs(ang-GOLD)<.004)$('#phyRead').innerHTML=`<em>the golden angle, 360° ÷ φ²</em> · no seed ever lines up with another`;
+  else{const f=nearFrac(ang/360,89);$('#phyRead').innerHTML=`close to 360° × ${f.p}/${f.q} · <em>${f.q} straight spokes</em> · ${(ang-GOLD>=0?'+':'−')+Math.abs(ang-GOLD).toFixed(3)}° from golden`}}
+function phyLoop(now){if(!ph.sweep)return;const t=(now-ph.t0)/1000;$('#phyAng').value=(GOLD+1.6*Math.sin(t*.16)).toFixed(3);drawPhy();ph.raf=requestAnimationFrame(phyLoop)}
+function setSweep(on){ph.sweep=on&&!reduced;$('#phySweep').setAttribute('aria-pressed',ph.sweep);$('#phySweep').textContent=ph.sweep?'Stop':'Sweep the angle';cancelAnimationFrame(ph.raf);if(ph.sweep){ph.t0=performance.now();ph.raf=requestAnimationFrame(phyLoop)}}
+$('#phyAng').addEventListener('input',()=>{setSweep(false);drawPhy()});bindRange('phyN',drawPhy);$('#phyM').addEventListener('input',drawPhy);
+$('#phyGold').onclick=()=>{setSweep(false);$('#phyAng').value=GOLD.toFixed(3);drawPhy()};$('#phySweep').onclick=()=>setSweep(!ph.sweep);
+
+/* ============ 10. Penrose by golden-triangle splitting ============ */
+function penroseTris(g){let cur=[];for(let i=0;i<10;i++){let B={x:Math.cos((2*i-1)*Math.PI/10),y:Math.sin((2*i-1)*Math.PI/10)},C={x:Math.cos((2*i+1)*Math.PI/10),y:Math.sin((2*i+1)*Math.PI/10)};if(i%2===0)[B,C]=[C,B];cur.push([0,{x:0,y:0},B,C])}
+  const lerp=(a,b,t)=>({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t});
+  for(let k=0;k<g;k++){const nx=[];for(const [c,A,B,C] of cur){if(c===0){const Q=lerp(A,B,1/PHI);nx.push([0,C,Q,B],[1,Q,C,A])}else{const Q=lerp(B,A,1/PHI),R=lerp(B,C,1/PHI);nx.push([1,R,C,A],[1,Q,R,B],[0,R,Q,A])}}cur=nx}return cur}
+function drawPen(){const cv=$('#penCv'),W=sizeCanvas(cv),ctx=cv.getContext('2d'),d=DPR();const g=+$('#penG').value,z=+$('#penZ').value;$('#penZOut').textContent=z.toFixed(1)+'×';
+  const T=penroseTris(g);const {X,Y}=view(W,1.02/z);ctx.clearRect(0,0,W,W);const hp=hatch(ctx);let n0=0,n1=0;
+  const p0=new Path2D(),p1=new Path2D(),edges=new Path2D();
+  for(const [c,A,B,C] of T){const path=c===0?p0:p1;c===0?n0++:n1++;path.moveTo(X(A.x),Y(A.y));path.lineTo(X(B.x),Y(B.y));path.lineTo(X(C.x),Y(C.y));path.closePath();edges.moveTo(X(C.x),Y(C.y));edges.lineTo(X(A.x),Y(A.y));edges.lineTo(X(B.x),Y(B.y))}
+  ctx.fillStyle=hp;ctx.fill(p0);ctx.fillStyle=P.sheet;ctx.fill(p1);ctx.strokeStyle=P.ink;ctx.lineJoin='round';ctx.lineWidth=Math.max(.6,1.8-g*.15)*d*Math.min(z,2);ctx.stroke(edges);
+  const r=Math.max(n0,n1)/Math.max(1,Math.min(n0,n1));$('#penRead').innerHTML=`${(n0+n1)/2} rhombs · white : red = <em>${(n1/Math.max(1,n0)).toFixed(4)}</em> · φ = ${PHI.toFixed(4)}`}
+bindRange('penG',drawPen);bindRange('penZ',drawPen,v=>v.toFixed(1)+'×');
+
+/* ============ 11. branching growth ============ */
+const br={mode:'tree'};
+const TREE_ANGLES=[[30,'30° (half a vesica)'],[36,'36° (pentagon)'],[45,'45° (square)'],[60,'60° (hexagon)'],[72,'72° (pentagon)'],[90,'90°']];
+const PYTH_ANGLES=[[45,'45° (isosceles)'],[30,'30° (half a vesica)'],[36.8699,'3–4–5 triangle'],[36,'36° (pentagon)']];
+function fillAng(){const L=br.mode==='tree'?TREE_ANGLES:PYTH_ANGLES;$('#brAng').innerHTML=L.map(([v,t],i)=>`<option value="${v}" ${i===(br.mode==='tree'?2:0)?'selected':''}>${t}</option>`).join('');$('#brS').disabled=br.mode!=='tree'}
+function drawBr(){const cv=$('#brCv'),W=sizeCanvas(cv),ctx=cv.getContext('2d'),d=DPR();const D=+$('#brD').value,k=+$('#brK').value,ang=+$('#brAng').value*Math.PI/180,sc=+$('#brS').value;
+  $('#brK').max=D;if(k>D){$('#brK').value=D}$('#brKOut').textContent=$('#brK').value;const K=+$('#brK').value;
+  ctx.clearRect(0,0,W,W);const hp=hatch(ctx);let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;const grow=(x,y)=>{x0=Math.min(x0,x);x1=Math.max(x1,x);y0=Math.min(y0,y);y1=Math.max(y1,y)};
+  if(br.mode==='tree'){const segs=[];const st=[[0,0,Math.PI/2,1,0]];while(st.length){const [x,y,a,l,g]=st.pop();const ex=x+l*Math.cos(a),ey=y+l*Math.sin(a);segs.push([x,y,ex,ey,l,g]);grow(x,y);grow(ex,ey);if(g<D){st.push([ex,ey,a+ang,l*sc,g+1],[ex,ey,a-ang,l*sc,g+1])}}
+    const Hw=Math.max(x1-x0,y1-y0)/2*1.08;const {s,X,Y}=view(W,Hw,(x0+x1)/2,(y0+y1)/2);ctx.lineCap='round';
+    for(const [ax,ay,bx,by,l,g] of segs){const hl=g===K;ctx.strokeStyle=hl?P.clay:P.ink;ctx.globalAlpha=hl?1:.78;ctx.lineWidth=Math.max(.7*d,l*s*.07)*(hl?1.4:1);ctx.beginPath();ctx.moveTo(X(ax),Y(ay));ctx.lineTo(X(bx),Y(by));ctx.stroke()}ctx.globalAlpha=1;
+    const f=2*sc;$('#brRead').innerHTML=`${segs.length} branches · each generation's total length × <em>${f.toFixed(3)}</em>`;
+    $('#brMath').innerHTML=`<b>Keep by counting:</b> ${f>1.001?`with two children at ${sc===.7071?'1/√2':sc===.618?'1/φ':sc===.866?'√3/2':'1/2'}, each generation is longer in total than the last, so the tree's length grows without limit while it stays a fixed size.`:f>.999?'with two halves, every generation has exactly the same total length as the trunk.':`the total length converges to ${(1/(1-f)).toFixed(3)} trunks.`} The red generation is chosen by its distance from the trunk.`}
+  else{const sq=[];const st=[[{x:-.5,y:0},{x:.5,y:0},0]];const ca=Math.cos(ang);while(st.length){const [p0,p1,g]=st.pop();const e={x:p1.x-p0.x,y:p1.y-p0.y};const pr={x:-e.y,y:e.x};const p2={x:p1.x+pr.x,y:p1.y+pr.y},p3={x:p0.x+pr.x,y:p0.y+pr.y};sq.push([p0,p1,p2,p3,g]);[p0,p1,p2,p3].forEach(q=>grow(q.x,q.y));
+      if(g<D){const L=Math.hypot(e.x,e.y)*ca;const u={x:e.x/Math.hypot(e.x,e.y),y:e.y/Math.hypot(e.x,e.y)};const ru={x:u.x*Math.cos(ang)-u.y*Math.sin(ang),y:u.x*Math.sin(ang)+u.y*Math.cos(ang)};const q={x:p3.x+ru.x*L,y:p3.y+ru.y*L};st.push([p3,q,g+1],[q,p2,g+1])}}
+    const Hw=Math.max(x1-x0,y1-y0)/2*1.06;const {X,Y}=view(W,Hw,(x0+x1)/2,(y0+y1)/2);
+    for(const [a,b,c,e,g] of sq){ctx.beginPath();ctx.moveTo(X(a.x),Y(a.y));ctx.lineTo(X(b.x),Y(b.y));ctx.lineTo(X(c.x),Y(c.y));ctx.lineTo(X(e.x),Y(e.y));ctx.closePath();if(g===K){ctx.fillStyle=hp;ctx.fill()}ctx.strokeStyle=P.ink;ctx.globalAlpha=.8;ctx.lineWidth=Math.max(.5,1.3-g*.08)*d;ctx.stroke();ctx.globalAlpha=1}
+    $('#brRead').innerHTML=`${sq.length} squares · every generation's total area = <em>1 trunk square</em>`;
+    $('#brMath').innerHTML='<b>Keep by counting:</b> by Pythagoras, the two squares on the legs add up to the square they grow from, so every generation has exactly the same total area. The red generation shows it.'}}
+function brMode(m){br.mode=m;$('#brTree').setAttribute('aria-pressed',m==='tree');$('#brPyth').setAttribute('aria-pressed',m==='pyth');$('#brD').max=m==='tree'?13:12;fillAng();drawBr()}
+$('#brTree').onclick=()=>brMode('tree');$('#brPyth').onclick=()=>brMode('pyth');$('#brAng').addEventListener('input',drawBr);$('#brS').addEventListener('input',drawBr);bindRange('brD',drawBr);bindRange('brK',drawBr);fillAng();
+
+/* ============ 12. Platonic solids from 0, ±1, ±φ, ±1/φ ============ */
+const sol={kind:'icosa',rx:-.42,ry:.5,auto:!reduced,drag:null,last:performance.now()};
+function solid(kind){const f=PHI,g=1/PHI,V=[];const cyc=(a,b,c)=>[[a,b,c],[c,a,b],[b,c,a]];const pm=[1,-1];
+  if(kind==='tetra')V.push([1,1,1],[1,-1,-1],[-1,1,-1],[-1,-1,1]);
+  if(kind==='cube'||kind==='dodeca')for(const a of pm)for(const b of pm)for(const c of pm)V.push([a,b,c]);
+  if(kind==='octa')V.push([1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]);
+  if(kind==='icosa')for(const a of pm)for(const b of pm)V.push(...cyc(0,a,b*f));
+  if(kind==='dodeca')for(const a of pm)for(const b of pm)V.push(...cyc(0,a*g,b*f));
+  let md=1e9;for(let i=0;i<V.length;i++)for(let j=i+1;j<V.length;j++)md=Math.min(md,Math.hypot(V[i][0]-V[j][0],V[i][1]-V[j][1],V[i][2]-V[j][2]));
+  const E=[];for(let i=0;i<V.length;i++)for(let j=i+1;j<V.length;j++)if(Math.abs(Math.hypot(V[i][0]-V[j][0],V[i][1]-V[j][1],V[i][2]-V[j][2])-md)<1e-6)E.push([i,j]);
+  let F=[];const cube=[];for(const a of pm)for(const b of pm)for(const c of pm)cube.push([a,b,c]);const cubeE=[];for(let i=0;i<8;i++)for(let j=i+1;j<8;j++)if(Math.abs(Math.hypot(cube[i][0]-cube[j][0],cube[i][1]-cube[j][1],cube[i][2]-cube[j][2])-2)<1e-6)cubeE.push([cube[i],cube[j]]);
+  if(kind==='icosa')F=[0,1,2].map(r=>[[0,1,f],[0,-1,f],[0,-1,-f],[0,1,-f]].map(p=>[p[(0+r)%3],p[(1+r)%3],p[(2+r)%3]]).map(p=>[p[0],p[1],p[2]]));
+  if(kind==='octa')F=[0,1,2].map(r=>[[1,0,0],[0,1,0],[-1,0,0],[0,-1,0]].map(p=>[p[(3-r)%3],p[(4-r)%3],p[(5-r)%3]]));
+  const frameE=(kind==='dodeca'||kind==='tetra')?cubeE:[];
+  return{V,E,F,frameE}}
+function drawSol(){const cv=$('#solCv'),W=sizeCanvas(cv),ctx=cv.getContext('2d'),d=DPR();const S=solid(sol.kind);let R=0;for(const v of S.V)R=Math.max(R,Math.hypot(...v));
+  const cy=Math.cos(sol.ry),sy=Math.sin(sol.ry),cx=Math.cos(sol.rx),sx=Math.sin(sol.rx);const rot=v=>{const x=v[0]*cy+v[2]*sy,z=-v[0]*sy+v[2]*cy;const y=v[1]*cx-z*sx,z2=v[1]*sx+z*cx;return[x/R,y/R,z2/R]};
+  const {s,X,Y}=view(W,1.25);const pr=v=>{const k=1/(1-v[2]*.18);return[X(v[0]*k),Y(v[1]*k),v[2]]};ctx.clearRect(0,0,W,W);const hp=hatch(ctx);
+  ctx.strokeStyle=P.gr;ctx.globalAlpha=.6;ctx.lineWidth=1*d;ctx.setLineDash([3*d,4*d]);ctx.beginPath();ctx.arc(X(0),Y(0),s,0,TAU);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;
+  for(const quad of S.F){const q=quad.map(v=>pr(rot(v)));ctx.beginPath();q.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();ctx.globalAlpha=.28;ctx.fillStyle=hp;ctx.fill();ctx.globalAlpha=.9;ctx.strokeStyle=P.clay;ctx.lineWidth=1.4*d;ctx.stroke();ctx.globalAlpha=1}
+  for(const [a,b] of S.frameE){const p=pr(rot(a)),q=pr(rot(b));ctx.strokeStyle=P.clay;ctx.globalAlpha=(p[2]+q[2])/2>0?.9:.35;ctx.lineWidth=1.3*d;ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(q[0],q[1]);ctx.stroke()}ctx.globalAlpha=1;
+  const Vp=S.V.map(v=>pr(rot(v)));const E=S.E.map(([i,j])=>[i,j,(Vp[i][2]+Vp[j][2])/2]).sort((a,b)=>a[2]-b[2]);
+  for(const [i,j,z] of E){const front=z>-.05;ctx.strokeStyle=front?P.ink:P.gr;ctx.globalAlpha=front?1:.55;ctx.lineWidth=(front?2.2:1)*d;ctx.setLineDash(front?[]:[4*d,4*d]);ctx.beginPath();ctx.moveTo(Vp[i][0],Vp[i][1]);ctx.lineTo(Vp[j][0],Vp[j][1]);ctx.stroke()}ctx.setLineDash([]);ctx.globalAlpha=1;
+  ctx.fillStyle=P.ink;for(const p of Vp){if(p[2]<-.05)continue;ctx.beginPath();ctx.arc(p[0],p[1],2.6*d,0,TAU);ctx.fill()}
+  const V=S.V.length,Ec=S.E.length,F=Ec-V+2;$('#solRead').innerHTML=`${V} corners − ${Ec} edges + ${F} faces = <em>2</em>`}
+function solLoop(now){const dt=Math.min(.05,(now-sol.last)/1000);sol.last=now;if(sol.auto&&!sol.drag){sol.ry+=dt*.35;drawSol()}requestAnimationFrame(solLoop)}
+document.querySelectorAll('#d-sol [data-s]').forEach(b=>{b.setAttribute('aria-pressed',b.dataset.s===sol.kind);b.onclick=()=>{sol.kind=b.dataset.s;document.querySelectorAll('#d-sol [data-s]').forEach(x=>x.setAttribute('aria-pressed',x===b));drawSol()}});
+$('#solCv').style.touchAction='none';
+$('#solCv').addEventListener('pointerdown',e=>{sol.drag={x:e.clientX,y:e.clientY,rx:sol.rx,ry:sol.ry};e.currentTarget.setPointerCapture(e.pointerId)});
+$('#solCv').addEventListener('pointermove',e=>{if(!sol.drag)return;sol.ry=sol.drag.ry+(e.clientX-sol.drag.x)*.01;sol.rx=sol.drag.rx+(e.clientY-sol.drag.y)*.01;drawSol()});
+const solUp=()=>{sol.drag=null};$('#solCv').addEventListener('pointerup',solUp);$('#solCv').addEventListener('pointercancel',solUp);
+
+/* ============ 13. tuning lattice ============ */
+const NOTE=['C','C♯','D','E♭','E','F','F♯','G','A♭','A','B♭','B'];const TH=Math.sqrt(3)/2,TX=4.2,TB=3;
+const ton={sel:null,node:null,wander:false,timer:0};
+function nodeInfo(a,b){let num=Math.pow(3,Math.max(a,0))*Math.pow(5,Math.max(b,0)),den=Math.pow(3,Math.max(-a,0))*Math.pow(5,Math.max(-b,0));while(num/den>=2)den*=2;while(num/den<1)num*=2;return{r:num/den,frac:`${num}/${den}`,name:NOTE[((a*7+b*4)%12+12)%12]}}
+const tpos=(a,b)=>({x:a+b/2,y:b*TH});
+const inView=(a,b)=>Math.abs(tpos(a,b).x)<=TX+1e-9&&Math.abs(b)<=TB;
+function triNodes(t){const [a,b,up]=t;return up?[[a,b],[a+1,b],[a,b+1]]:[[a+1,b],[a,b+1],[a+1,b+1]]}
+const triOk=t=>triNodes(t).every(([a,b])=>inView(a,b));
+function drawTon(){const cv=$('#tonCv'),W=sizeCanvas(cv),ctx=cv.getContext('2d'),d=DPR();const {s,X,Y}=view(W,4.65);ctx.clearRect(0,0,W,W);const hp=hatch(ctx);
+  if(ton.sel){const q=triNodes(ton.sel).map(([a,b])=>tpos(a,b));ctx.beginPath();q.forEach((p,i)=>i?ctx.lineTo(X(p.x),Y(p.y)):ctx.moveTo(X(p.x),Y(p.y)));ctx.closePath();ctx.fillStyle=hp;ctx.fill()}
+  ctx.strokeStyle=P.gr;ctx.lineWidth=1*d;ctx.globalAlpha=.7;ctx.beginPath();
+  for(let b=-TB;b<=TB;b++)for(let a=-8;a<=8;a++){if(!inView(a,b))continue;const p=tpos(a,b);for(const [da,db] of [[1,0],[0,1],[-1,1]]){if(!inView(a+da,b+db))continue;const q=tpos(a+da,b+db);ctx.moveTo(X(p.x),Y(p.y));ctx.lineTo(X(q.x),Y(q.y))}}ctx.stroke();ctx.globalAlpha=1;
+  const nr=Math.min(.38*s,26*d);ctx.textAlign='center';ctx.textBaseline='middle';
+  for(let b=-TB;b<=TB;b++)for(let a=-8;a<=8;a++){if(!inView(a,b))continue;const p=tpos(a,b),info=nodeInfo(a,b);const comma=(a===4&&b===0)||(a===0&&b===1);const on=ton.node&&ton.node[0]===a&&ton.node[1]===b;
+    ctx.beginPath();ctx.arc(X(p.x),Y(p.y),nr,0,TAU);ctx.fillStyle=on?P.clay:P.sheet;ctx.fill();ctx.strokeStyle=comma?P.clay:P.ink;ctx.lineWidth=(comma?2.4:1.2)*d;ctx.stroke();
+    ctx.fillStyle=on?P.sheet:P.ink;ctx.font=`500 ${Math.min(13,nr/d*.5)*d}px ${P.mono}`;ctx.fillText(info.name,X(p.x),Y(p.y)-nr*.32);ctx.font=`${Math.min(10.5,nr/d*.42)*d}px ${P.mono}`;ctx.fillStyle=on?P.sheet:(comma?P.clay:P.gr);ctx.fillText(info.frac,X(p.x),Y(p.y)+nr*.36)}
+  ctx.textAlign='start';ctx.textBaseline='alphabetic'}
+function chordName(t){const [a,b,up]=t;return up?`${nodeInfo(a,b).name} major`:`${nodeInfo(a,b+1).name} minor`}
+function playTri(t){const ns=triNodes(t).map(([a,b])=>nodeInfo(a,b));ns.sort((x,y)=>x.r-y.r);ns.forEach((n,i)=>tone(196*n.r,i*.04,1.6,.11));ton.sel=t;ton.node=null;drawTon();$('#tonRead').innerHTML=`<em>${chordName(t)}</em> · ${ns.map(n=>n.frac).join(' : ')}`}
+$('#tonCv').addEventListener('pointerdown',e=>{const r=e.currentTarget.getBoundingClientRect();const x=((e.clientX-r.left)/r.width*2-1)*4.65,y=(1-(e.clientY-r.top)/r.height*2)*4.65;const bf=y/TH,af=x-bf/2;
+  const ra=Math.round(af),rb=Math.round(bf);const pn=tpos(ra,rb);if(inView(ra,rb)&&Math.hypot(pn.x-x,pn.y-y)<.3){const n=nodeInfo(ra,rb);ton.node=[ra,rb];ton.sel=null;tone(196*n.r,0,1.4,.15);drawTon();$('#tonRead').innerHTML=`<em>${n.name}</em> · ${n.frac} = ${n.r.toFixed(4)}${(ra===4&&rb===0)||(ra===0&&rb===1)?' · one of the two Es':''}`;return}
+  const a0=Math.floor(af),b0=Math.floor(bf);const t=(af-a0)+(bf-b0)<1?[a0,b0,true]:[a0,b0,false];if(triOk(t))playTri(t)});
+function neighbors(t){const [a,b,up]=t;return(up?[[a,b,false],[a-1,b,false],[a,b-1,false]]:[[a,b,true],[a+1,b,true],[a,b+1,true]]).filter(triOk)}
+function wanderStep(){if(!ton.wander)return;const nb=neighbors(ton.sel||[0,0,true]);playTri(nb[Math.floor(Math.random()*nb.length)]);ton.timer=setTimeout(wanderStep,700)}
+$('#tonWander').onclick=()=>{ton.wander=!ton.wander;$('#tonWander').setAttribute('aria-pressed',ton.wander);$('#tonWander').textContent=ton.wander?'Stop':'Wander';clearTimeout(ton.timer);if(ton.wander){audio();if(!ton.sel)playTri([0,0,true]);ton.timer=setTimeout(wanderStep,700)}};
+
+/* ============ 14. woven circles ============ */
+function drawKnot(){const cv=$('#knotCv'),W=sizeCanvas(cv),ctx=cv.getContext('2d'),d=DPR();const n=+$('#knotN').value,d0=+$('#knotD').value,dd=Math.abs(d0-1)<.006?1.006:d0,w=+$('#knotW').value,cen=$('#knotC').checked;
+  const C=[];for(let i=0;i<n;i++){const a=Math.PI/2+i*TAU/n;C.push({x:dd*Math.cos(a),y:dd*Math.sin(a),r:1})}if(cen)C.push({x:0,y:0,r:1});
+  const Hw=dd+1+w+.12;const {s,X,Y}=view(W,Hw);ctx.clearRect(0,0,W,W);
+  const par=p=>{let k=0;for(const c of C)if(Math.hypot(p.x-c.x,p.y-c.y)<c.r)k++;return k%2};
+  const X0=[];for(let i=0;i<C.length;i++)for(let j=i+1;j<C.length;j++){const A=C[i],B=C[j];const dx=B.x-A.x,dy=B.y-A.y,D=Math.hypot(dx,dy);if(D<1e-6||D>=A.r+B.r-1e-6||D<=Math.abs(A.r-B.r)+1e-6)continue;
+    const a=(A.r*A.r-B.r*B.r+D*D)/(2*D),h=Math.sqrt(A.r*A.r-a*a);const mx=A.x+a*dx/D,my=A.y+a*dy/D;
+    for(const sg of[1,-1]){const p={x:mx-sg*h*dy/D,y:my+sg*h*dx/D};const tA={x:-(p.y-A.y)/A.r,y:(p.x-A.x)/A.r},tB={x:-(p.y-B.y)/B.r,y:(p.x-B.x)/B.r};const m={x:tA.x+tB.x,y:tA.y+tB.y},ml=Math.hypot(m.x,m.y);if(ml<1e-3)continue;
+      const sh=par({x:p.x+1e-5*m.x/ml,y:p.y+1e-5*m.y/ml});const cr=tA.x*tB.y-tA.y*tB.x;const over=(sh===1)===(cr>0)?i:j;X0.push({p,over})}}
+  const wp=w*s;const strand=(c,a0,a1)=>{ctx.beginPath();ctx.arc(X(c.x),Y(c.y),c.r*s,a0,a1,false)};
+  const ribbon=(c,a0,a1,gap)=>{if(gap){ctx.strokeStyle=P.sheet;ctx.lineWidth=wp*1.75;strand(c,a0,a1);ctx.stroke()}ctx.strokeStyle=P.ink;ctx.lineWidth=wp;strand(c,a0,a1);ctx.stroke();ctx.strokeStyle=P.clay;ctx.lineWidth=wp*.56;strand(c,a0,a1);ctx.stroke()};
+  ctx.lineCap='butt';for(const c of C)ribbon(c,0,TAU,false);
+  for(const x of X0){const c=C[x.over];const ang=-Math.atan2(x.p.y-c.y,x.p.x-c.x);const dl=wp*1.5/(c.r*s);ribbon(c,ang-dl,ang+dl,true)}
+  $('#knotRead').innerHTML=`${C.length} loops · ${X0.length} crossings · <em>every loop alternates over, under</em>`}
+bindRange('knotN',drawKnot);bindRange('knotD',drawKnot,v=>v.toFixed(2));bindRange('knotW',drawKnot,v=>v.toFixed(2));$('#knotC').addEventListener('input',drawKnot);
+
 /* ============ start ============ */
-function drawAll(){pal();drawCells();drawMaze();drawSpiral();drawFoam();drawEnv();drawInv();drawHyp();drawRW()}
-pal();scatter(70);voronoi();shuffleMaze();drawAll();requestAnimationFrame(rwLoop);
-let rz;new ResizeObserver(()=>{clearTimeout(rz);rz=setTimeout(drawAll,120)}).observe(document.querySelector('.demos'));
+function drawAll(){pal();drawCells();drawMaze();drawSpiral();drawFoam();drawEnv();drawInv();drawHyp();drawRW();drawPhy();drawPen();drawBr();drawSol();drawTon();drawKnot()}
+pal();scatter(70);voronoi();shuffleMaze();drawAll();requestAnimationFrame(rwLoop);requestAnimationFrame(solLoop);$('#tonRead').textContent='Tap a triangle or a dot.';
+let rz;new ResizeObserver(()=>{clearTimeout(rz);rz=setTimeout(drawAll,120)}).observe(document.querySelector('.wrap'));
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',drawAll);
 })();
 </script>
